@@ -18,3 +18,21 @@ export interface Category {
 }
 
 export type FundingType = 'personal' | 'public' | null;
+
+export interface InvitationData {
+  message: string;
+  name: string;
+  deadline: string;
+  products: CartItem[];
+}
+
+export type AppView = 
+  | "home" 
+  | "funding" 
+  | "proposals" 
+  | "donations"
+  | "invitation-settings"
+  | "invitation-share"
+  | "attend-fundraising"
+  | "payment-form"
+  | "payment-complete";

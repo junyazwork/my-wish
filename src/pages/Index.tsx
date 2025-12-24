@@ -5,11 +5,14 @@ import CategoryTabs from "@/components/CategoryTabs";
 import ProductGrid from "@/components/ProductGrid";
 import ProductDrawer from "@/components/ProductDrawer";
 import FundingSelection from "@/components/FundingSelection";
+import InvitationSettings from "@/components/InvitationSettings";
+import InvitationShare from "@/components/InvitationShare";
+import AttendFundraising from "@/components/AttendFundraising";
+import PaymentForm from "@/components/PaymentForm";
+import PaymentComplete from "@/components/PaymentComplete";
 import { products, categories } from "@/data/products";
-import { Product, CartItem, FundingType } from "@/types";
+import { Product, CartItem, FundingType, InvitationData, AppView } from "@/types";
 import { toast } from "sonner";
-
-type AppView = "home" | "funding" | "proposals" | "donations";
 
 const Index = () => {
   const [currentView, setCurrentView] = useState<AppView>("home");
@@ -19,6 +22,10 @@ const Index = () => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [cart, setCart] = useState<CartItem[]>([]);
+  
+  // Personal fundraising state
+  const [invitationData, setInvitationData] = useState<InvitationData | null>(null);
+  const [donationAmount, setDonationAmount] = useState(0);
 
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
@@ -30,6 +37,10 @@ const Index = () => {
 
   const cartCount = useMemo(() => {
     return cart.reduce((sum, item) => sum + item.quantity, 0);
+  }, [cart]);
+
+  const totalGoal = useMemo(() => {
+    return cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   }, [cart]);
 
   const handleProductClick = (product: Product) => {
@@ -70,11 +81,39 @@ const Index = () => {
 
   const handleFundingConfirm = (fundingType: FundingType) => {
     if (fundingType === "personal") {
-      toast.success("已選擇個人募資");
+      setCurrentView("invitation-settings");
     } else {
       toast.success("已選擇公益募資");
+      // Future: Navigate to public funding flow
     }
-    // Future: Navigate to funding setup screens
+  };
+
+  const handleInvitationConfirm = (data: InvitationData) => {
+    setInvitationData(data);
+    setCurrentView("invitation-share");
+  };
+
+  const handlePreviewAttend = () => {
+    setCurrentView("attend-fundraising");
+  };
+
+  const handleDonate = (amount: number) => {
+    setDonationAmount(amount);
+    setCurrentView("payment-form");
+  };
+
+  const handlePayment = (method: "credit" | "linepay") => {
+    toast.success(`使用 ${method === "credit" ? "信用卡" : "LinePay"} 支付`);
+    setCurrentView("payment-complete");
+  };
+
+  const handlePaymentFinish = () => {
+    // Reset state and go home
+    setCart([]);
+    setInvitationData(null);
+    setDonationAmount(0);
+    setCurrentView("home");
+    toast.success("感謝您的贊助！");
   };
 
   // Render proposals page
@@ -133,6 +172,63 @@ const Index = () => {
         onContinueShopping={() => setCurrentView("home")}
         onConfirm={handleFundingConfirm}
         cartCount={cartCount}
+      />
+    );
+  }
+
+  // Render invitation settings
+  if (currentView === "invitation-settings") {
+    return (
+      <InvitationSettings
+        cartItems={cart}
+        cartCount={cartCount}
+        onBack={() => setCurrentView("funding")}
+        onConfirm={handleInvitationConfirm}
+      />
+    );
+  }
+
+  // Render invitation share
+  if (currentView === "invitation-share" && invitationData) {
+    return (
+      <InvitationShare
+        invitation={invitationData}
+        cartCount={cartCount}
+        onBack={() => setCurrentView("invitation-settings")}
+        onPreview={handlePreviewAttend}
+      />
+    );
+  }
+
+  // Render attend fundraising (what friends see)
+  if (currentView === "attend-fundraising" && invitationData) {
+    return (
+      <AttendFundraising
+        invitation={invitationData}
+        onBack={() => setCurrentView("invitation-share")}
+        onDonate={handleDonate}
+      />
+    );
+  }
+
+  // Render payment form
+  if (currentView === "payment-form" && invitationData) {
+    return (
+      <PaymentForm
+        goalAmount={totalGoal}
+        donationAmount={donationAmount}
+        onBack={() => setCurrentView("attend-fundraising")}
+        onPayment={handlePayment}
+      />
+    );
+  }
+
+  // Render payment complete
+  if (currentView === "payment-complete" && invitationData) {
+    return (
+      <PaymentComplete
+        recipientName={invitationData.name}
+        onFinish={handlePaymentFinish}
       />
     );
   }
