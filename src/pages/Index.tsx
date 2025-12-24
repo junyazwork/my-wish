@@ -1,12 +1,176 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState, useMemo } from "react";
+import Header from "@/components/Header";
+import SlideMenu from "@/components/SlideMenu";
+import CategoryTabs from "@/components/CategoryTabs";
+import ProductGrid from "@/components/ProductGrid";
+import ProductDrawer from "@/components/ProductDrawer";
+import FundingSelection from "@/components/FundingSelection";
+import { products, categories } from "@/data/products";
+import { Product, CartItem, FundingType } from "@/types";
+import { toast } from "sonner";
+
+type AppView = "home" | "funding" | "proposals" | "donations";
 
 const Index = () => {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
+  const [currentView, setCurrentView] = useState<AppView>("home");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeCategory, setActiveCategory] = useState(categories[0].id);
+  const [activeSubcategory, setActiveSubcategory] = useState<string | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [cart, setCart] = useState<CartItem[]>([]);
+
+  const filteredProducts = useMemo(() => {
+    return products.filter((product) => {
+      if (product.category !== activeCategory) return false;
+      if (activeSubcategory && product.subcategory !== activeSubcategory) return false;
+      return true;
+    });
+  }, [activeCategory, activeSubcategory]);
+
+  const cartCount = useMemo(() => {
+    return cart.reduce((sum, item) => sum + item.quantity, 0);
+  }, [cart]);
+
+  const handleProductClick = (product: Product) => {
+    setSelectedProduct(product);
+    setIsDrawerOpen(true);
+  };
+
+  const handleAddToCart = (product: Product, quantity: number) => {
+    setCart((prev) => {
+      const existingIndex = prev.findIndex((item) => item.id === product.id);
+      if (existingIndex >= 0) {
+        const updated = [...prev];
+        updated[existingIndex].quantity += quantity;
+        return updated;
+      }
+      return [...prev, { ...product, quantity }];
+    });
+    toast.success(`已加入 ${quantity} 件商品到清單`);
+  };
+
+  const handleCartClick = () => {
+    if (cart.length > 0) {
+      setCurrentView("funding");
+    } else {
+      toast.info("請先選擇商品");
+    }
+  };
+
+  const handleNavigate = (page: string) => {
+    if (page === "home") {
+      setCurrentView("home");
+    } else if (page === "proposals") {
+      setCurrentView("proposals");
+    } else if (page === "donations") {
+      setCurrentView("donations");
+    }
+  };
+
+  const handleFundingConfirm = (fundingType: FundingType) => {
+    if (fundingType === "personal") {
+      toast.success("已選擇個人募資");
+    } else {
+      toast.success("已選擇公益募資");
+    }
+    // Future: Navigate to funding setup screens
+  };
+
+  // Render proposals page
+  if (currentView === "proposals") {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header
+          cartCount={cartCount}
+          onMenuClick={() => setIsMenuOpen(true)}
+          onCartClick={handleCartClick}
+          title="提案紀錄"
+          showBack
+          onBack={() => setCurrentView("home")}
+        />
+        <div className="flex flex-col items-center justify-center min-h-[60vh] px-4">
+          <p className="text-muted-foreground text-center">尚無提案紀錄</p>
+        </div>
+        <SlideMenu
+          isOpen={isMenuOpen}
+          onClose={() => setIsMenuOpen(false)}
+          onNavigate={handleNavigate}
+        />
       </div>
+    );
+  }
+
+  // Render donations page
+  if (currentView === "donations") {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header
+          cartCount={cartCount}
+          onMenuClick={() => setIsMenuOpen(true)}
+          onCartClick={handleCartClick}
+          title="贊助紀錄"
+          showBack
+          onBack={() => setCurrentView("home")}
+        />
+        <div className="flex flex-col items-center justify-center min-h-[60vh] px-4">
+          <p className="text-muted-foreground text-center">尚無贊助紀錄</p>
+        </div>
+        <SlideMenu
+          isOpen={isMenuOpen}
+          onClose={() => setIsMenuOpen(false)}
+          onNavigate={handleNavigate}
+        />
+      </div>
+    );
+  }
+
+  // Render funding selection
+  if (currentView === "funding") {
+    return (
+      <FundingSelection
+        onBack={() => setCurrentView("home")}
+        onContinueShopping={() => setCurrentView("home")}
+        onConfirm={handleFundingConfirm}
+        cartCount={cartCount}
+      />
+    );
+  }
+
+  // Render home page
+  return (
+    <div className="min-h-screen bg-background">
+      <Header
+        cartCount={cartCount}
+        onMenuClick={() => setIsMenuOpen(true)}
+        onCartClick={handleCartClick}
+      />
+      
+      <CategoryTabs
+        categories={categories}
+        activeCategory={activeCategory}
+        activeSubcategory={activeSubcategory}
+        onCategoryChange={setActiveCategory}
+        onSubcategoryChange={setActiveSubcategory}
+      />
+      
+      <ProductGrid
+        products={filteredProducts}
+        onProductClick={handleProductClick}
+      />
+      
+      <SlideMenu
+        isOpen={isMenuOpen}
+        onClose={() => setIsMenuOpen(false)}
+        onNavigate={handleNavigate}
+      />
+      
+      <ProductDrawer
+        product={selectedProduct}
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        onAddToCart={handleAddToCart}
+      />
     </div>
   );
 };

@@ -1,0 +1,60 @@
+import { X } from "lucide-react";
+
+interface SlideMenuProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onNavigate: (page: string) => void;
+}
+
+const SlideMenu = ({ isOpen, onClose, onNavigate }: SlideMenuProps) => {
+  const menuItems = [
+    { id: "home", label: "首頁" },
+    { id: "proposals", label: "提案紀錄" },
+    { id: "donations", label: "贊助紀錄" },
+  ];
+
+  if (!isOpen) return null;
+
+  return (
+    <>
+      {/* Backdrop */}
+      <div 
+        className="fixed inset-0 bg-foreground/20 backdrop-blur-sm z-50 animate-fade-in"
+        onClick={onClose}
+      />
+      
+      {/* Menu Panel */}
+      <div className="fixed inset-0 z-50 bg-background animate-slide-in-left">
+        <div className="flex flex-col h-full">
+          {/* Close Button */}
+          <div className="flex justify-end p-4">
+            <button 
+              onClick={onClose}
+              className="p-2 text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <X size={28} />
+            </button>
+          </div>
+          
+          {/* Menu Items */}
+          <nav className="flex-1 flex flex-col items-center justify-start pt-12 gap-6">
+            {menuItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => {
+                  onNavigate(item.id);
+                  onClose();
+                }}
+                className="text-xl text-foreground/80 hover:text-foreground transition-colors py-3 px-8"
+              >
+                {item.label}
+              </button>
+            ))}
+          </nav>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default SlideMenu;
