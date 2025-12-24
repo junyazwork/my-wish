@@ -10,8 +10,14 @@ import InvitationShare from "@/components/InvitationShare";
 import AttendFundraising from "@/components/AttendFundraising";
 import PaymentForm from "@/components/PaymentForm";
 import PaymentComplete from "@/components/PaymentComplete";
+import PublicHostSettings from "@/components/PublicHostSettings";
+import PublicInvitationSettings from "@/components/PublicInvitationSettings";
+import PublicInvitationShare from "@/components/PublicInvitationShare";
+import PublicAttendFundraising from "@/components/PublicAttendFundraising";
+import PublicPaymentForm from "@/components/PublicPaymentForm";
+import PublicPaymentComplete from "@/components/PublicPaymentComplete";
 import { products, categories } from "@/data/products";
-import { Product, CartItem, FundingType, InvitationData, AppView } from "@/types";
+import { Product, CartItem, FundingType, InvitationData, PublicHostData, PublicInvitationData, AppView } from "@/types";
 import { toast } from "sonner";
 
 const Index = () => {
@@ -26,6 +32,10 @@ const Index = () => {
   // Personal fundraising state
   const [invitationData, setInvitationData] = useState<InvitationData | null>(null);
   const [donationAmount, setDonationAmount] = useState(0);
+
+  // Public fundraising state
+  const [publicHostData, setPublicHostData] = useState<PublicHostData | null>(null);
+  const [publicInvitationData, setPublicInvitationData] = useState<PublicInvitationData | null>(null);
 
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
@@ -82,12 +92,12 @@ const Index = () => {
   const handleFundingConfirm = (fundingType: FundingType) => {
     if (fundingType === "personal") {
       setCurrentView("invitation-settings");
-    } else {
-      toast.success("已選擇公益募資");
-      // Future: Navigate to public funding flow
+    } else if (fundingType === "public") {
+      setCurrentView("public-host-settings");
     }
   };
 
+  // Personal fundraising handlers
   const handleInvitationConfirm = (data: InvitationData) => {
     setInvitationData(data);
     setCurrentView("invitation-share");
@@ -111,6 +121,48 @@ const Index = () => {
     // Reset state and go home
     setCart([]);
     setInvitationData(null);
+    setDonationAmount(0);
+    setCurrentView("home");
+    toast.success("感謝您的贊助！");
+  };
+
+  // Public fundraising handlers
+  const handlePublicHostConfirm = (data: PublicHostData) => {
+    setPublicHostData(data);
+    setCurrentView("public-invitation-settings");
+  };
+
+  const handlePublicInvitationConfirm = (data: PublicInvitationData) => {
+    setPublicInvitationData(data);
+    setCurrentView("public-invitation-share");
+  };
+
+  const handlePublicPreviewAttend = () => {
+    setCurrentView("public-attend-fundraising");
+  };
+
+  const handlePublicConfirmContent = () => {
+    toast.success("公益募資已確認！");
+    setCart([]);
+    setPublicHostData(null);
+    setPublicInvitationData(null);
+    setCurrentView("home");
+  };
+
+  const handlePublicDonate = (amount: number) => {
+    setDonationAmount(amount);
+    setCurrentView("public-payment-form");
+  };
+
+  const handlePublicPayment = (method: "credit" | "linepay") => {
+    toast.success(`使用 ${method === "credit" ? "信用卡" : "LinePay"} 支付`);
+    setCurrentView("public-payment-complete");
+  };
+
+  const handlePublicPaymentFinish = () => {
+    setCart([]);
+    setPublicHostData(null);
+    setPublicInvitationData(null);
     setDonationAmount(0);
     setCurrentView("home");
     toast.success("感謝您的贊助！");
@@ -176,7 +228,7 @@ const Index = () => {
     );
   }
 
-  // Render invitation settings
+  // ========== Personal Fundraising Flow ==========
   if (currentView === "invitation-settings") {
     return (
       <InvitationSettings
@@ -188,7 +240,6 @@ const Index = () => {
     );
   }
 
-  // Render invitation share
   if (currentView === "invitation-share" && invitationData) {
     return (
       <InvitationShare
@@ -200,7 +251,6 @@ const Index = () => {
     );
   }
 
-  // Render attend fundraising (what friends see)
   if (currentView === "attend-fundraising" && invitationData) {
     return (
       <AttendFundraising
@@ -211,7 +261,6 @@ const Index = () => {
     );
   }
 
-  // Render payment form
   if (currentView === "payment-form" && invitationData) {
     return (
       <PaymentForm
@@ -223,12 +272,76 @@ const Index = () => {
     );
   }
 
-  // Render payment complete
   if (currentView === "payment-complete" && invitationData) {
     return (
       <PaymentComplete
         recipientName={invitationData.name}
         onFinish={handlePaymentFinish}
+      />
+    );
+  }
+
+  // ========== Public Fundraising Flow ==========
+  if (currentView === "public-host-settings") {
+    return (
+      <PublicHostSettings
+        cartCount={cartCount}
+        onBack={() => setCurrentView("funding")}
+        onConfirm={handlePublicHostConfirm}
+      />
+    );
+  }
+
+  if (currentView === "public-invitation-settings" && publicHostData) {
+    return (
+      <PublicInvitationSettings
+        hostData={publicHostData}
+        cartItems={cart}
+        cartCount={cartCount}
+        onBack={() => setCurrentView("public-host-settings")}
+        onConfirm={handlePublicInvitationConfirm}
+      />
+    );
+  }
+
+  if (currentView === "public-invitation-share" && publicInvitationData) {
+    return (
+      <PublicInvitationShare
+        invitation={publicInvitationData}
+        cartCount={cartCount}
+        onBack={() => setCurrentView("public-invitation-settings")}
+        onPreview={handlePublicPreviewAttend}
+        onConfirmContent={handlePublicConfirmContent}
+      />
+    );
+  }
+
+  if (currentView === "public-attend-fundraising" && publicInvitationData) {
+    return (
+      <PublicAttendFundraising
+        invitation={publicInvitationData}
+        onBack={() => setCurrentView("public-invitation-share")}
+        onDonate={handlePublicDonate}
+      />
+    );
+  }
+
+  if (currentView === "public-payment-form" && publicInvitationData) {
+    return (
+      <PublicPaymentForm
+        goalAmount={totalGoal}
+        donationAmount={donationAmount}
+        onBack={() => setCurrentView("public-attend-fundraising")}
+        onPayment={handlePublicPayment}
+      />
+    );
+  }
+
+  if (currentView === "public-payment-complete" && publicInvitationData) {
+    return (
+      <PublicPaymentComplete
+        recipientName={publicInvitationData.name}
+        onFinish={handlePublicPaymentFinish}
       />
     );
   }
