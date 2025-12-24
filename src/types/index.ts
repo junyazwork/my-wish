@@ -26,6 +26,20 @@ export interface InvitationData {
   products: CartItem[];
 }
 
+export interface PublicHostData {
+  city: string;
+  organization: string;
+  address: string;
+}
+
+export interface PublicInvitationData {
+  host: PublicHostData;
+  message: string;
+  name: string;
+  deadline: string;
+  products: CartItem[];
+}
+
 export type AppView = 
   | "home" 
   | "funding" 
@@ -35,4 +49,10 @@ export type AppView =
   | "invitation-share"
   | "attend-fundraising"
   | "payment-form"
-  | "payment-complete";
+  | "payment-complete"
+  | "public-host-settings"
+  | "public-invitation-settings"
+  | "public-invitation-share"
+  | "public-attend-fundraising"
+  | "public-payment-form"
+  | "public-payment-complete";
