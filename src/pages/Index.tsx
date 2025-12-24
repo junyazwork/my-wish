@@ -16,6 +16,8 @@ import PublicInvitationShare from "@/components/PublicInvitationShare";
 import PublicAttendFundraising from "@/components/PublicAttendFundraising";
 import PublicPaymentForm from "@/components/PublicPaymentForm";
 import PublicPaymentComplete from "@/components/PublicPaymentComplete";
+import ProposalsLog from "@/components/ProposalsLog";
+import DonationsLog from "@/components/DonationsLog";
 import { products, categories } from "@/data/products";
 import { Product, CartItem, FundingType, InvitationData, PublicHostData, PublicInvitationData, AppView } from "@/types";
 import { toast } from "sonner";
@@ -171,48 +173,24 @@ const Index = () => {
   // Render proposals page
   if (currentView === "proposals") {
     return (
-      <div className="min-h-screen bg-background">
-        <Header
-          cartCount={cartCount}
-          onMenuClick={() => setIsMenuOpen(true)}
-          onCartClick={handleCartClick}
-          title="提案紀錄"
-          showBack
-          onBack={() => setCurrentView("home")}
-        />
-        <div className="flex flex-col items-center justify-center min-h-[60vh] px-4">
-          <p className="text-muted-foreground text-center">尚無提案紀錄</p>
-        </div>
-        <SlideMenu
-          isOpen={isMenuOpen}
-          onClose={() => setIsMenuOpen(false)}
-          onNavigate={handleNavigate}
-        />
-      </div>
+      <ProposalsLog
+        onBack={() => setCurrentView("home")}
+        onMenuClick={() => setIsMenuOpen(true)}
+        onCartClick={handleCartClick}
+        cartCount={cartCount}
+      />
     );
   }
 
   // Render donations page
   if (currentView === "donations") {
     return (
-      <div className="min-h-screen bg-background">
-        <Header
-          cartCount={cartCount}
-          onMenuClick={() => setIsMenuOpen(true)}
-          onCartClick={handleCartClick}
-          title="贊助紀錄"
-          showBack
-          onBack={() => setCurrentView("home")}
-        />
-        <div className="flex flex-col items-center justify-center min-h-[60vh] px-4">
-          <p className="text-muted-foreground text-center">尚無贊助紀錄</p>
-        </div>
-        <SlideMenu
-          isOpen={isMenuOpen}
-          onClose={() => setIsMenuOpen(false)}
-          onNavigate={handleNavigate}
-        />
-      </div>
+      <DonationsLog
+        onBack={() => setCurrentView("home")}
+        onMenuClick={() => setIsMenuOpen(true)}
+        onCartClick={handleCartClick}
+        cartCount={cartCount}
+      />
     );
   }
 
