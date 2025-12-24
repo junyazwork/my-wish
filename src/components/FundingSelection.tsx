@@ -16,7 +16,6 @@ const FundingSelection = ({
   cartCount 
 }: FundingSelectionProps) => {
   const [selectedType, setSelectedType] = useState<FundingType>(null);
-  const [agreedToTerms, setAgreedToTerms] = useState(false);
 
   const handleConfirm = () => {
     if (selectedType) {
@@ -91,18 +90,6 @@ const FundingSelection = ({
           </div>
         </button>
 
-        {/* Terms Checkbox - Only show for public funding */}
-        {selectedType === 'public' && (
-          <label className="flex items-center justify-center gap-2 py-2 animate-fade-in cursor-pointer">
-            <input
-              type="checkbox"
-              checked={agreedToTerms}
-              onChange={(e) => setAgreedToTerms(e.target.checked)}
-              className="w-5 h-5 rounded border-primary text-primary focus:ring-primary"
-            />
-            <span className="text-sm text-primary">已經閱讀並同意相關條款</span>
-          </label>
-        )}
       </div>
 
       {/* Bottom Buttons */}
@@ -115,7 +102,7 @@ const FundingSelection = ({
         </button>
         <button
           onClick={handleConfirm}
-          disabled={!selectedType || (selectedType === 'public' && !agreedToTerms)}
+          disabled={!selectedType}
           className="flex-1 py-3.5 bg-primary text-primary-foreground rounded-xl font-medium transition-all hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           確定
