@@ -19,11 +19,21 @@ export interface Category {
 
 export type FundingType = 'personal' | 'public' | null;
 
+export interface MediaItemData {
+  id: string;
+  url: string;
+  type: "image" | "video";
+}
+
+export type AspectRatioType = "3:4" | "1:1" | "9:16";
+
 export interface InvitationData {
   message: string;
   name: string;
   deadline: string;
   products: CartItem[];
+  mediaItems?: MediaItemData[];
+  aspectRatio?: AspectRatioType;
 }
 
 export interface PublicHostData {
@@ -38,6 +48,8 @@ export interface PublicInvitationData {
   name: string;
   deadline: string;
   products: CartItem[];
+  mediaItems?: MediaItemData[];
+  aspectRatio?: AspectRatioType;
 }
 
 export interface LineFriend {

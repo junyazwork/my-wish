@@ -34,6 +34,12 @@ const PublicInvitationSettings = ({
       name: name.trim(),
       deadline,
       products: cartItems,
+      mediaItems: mediaItems.map(item => ({
+        id: item.id,
+        url: item.url,
+        type: item.type,
+      })),
+      aspectRatio,
     });
   };
 
