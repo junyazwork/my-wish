@@ -1,23 +1,99 @@
+import { useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import thankYouBanner from "@/assets/thank-you-banner.jpg";
+
+interface MediaItem {
+  id: string;
+  type: 'image' | 'video';
+  url: string;
+}
 
 interface PublicPaymentCompleteProps {
   recipientName: string;
   onFinish: () => void;
+  mediaItems?: MediaItem[];
+  aspectRatio?: '3:4' | '1:1' | '9:16';
 }
 
-const PublicPaymentComplete = ({ recipientName, onFinish }: PublicPaymentCompleteProps) => {
+const PublicPaymentComplete = ({ recipientName, onFinish, mediaItems = [], aspectRatio = '3:4' }: PublicPaymentCompleteProps) => {
+  const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
+
+  const getAspectRatioClass = () => {
+    switch (aspectRatio) {
+      case '1:1': return 'aspect-square';
+      case '9:16': return 'aspect-[9/16]';
+      default: return 'aspect-[3/4]';
+    }
+  };
+
+  const handlePrevMedia = () => {
+    setCurrentMediaIndex((prev) => (prev > 0 ? prev - 1 : mediaItems.length - 1));
+  };
+
+  const handleNextMedia = () => {
+    setCurrentMediaIndex((prev) => (prev < mediaItems.length - 1 ? prev + 1 : 0));
+  };
+
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      {/* Banner */}
+      {/* Media Display */}
       <div className="relative">
-        <img
-          src={thankYouBanner}
-          alt="Thank You"
-          className="w-full h-64 object-cover"
-        />
-      </div>
+        {mediaItems.length > 0 ? (
+          <div className={`relative ${getAspectRatioClass()} bg-muted overflow-hidden`}>
+            {mediaItems[currentMediaIndex]?.type === 'video' ? (
+              <video
+                src={mediaItems[currentMediaIndex].url}
+                className="w-full h-full object-cover"
+                controls
+              />
+            ) : (
+              <img
+                src={mediaItems[currentMediaIndex]?.url}
+                alt="Media"
+                className="w-full h-full object-cover"
+              />
+            )}
+            
+            {/* Navigation Arrows */}
+            {mediaItems.length > 1 && (
+              <>
+                <button
+                  onClick={handlePrevMedia}
+                  className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-background/80 rounded-full flex items-center justify-center shadow-md"
+                >
+                  <ChevronLeft className="w-5 h-5 text-foreground" />
+                </button>
+                <button
+                  onClick={handleNextMedia}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-background/80 rounded-full flex items-center justify-center shadow-md"
+                >
+                  <ChevronRight className="w-5 h-5 text-foreground" />
+                </button>
+              </>
+            )}
 
-      {/* Content */}
+            {/* Page Indicators */}
+            {mediaItems.length > 1 && (
+              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+                {mediaItems.map((_, index) => (
+                  <div
+                    key={index}
+                    className={`w-2 h-2 rounded-full transition-colors ${
+                      index === currentMediaIndex ? 'bg-primary' : 'bg-background/60'
+                    }`}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        ) : (
+          <img
+            src={thankYouBanner}
+            alt="Thank You"
+            className="w-full h-64 object-cover"
+          />
+        )}
+      </div>
       <div className="flex-1 p-6 text-center space-y-4">
         <h1 className="text-xl font-bold text-foreground">
           {recipientName}感謝您的贊助！
