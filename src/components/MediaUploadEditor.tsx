@@ -8,7 +8,7 @@ export interface MediaItem {
   type: "image" | "video";
 }
 
-type AspectRatio = "4:3" | "1:1" | "16:9";
+type AspectRatio = "3:4" | "1:1" | "9:16";
 
 interface MediaUploadEditorProps {
   onSave: (media: MediaItem[], aspectRatio: AspectRatio) => void;
@@ -21,7 +21,7 @@ const MediaUploadEditor = ({
   onSave,
   onBack,
   initialMedia = [],
-  initialAspectRatio = "4:3",
+  initialAspectRatio = "3:4",
 }: MediaUploadEditorProps) => {
   const [mediaItems, setMediaItems] = useState<MediaItem[]>(initialMedia);
   const [aspectRatio, setAspectRatio] = useState<AspectRatio>(initialAspectRatio);
@@ -146,24 +146,24 @@ const MediaUploadEditor = ({
 
   const getAspectRatioClass = () => {
     switch (aspectRatio) {
-      case "4:3":
-        return "aspect-[4/3]";
+      case "3:4":
+        return "aspect-[3/4]";
       case "1:1":
         return "aspect-square";
-      case "16:9":
-        return "aspect-video";
+      case "9:16":
+        return "aspect-[9/16]";
       default:
-        return "aspect-[4/3]";
+        return "aspect-[3/4]";
     }
   };
 
   const getRatioIcon = (ratio: AspectRatio, isActive: boolean) => {
     const baseClass = `transition-colors ${isActive ? "stroke-primary" : "stroke-muted-foreground"}`;
     switch (ratio) {
-      case "4:3":
+      case "3:4":
         return (
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className={baseClass}>
-            <rect x="4" y="6" width="16" height="12" rx="2" strokeWidth="1.5" />
+            <rect x="6" y="4" width="12" height="16" rx="2" strokeWidth="1.5" />
           </svg>
         );
       case "1:1":
@@ -172,10 +172,10 @@ const MediaUploadEditor = ({
             <rect x="5" y="5" width="14" height="14" rx="2" strokeWidth="1.5" />
           </svg>
         );
-      case "16:9":
+      case "9:16":
         return (
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className={baseClass}>
-            <rect x="3" y="7" width="18" height="10" rx="2" strokeWidth="1.5" />
+            <rect x="7" y="3" width="10" height="18" rx="2" strokeWidth="1.5" />
           </svg>
         );
     }
@@ -201,7 +201,7 @@ const MediaUploadEditor = ({
 
       {/* Aspect Ratio Tabs */}
       <div className="flex justify-center gap-12 py-4">
-        {(["4:3", "1:1", "16:9"] as AspectRatio[]).map((ratio) => (
+        {(["3:4", "1:1", "9:16"] as AspectRatio[]).map((ratio) => (
           <button
             key={ratio}
             onClick={() => setAspectRatio(ratio)}
