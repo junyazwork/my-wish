@@ -13,6 +13,7 @@ import PaymentForm from "@/components/PaymentForm";
 import PaymentComplete from "@/components/PaymentComplete";
 import PublicHostSettings from "@/components/PublicHostSettings";
 import PublicInvitationSettings from "@/components/PublicInvitationSettings";
+import PublicInvitationConfirm from "@/components/PublicInvitationConfirm";
 import PublicInvitationShare from "@/components/PublicInvitationShare";
 import PublicAttendFundraising from "@/components/PublicAttendFundraising";
 import PublicPaymentForm from "@/components/PublicPaymentForm";
@@ -141,6 +142,10 @@ const Index = () => {
 
   const handlePublicInvitationConfirm = (data: PublicInvitationData) => {
     setPublicInvitationData(data);
+    setCurrentView("public-invitation-confirm");
+  };
+
+  const handlePublicInvitationContentConfirm = () => {
     setCurrentView("public-invitation-share");
   };
 
@@ -299,12 +304,24 @@ const Index = () => {
     );
   }
 
+  if (currentView === "public-invitation-confirm" && publicInvitationData) {
+    return (
+      <PublicInvitationConfirm
+        invitation={publicInvitationData}
+        cartCount={cartCount}
+        onBack={() => setCurrentView("public-invitation-settings")}
+        onPreview={handlePublicPreviewAttend}
+        onConfirm={handlePublicInvitationContentConfirm}
+      />
+    );
+  }
+
   if (currentView === "public-invitation-share" && publicInvitationData) {
     return (
       <PublicInvitationShare
         invitation={publicInvitationData}
         cartCount={cartCount}
-        onBack={() => setCurrentView("home")}
+        onBack={() => setCurrentView("public-invitation-confirm")}
         onPreview={handlePublicPreviewAttend}
       />
     );
