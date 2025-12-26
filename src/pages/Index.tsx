@@ -4,6 +4,7 @@ import SlideMenu from "@/components/SlideMenu";
 import CategoryTabs from "@/components/CategoryTabs";
 import ProductGrid from "@/components/ProductGrid";
 import ProductDrawer from "@/components/ProductDrawer";
+import CartDrawer from "@/components/CartDrawer";
 import FundingSelection from "@/components/FundingSelection";
 import InvitationSettings from "@/components/InvitationSettings";
 import InvitationConfirm from "@/components/InvitationConfirm";
@@ -35,6 +36,7 @@ const Index = () => {
   const [activeSubcategory, setActiveSubcategory] = useState<string | null>(null);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
   const [cart, setCart] = useState<CartItem[]>([]);
   
   // Personal fundraising state
@@ -83,10 +85,27 @@ const Index = () => {
 
   const handleCartClick = () => {
     if (cart.length > 0) {
-      setCurrentView("funding");
+      setIsCartOpen(true);
     } else {
       toast.info("請先選擇商品");
     }
+  };
+
+  const handleCartConfirm = () => {
+    setIsCartOpen(false);
+    setCurrentView("funding");
+  };
+
+  const handleUpdateCartQuantity = (productId: string, quantity: number) => {
+    setCart((prev) =>
+      prev.map((item) =>
+        item.id === productId ? { ...item, quantity } : item
+      )
+    );
+  };
+
+  const handleRemoveCartItem = (productId: string) => {
+    setCart((prev) => prev.filter((item) => item.id !== productId));
   };
 
   const handleNavigate = (page: string) => {
@@ -262,7 +281,7 @@ const Index = () => {
   if (currentView === "funding") {
     return (
       <FundingSelection
-        onBack={() => setCurrentView("home")}
+        onBack={() => setIsCartOpen(true)}
         onContinueShopping={() => setCurrentView("home")}
         onConfirm={handleFundingConfirm}
         cartCount={cartCount}
@@ -526,6 +545,16 @@ const Index = () => {
         isOpen={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}
         onAddToCart={handleAddToCart}
+      />
+
+      <CartDrawer
+        isOpen={isCartOpen}
+        cartItems={cart}
+        onClose={() => setIsCartOpen(false)}
+        onUpdateQuantity={handleUpdateCartQuantity}
+        onRemoveItem={handleRemoveCartItem}
+        onContinueShopping={() => setIsCartOpen(false)}
+        onConfirm={handleCartConfirm}
       />
     </div>
   );
