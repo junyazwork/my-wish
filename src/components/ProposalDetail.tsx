@@ -16,6 +16,7 @@ interface DonationRecord {
   lineName: string;
   amount: number;
   date: string;
+  email?: string;
 }
 
 interface ProposalDetailData {
@@ -231,7 +232,13 @@ const ProposalDetail = ({ proposal, onBack, onMenuClick, onShareClick }: Proposa
                   <TableCell className="text-foreground">${donation.amount}</TableCell>
                   <TableCell className="text-foreground">{donation.date}</TableCell>
                   <TableCell className="text-center">
-                    <Mail className="w-5 h-5 text-muted-foreground mx-auto" />
+                    {donation.email ? (
+                      <a href={`mailto:${donation.email}`}>
+                        <Mail className="w-5 h-5 text-primary mx-auto cursor-pointer hover:text-primary/80 transition-colors" />
+                      </a>
+                    ) : (
+                      <Mail className="w-5 h-5 text-muted-foreground/50 mx-auto" />
+                    )}
                   </TableCell>
                 </TableRow>
               ))}
