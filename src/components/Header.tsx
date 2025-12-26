@@ -1,21 +1,25 @@
-import { LayoutGrid, ShoppingBag } from "lucide-react";
+import { LayoutGrid, ShoppingBag, Share2 } from "lucide-react";
 
 interface HeaderProps {
-  cartCount: number;
-  onMenuClick: () => void;
-  onCartClick: () => void;
+  cartCount?: number;
+  onMenuClick?: () => void;
+  onCartClick?: () => void;
+  onShareClick?: () => void;
   title?: string;
   showBack?: boolean;
   onBack?: () => void;
+  showShare?: boolean;
 }
 
 const Header = ({ 
-  cartCount, 
+  cartCount = 0, 
   onMenuClick, 
   onCartClick, 
+  onShareClick,
   title,
   showBack,
-  onBack 
+  onBack,
+  showShare
 }: HeaderProps) => {
   return (
     <header className="sticky top-0 z-40 bg-background/95 backdrop-blur-sm border-b border-border">
@@ -52,19 +56,30 @@ const Header = ({
           </div>
         )}
         
-        <button 
-          onClick={onCartClick}
-          className="relative p-2 -mr-2"
-        >
-          <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
-            <ShoppingBag size={20} className="text-primary-foreground" />
-          </div>
-          {cartCount > 0 && (
-            <span className="absolute -top-0.5 -right-0.5 min-w-[20px] h-5 px-1.5 bg-destructive text-destructive-foreground text-xs font-medium rounded-full flex items-center justify-center">
-              {cartCount}
-            </span>
-          )}
-        </button>
+        {showShare ? (
+          <button 
+            onClick={onShareClick}
+            className="relative p-2 -mr-2"
+          >
+            <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
+              <Share2 size={20} className="text-primary-foreground" />
+            </div>
+          </button>
+        ) : (
+          <button 
+            onClick={onCartClick}
+            className="relative p-2 -mr-2"
+          >
+            <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
+              <ShoppingBag size={20} className="text-primary-foreground" />
+            </div>
+            {cartCount > 0 && (
+              <span className="absolute -top-0.5 -right-0.5 min-w-[20px] h-5 px-1.5 bg-destructive text-destructive-foreground text-xs font-medium rounded-full flex items-center justify-center">
+                {cartCount}
+              </span>
+            )}
+          </button>
+        )}
       </div>
     </header>
   );

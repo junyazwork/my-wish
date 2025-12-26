@@ -37,11 +37,10 @@ interface ProposalDetailProps {
   proposal: ProposalDetailData;
   onBack: () => void;
   onMenuClick: () => void;
-  onCartClick: () => void;
-  cartCount: number;
+  onShareClick: () => void;
 }
 
-const ProposalDetail = ({ proposal, onBack, onMenuClick, onCartClick, cartCount }: ProposalDetailProps) => {
+const ProposalDetail = ({ proposal, onBack, onMenuClick, onShareClick }: ProposalDetailProps) => {
   const [isPublic, setIsPublic] = useState(proposal.isPublic);
   const [messageBoard, setMessageBoard] = useState(proposal.messageBoard);
   const [notifyEnabled, setNotifyEnabled] = useState(proposal.notifyBeforeDeadline);
@@ -76,8 +75,8 @@ const ProposalDetail = ({ proposal, onBack, onMenuClick, onCartClick, cartCount 
         showBack
         onBack={onBack}
         onMenuClick={onMenuClick}
-        onCartClick={onCartClick}
-        cartCount={cartCount}
+        showShare
+        onShareClick={onShareClick}
       />
 
       <div className="flex-1 overflow-auto">

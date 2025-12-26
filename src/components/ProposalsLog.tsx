@@ -142,13 +142,18 @@ const ProposalsLog = ({ onBack, onMenuClick, onCartClick, cartCount }: Proposals
 
   // Show detail page if a proposal is selected
   if (selectedProposal) {
+    const handleShare = () => {
+      // Copy link to clipboard or trigger share dialog
+      navigator.clipboard.writeText(`https://example.com/fundraising/${selectedProposal.id}`);
+      alert("已複製募資活動連結！");
+    };
+
     return (
       <ProposalDetail
         proposal={selectedProposal}
         onBack={() => setSelectedProposal(null)}
         onMenuClick={onMenuClick}
-        onCartClick={onCartClick}
-        cartCount={cartCount}
+        onShareClick={handleShare}
       />
     );
   }
