@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { ChevronLeft, Plus, GripVertical, X, ImageIcon, Video } from "lucide-react";
+import { ChevronLeft, Plus, Trash2 } from "lucide-react";
 
 export interface MediaItem {
   id: string;
@@ -25,8 +25,13 @@ const MediaUploadEditor = ({
 }: MediaUploadEditorProps) => {
   const [mediaItems, setMediaItems] = useState<MediaItem[]>(initialMedia);
   const [aspectRatio, setAspectRatio] = useState<AspectRatio>(initialAspectRatio);
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+  const [isLongPressing, setIsLongPressing] = useState(false);
+  const [showTrashZone, setShowTrashZone] = useState(false);
+  const [isOverTrash, setIsOverTrash] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const longPressTimer = useRef<NodeJS.Timeout | null>(null);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -50,16 +55,25 @@ const MediaUploadEditor = ({
 
   const removeItem = (id: string) => {
     setMediaItems((prev) => {
+      const itemIndex = prev.findIndex((m) => m.id === id);
       const item = prev.find((m) => m.id === id);
       if (item) {
         URL.revokeObjectURL(item.url);
       }
-      return prev.filter((m) => m.id !== id);
+      const newItems = prev.filter((m) => m.id !== id);
+      // Adjust selected index if needed
+      if (selectedIndex >= newItems.length && newItems.length > 0) {
+        setSelectedIndex(newItems.length - 1);
+      } else if (selectedIndex > itemIndex) {
+        setSelectedIndex(selectedIndex - 1);
+      }
+      return newItems;
     });
   };
 
   const handleDragStart = (index: number) => {
     setDraggedIndex(index);
+    setShowTrashZone(true);
   };
 
   const handleDragOver = (e: React.DragEvent, index: number) => {
@@ -74,7 +88,56 @@ const MediaUploadEditor = ({
   };
 
   const handleDragEnd = () => {
+    if (isOverTrash && draggedIndex !== null) {
+      const itemToRemove = mediaItems[draggedIndex];
+      if (itemToRemove) {
+        removeItem(itemToRemove.id);
+      }
+    }
     setDraggedIndex(null);
+    setShowTrashZone(false);
+    setIsOverTrash(false);
+    setIsLongPressing(false);
+  };
+
+  const handleTouchStart = (index: number) => {
+    longPressTimer.current = setTimeout(() => {
+      setIsLongPressing(true);
+      setShowTrashZone(true);
+      setDraggedIndex(index);
+    }, 500);
+  };
+
+  const handleTouchEnd = () => {
+    if (longPressTimer.current) {
+      clearTimeout(longPressTimer.current);
+    }
+    if (isOverTrash && draggedIndex !== null) {
+      const itemToRemove = mediaItems[draggedIndex];
+      if (itemToRemove) {
+        removeItem(itemToRemove.id);
+      }
+    }
+    setIsLongPressing(false);
+    setShowTrashZone(false);
+    setDraggedIndex(null);
+    setIsOverTrash(false);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isLongPressing || draggedIndex === null) return;
+
+    const touch = e.touches[0];
+    const trashZone = document.getElementById("trash-zone");
+    if (trashZone) {
+      const rect = trashZone.getBoundingClientRect();
+      const isOver =
+        touch.clientX >= rect.left &&
+        touch.clientX <= rect.right &&
+        touch.clientY >= rect.top &&
+        touch.clientY <= rect.bottom;
+      setIsOverTrash(isOver);
+    }
   };
 
   const handleSave = () => {
@@ -94,10 +157,36 @@ const MediaUploadEditor = ({
     }
   };
 
+  const getRatioIcon = (ratio: AspectRatio, isActive: boolean) => {
+    const baseClass = `transition-colors ${isActive ? "stroke-primary" : "stroke-muted-foreground"}`;
+    switch (ratio) {
+      case "4:3":
+        return (
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className={baseClass}>
+            <rect x="4" y="6" width="16" height="12" rx="2" strokeWidth="1.5" />
+          </svg>
+        );
+      case "1:1":
+        return (
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className={baseClass}>
+            <rect x="5" y="5" width="14" height="14" rx="2" strokeWidth="1.5" />
+          </svg>
+        );
+      case "16:9":
+        return (
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className={baseClass}>
+            <rect x="3" y="7" width="18" height="10" rx="2" strokeWidth="1.5" />
+          </svg>
+        );
+    }
+  };
+
+  const currentMedia = mediaItems[selectedIndex];
+
   return (
     <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
-      <header className="sticky top-0 z-40 bg-background/95 backdrop-blur-sm border-b border-border">
+      <header className="sticky top-0 z-40 bg-background/95 backdrop-blur-sm">
         <div className="flex items-center justify-between px-4 py-3">
           <button
             onClick={onBack}
@@ -110,38 +199,133 @@ const MediaUploadEditor = ({
         </div>
       </header>
 
-      {/* Content */}
-      <div className="flex-1 p-5 space-y-6">
-        {/* Aspect Ratio Selection */}
-        <div className="space-y-3">
-          <label className="text-sm font-medium text-foreground">呈現比例</label>
-          <div className="flex gap-3">
-            {(["4:3", "1:1", "16:9"] as AspectRatio[]).map((ratio) => (
-              <button
-                key={ratio}
-                onClick={() => setAspectRatio(ratio)}
-                className={`flex-1 py-2.5 rounded-lg border text-sm font-medium transition-all ${
-                  aspectRatio === ratio
-                    ? "border-primary bg-primary/10 text-primary"
-                    : "border-border text-muted-foreground hover:border-primary/50"
-                }`}
-              >
-                {ratio}
-              </button>
-            ))}
-          </div>
+      {/* Aspect Ratio Tabs */}
+      <div className="flex justify-center gap-12 py-4">
+        {(["4:3", "1:1", "16:9"] as AspectRatio[]).map((ratio) => (
+          <button
+            key={ratio}
+            onClick={() => setAspectRatio(ratio)}
+            className="flex flex-col items-center gap-1"
+          >
+            {getRatioIcon(ratio, aspectRatio === ratio)}
+            <span
+              className={`text-sm font-medium transition-colors ${
+                aspectRatio === ratio ? "text-primary" : "text-muted-foreground"
+              }`}
+            >
+              {ratio}
+            </span>
+          </button>
+        ))}
+      </div>
+
+      {/* Main Preview Area */}
+      <div className="flex-1 px-5 flex flex-col">
+        <div className={`${getAspectRatioClass()} w-full bg-muted rounded-2xl overflow-hidden relative`}>
+          {currentMedia ? (
+            currentMedia.type === "image" ? (
+              <img
+                src={currentMedia.url}
+                alt="Preview"
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <video
+                src={currentMedia.url}
+                className="w-full h-full object-cover"
+                controls
+                muted
+              />
+            )
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-muted-foreground">
+              <span>尚未上傳任何媒體</span>
+            </div>
+          )}
+
+          {/* Page Indicators */}
+          {mediaItems.length > 1 && (
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5">
+              {mediaItems.map((_, index) => (
+                <div
+                  key={index}
+                  className={`w-2 h-2 rounded-full transition-colors ${
+                    index === selectedIndex ? "bg-white" : "bg-white/50"
+                  }`}
+                />
+              ))}
+            </div>
+          )}
         </div>
 
-        {/* Upload Button */}
-        {mediaItems.length < 5 && (
-          <button
-            onClick={() => fileInputRef.current?.click()}
-            className="w-full py-3 border-2 border-dashed border-border rounded-xl flex items-center justify-center gap-2 text-muted-foreground hover:border-primary/50 hover:text-primary transition-colors"
-          >
-            <Plus size={20} />
-            <span>上傳圖片/影片 ({mediaItems.length}/5)</span>
-          </button>
-        )}
+        {/* Thumbnail Row */}
+        <div className="py-6">
+          <div className="flex gap-3 overflow-x-auto pb-2">
+            {mediaItems.map((item, index) => (
+              <div
+                key={item.id}
+                draggable
+                onDragStart={() => handleDragStart(index)}
+                onDragOver={(e) => handleDragOver(e, index)}
+                onDragEnd={handleDragEnd}
+                onTouchStart={() => handleTouchStart(index)}
+                onTouchEnd={handleTouchEnd}
+                onTouchMove={handleTouchMove}
+                onClick={() => setSelectedIndex(index)}
+                className={`flex-shrink-0 w-24 h-24 rounded-xl overflow-hidden cursor-pointer transition-all border-2 ${
+                  selectedIndex === index
+                    ? "border-primary"
+                    : "border-transparent"
+                } ${draggedIndex === index ? "opacity-50 scale-95" : ""}`}
+              >
+                {item.type === "image" ? (
+                  <img
+                    src={item.url}
+                    alt={`Thumbnail ${index + 1}`}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <video
+                    src={item.url}
+                    className="w-full h-full object-cover"
+                    muted
+                  />
+                )}
+              </div>
+            ))}
+
+            {/* Add Button */}
+            {mediaItems.length < 5 && (
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                className="flex-shrink-0 w-24 h-24 rounded-xl border-2 border-dashed border-primary/30 bg-primary/5 flex items-center justify-center hover:border-primary/50 hover:bg-primary/10 transition-colors"
+              >
+                <Plus size={32} className="text-primary" />
+              </button>
+            )}
+          </div>
+
+          {/* Trash Zone - appears when long pressing */}
+          {showTrashZone && (
+            <div
+              id="trash-zone"
+              onDragOver={(e) => {
+                e.preventDefault();
+                setIsOverTrash(true);
+              }}
+              onDragLeave={() => setIsOverTrash(false)}
+              onDrop={handleDragEnd}
+              className={`mt-4 py-6 rounded-xl border-2 border-dashed flex items-center justify-center gap-2 transition-colors ${
+                isOverTrash
+                  ? "border-destructive bg-destructive/10 text-destructive"
+                  : "border-muted-foreground/30 text-muted-foreground"
+              }`}
+            >
+              <Trash2 size={24} />
+              <span className="text-sm font-medium">拖曳至此處刪除</span>
+            </div>
+          )}
+        </div>
 
         <input
           ref={fileInputRef}
@@ -151,75 +335,6 @@ const MediaUploadEditor = ({
           onChange={handleFileSelect}
           className="hidden"
         />
-
-        {/* Media Preview Grid */}
-        {mediaItems.length > 0 && (
-          <div className="space-y-3">
-            <label className="text-sm font-medium text-foreground">
-              拖曳調整順序
-            </label>
-            <div className="space-y-3">
-              {mediaItems.map((item, index) => (
-                <div
-                  key={item.id}
-                  draggable
-                  onDragStart={() => handleDragStart(index)}
-                  onDragOver={(e) => handleDragOver(e, index)}
-                  onDragEnd={handleDragEnd}
-                  className={`relative rounded-xl overflow-hidden border border-border bg-card transition-transform ${
-                    draggedIndex === index ? "opacity-50 scale-95" : ""
-                  }`}
-                >
-                  <div className={`${getAspectRatioClass()} bg-muted`}>
-                    {item.type === "image" ? (
-                      <img
-                        src={item.url}
-                        alt={`Media ${index + 1}`}
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <video
-                        src={item.url}
-                        className="w-full h-full object-cover"
-                        muted
-                      />
-                    )}
-                  </div>
-
-                  {/* Overlay Controls */}
-                  <div className="absolute top-2 left-2 flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center cursor-grab active:cursor-grabbing">
-                      <GripVertical size={16} className="text-foreground" />
-                    </div>
-                    <div className="px-2 py-1 rounded-full bg-background/80 backdrop-blur-sm flex items-center gap-1 text-xs text-foreground">
-                      {item.type === "image" ? (
-                        <ImageIcon size={12} />
-                      ) : (
-                        <Video size={12} />
-                      )}
-                      <span>{index + 1}</span>
-                    </div>
-                  </div>
-
-                  <button
-                    onClick={() => removeItem(item.id)}
-                    className="absolute top-2 right-2 w-8 h-8 rounded-full bg-destructive/80 backdrop-blur-sm flex items-center justify-center hover:bg-destructive transition-colors"
-                  >
-                    <X size={16} className="text-destructive-foreground" />
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Empty State */}
-        {mediaItems.length === 0 && (
-          <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
-            <ImageIcon size={48} strokeWidth={1.5} />
-            <p className="mt-3 text-sm">尚未上傳任何媒體</p>
-          </div>
-        )}
       </div>
 
       {/* Bottom Button */}
