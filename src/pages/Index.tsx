@@ -6,6 +6,7 @@ import ProductGrid from "@/components/ProductGrid";
 import ProductDrawer from "@/components/ProductDrawer";
 import FundingSelection from "@/components/FundingSelection";
 import InvitationSettings from "@/components/InvitationSettings";
+import InvitationConfirm from "@/components/InvitationConfirm";
 import InvitationShare from "@/components/InvitationShare";
 import AttendFundraising from "@/components/AttendFundraising";
 import PaymentForm from "@/components/PaymentForm";
@@ -102,6 +103,10 @@ const Index = () => {
   // Personal fundraising handlers
   const handleInvitationConfirm = (data: InvitationData) => {
     setInvitationData(data);
+    setCurrentView("invitation-confirm");
+  };
+
+  const handleInvitationContentConfirm = () => {
     setCurrentView("invitation-share");
   };
 
@@ -218,12 +223,24 @@ const Index = () => {
     );
   }
 
+  if (currentView === "invitation-confirm" && invitationData) {
+    return (
+      <InvitationConfirm
+        invitation={invitationData}
+        cartCount={cartCount}
+        onBack={() => setCurrentView("invitation-settings")}
+        onPreview={handlePreviewAttend}
+        onConfirm={handleInvitationContentConfirm}
+      />
+    );
+  }
+
   if (currentView === "invitation-share" && invitationData) {
     return (
       <InvitationShare
         invitation={invitationData}
         cartCount={cartCount}
-        onBack={() => setCurrentView("invitation-settings")}
+        onBack={() => setCurrentView("invitation-confirm")}
         onPreview={handlePreviewAttend}
       />
     );
