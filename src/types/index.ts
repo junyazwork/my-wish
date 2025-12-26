@@ -58,6 +58,7 @@ export type AppView =
   | "attend-fundraising"
   | "payment-form"
   | "credit-card-form"
+  | "linepay-form"
   | "payment-complete"
   | "public-host-settings"
   | "public-invitation-settings"
@@ -68,4 +69,5 @@ export type AppView =
   | "public-attend-fundraising"
   | "public-payment-form"
   | "public-credit-card-form"
+  | "public-linepay-form"
   | "public-payment-complete";
