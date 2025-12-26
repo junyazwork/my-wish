@@ -8,6 +8,8 @@ import FundingSelection from "@/components/FundingSelection";
 import InvitationSettings from "@/components/InvitationSettings";
 import InvitationConfirm from "@/components/InvitationConfirm";
 import InvitationShare from "@/components/InvitationShare";
+import LineFriendSelector from "@/components/LineFriendSelector";
+import LineChatRoom from "@/components/LineChatRoom";
 import AttendFundraising from "@/components/AttendFundraising";
 import PaymentForm from "@/components/PaymentForm";
 import PaymentComplete from "@/components/PaymentComplete";
@@ -21,7 +23,7 @@ import PublicPaymentComplete from "@/components/PublicPaymentComplete";
 import ProposalsLog from "@/components/ProposalsLog";
 import DonationsLog from "@/components/DonationsLog";
 import { products, categories } from "@/data/products";
-import { Product, CartItem, FundingType, InvitationData, PublicHostData, PublicInvitationData, AppView } from "@/types";
+import { Product, CartItem, FundingType, InvitationData, PublicHostData, PublicInvitationData, AppView, LineFriend } from "@/types";
 import { toast } from "sonner";
 
 const Index = () => {
@@ -36,10 +38,12 @@ const Index = () => {
   // Personal fundraising state
   const [invitationData, setInvitationData] = useState<InvitationData | null>(null);
   const [donationAmount, setDonationAmount] = useState(0);
+  const [selectedLineFriends, setSelectedLineFriends] = useState<LineFriend[]>([]);
 
   // Public fundraising state
   const [publicHostData, setPublicHostData] = useState<PublicHostData | null>(null);
   const [publicInvitationData, setPublicInvitationData] = useState<PublicInvitationData | null>(null);
+  const [publicSelectedLineFriends, setPublicSelectedLineFriends] = useState<LineFriend[]>([]);
 
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
@@ -111,6 +115,19 @@ const Index = () => {
     setCurrentView("invitation-share");
   };
 
+  const handleLineShareClick = () => {
+    setCurrentView("line-friend-selector");
+  };
+
+  const handleLineFriendConfirm = (friends: LineFriend[]) => {
+    setSelectedLineFriends(friends);
+    setCurrentView("line-chat-room");
+  };
+
+  const handleLineChatDonateClick = () => {
+    setCurrentView("attend-fundraising");
+  };
+
   const handlePreviewAttend = () => {
     setCurrentView("attend-fundraising");
   };
@@ -147,6 +164,19 @@ const Index = () => {
 
   const handlePublicInvitationContentConfirm = () => {
     setCurrentView("public-invitation-share");
+  };
+
+  const handlePublicLineShareClick = () => {
+    setCurrentView("public-line-friend-selector");
+  };
+
+  const handlePublicLineFriendConfirm = (friends: LineFriend[]) => {
+    setPublicSelectedLineFriends(friends);
+    setCurrentView("public-line-chat-room");
+  };
+
+  const handlePublicLineChatDonateClick = () => {
+    setCurrentView("public-attend-fundraising");
   };
 
   const handlePublicPreviewAttend = () => {
@@ -247,6 +277,27 @@ const Index = () => {
         cartCount={cartCount}
         onBack={() => setCurrentView("invitation-confirm")}
         onPreview={handlePreviewAttend}
+        onLineShare={handleLineShareClick}
+      />
+    );
+  }
+
+  if (currentView === "line-friend-selector" && invitationData) {
+    return (
+      <LineFriendSelector
+        onBack={() => setCurrentView("invitation-share")}
+        onConfirm={handleLineFriendConfirm}
+      />
+    );
+  }
+
+  if (currentView === "line-chat-room" && invitationData && selectedLineFriends.length > 0) {
+    return (
+      <LineChatRoom
+        friendName={selectedLineFriends[0].name}
+        message={invitationData.message}
+        onBack={() => setCurrentView("invitation-share")}
+        onDonateClick={handleLineChatDonateClick}
       />
     );
   }
@@ -323,6 +374,27 @@ const Index = () => {
         cartCount={cartCount}
         onBack={() => setCurrentView("public-invitation-confirm")}
         onPreview={handlePublicPreviewAttend}
+        onLineShare={handlePublicLineShareClick}
+      />
+    );
+  }
+
+  if (currentView === "public-line-friend-selector" && publicInvitationData) {
+    return (
+      <LineFriendSelector
+        onBack={() => setCurrentView("public-invitation-share")}
+        onConfirm={handlePublicLineFriendConfirm}
+      />
+    );
+  }
+
+  if (currentView === "public-line-chat-room" && publicInvitationData && publicSelectedLineFriends.length > 0) {
+    return (
+      <LineChatRoom
+        friendName={publicSelectedLineFriends[0].name}
+        message={publicInvitationData.message}
+        onBack={() => setCurrentView("public-invitation-share")}
+        onDonateClick={handlePublicLineChatDonateClick}
       />
     );
   }

@@ -40,6 +40,11 @@ export interface PublicInvitationData {
   products: CartItem[];
 }
 
+export interface LineFriend {
+  id: string;
+  name: string;
+}
+
 export type AppView = 
   | "home" 
   | "funding" 
@@ -48,6 +53,8 @@ export type AppView =
   | "invitation-settings"
   | "invitation-confirm"
   | "invitation-share"
+  | "line-friend-selector"
+  | "line-chat-room"
   | "attend-fundraising"
   | "payment-form"
   | "payment-complete"
@@ -55,6 +62,8 @@ export type AppView =
   | "public-invitation-settings"
   | "public-invitation-confirm"
   | "public-invitation-share"
+  | "public-line-friend-selector"
+  | "public-line-chat-room"
   | "public-attend-fundraising"
   | "public-payment-form"
   | "public-payment-complete";

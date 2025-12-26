@@ -7,6 +7,7 @@ interface InvitationShareProps {
   cartCount: number;
   onBack: () => void;
   onPreview: () => void;
+  onLineShare: () => void;
 }
 
 const InvitationShare = ({
@@ -14,6 +15,7 @@ const InvitationShare = ({
   cartCount,
   onBack,
   onPreview,
+  onLineShare,
 }: InvitationShareProps) => {
   const handleCopyLink = () => {
     // In production, this would be a real shareable link
@@ -23,9 +25,7 @@ const InvitationShare = ({
   };
 
   const handleLineShare = () => {
-    const shareUrl = `${window.location.origin}/attend/${invitation.name}`;
-    const lineShareUrl = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(shareUrl)}`;
-    window.open(lineShareUrl, "_blank");
+    onLineShare();
   };
 
   return (

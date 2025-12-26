@@ -7,6 +7,7 @@ interface PublicInvitationShareProps {
   cartCount: number;
   onBack: () => void;
   onPreview: () => void;
+  onLineShare: () => void;
 }
 
 const PublicInvitationShare = ({
@@ -14,6 +15,7 @@ const PublicInvitationShare = ({
   cartCount,
   onBack,
   onPreview,
+  onLineShare,
 }: PublicInvitationShareProps) => {
   const handleCopyLink = () => {
     const shareUrl = `${window.location.origin}/public-fundraising/${invitation.name}`;
@@ -22,9 +24,7 @@ const PublicInvitationShare = ({
   };
 
   const handleLineShare = () => {
-    const shareUrl = `${window.location.origin}/public-fundraising/${invitation.name}`;
-    const lineShareUrl = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(shareUrl)}`;
-    window.open(lineShareUrl, "_blank");
+    onLineShare();
   };
 
   return (
