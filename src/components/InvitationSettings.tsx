@@ -25,6 +25,12 @@ const InvitationSettings = ({ cartItems, cartCount, onBack, onConfirm }: Invitat
         name,
         deadline,
         products: cartItems,
+        mediaItems: mediaItems.map(item => ({
+          id: item.id,
+          url: item.url,
+          type: item.type,
+        })),
+        aspectRatio,
       });
     }
   };
