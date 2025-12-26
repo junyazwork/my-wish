@@ -1,10 +1,7 @@
 import { useState } from "react";
-import { ChevronLeft, ChevronRight, Calendar, Upload } from "lucide-react";
+import { ChevronLeft, Calendar } from "lucide-react";
 import { CartItem, PublicHostData, PublicInvitationData } from "@/types";
-import thankYouBanner from "@/assets/thank-you-banner.jpg";
-import MediaUploadEditor, { MediaItem } from "./MediaUploadEditor";
-
-type AspectRatio = "3:4" | "1:1" | "9:16";
+import InlineMediaEditor, { MediaItem, AspectRatio } from "./InlineMediaEditor";
 
 interface PublicInvitationSettingsProps {
   hostData: PublicHostData;
@@ -24,10 +21,8 @@ const PublicInvitationSettings = ({
   const [message, setMessage] = useState("");
   const [name, setName] = useState("");
   const [deadline, setDeadline] = useState("");
-  const [showMediaEditor, setShowMediaEditor] = useState(false);
-  const [uploadedMedia, setUploadedMedia] = useState<MediaItem[]>([]);
-  const [mediaAspectRatio, setMediaAspectRatio] = useState<AspectRatio>("3:4");
-  const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
+  const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
+  const [aspectRatio, setAspectRatio] = useState<AspectRatio>("3:4");
   const maxMessageLength = 100;
 
   const handleConfirm = () => {
@@ -42,50 +37,7 @@ const PublicInvitationSettings = ({
     });
   };
 
-  const handleMediaSave = (media: MediaItem[], aspectRatio: AspectRatio) => {
-    setUploadedMedia(media);
-    setMediaAspectRatio(aspectRatio);
-    setCurrentMediaIndex(0);
-    setShowMediaEditor(false);
-  };
-
-  const getAspectRatioClass = () => {
-    switch (mediaAspectRatio) {
-      case "3:4":
-        return "aspect-[3/4]";
-      case "1:1":
-        return "aspect-square";
-      case "9:16":
-        return "aspect-[9/16]";
-      default:
-        return "aspect-[3/4]";
-    }
-  };
-
-  const handlePrevMedia = () => {
-    setCurrentMediaIndex((prev) =>
-      prev === 0 ? uploadedMedia.length - 1 : prev - 1
-    );
-  };
-
-  const handleNextMedia = () => {
-    setCurrentMediaIndex((prev) =>
-      prev === uploadedMedia.length - 1 ? 0 : prev + 1
-    );
-  };
-
   const isValid = message.trim() && name.trim() && deadline;
-
-  if (showMediaEditor) {
-    return (
-      <MediaUploadEditor
-        onSave={handleMediaSave}
-        onBack={() => setShowMediaEditor(false)}
-        initialMedia={uploadedMedia}
-        initialAspectRatio={mediaAspectRatio}
-      />
-    );
-  }
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -125,68 +77,13 @@ const PublicInvitationSettings = ({
 
       {/* Content */}
       <div className="flex-1 p-5 space-y-4">
-        {/* Banner Carousel or Uploaded Media */}
-        {uploadedMedia.length > 0 ? (
-          <div className={`relative rounded-xl overflow-hidden ${getAspectRatioClass()}`}>
-            {uploadedMedia[currentMediaIndex].type === "image" ? (
-              <img
-                src={uploadedMedia[currentMediaIndex].url}
-                alt={`Media ${currentMediaIndex + 1}`}
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <video
-                src={uploadedMedia[currentMediaIndex].url}
-                className="w-full h-full object-cover"
-                muted
-                autoPlay
-                loop
-              />
-            )}
-            {uploadedMedia.length > 1 && (
-              <>
-                <button
-                  onClick={handlePrevMedia}
-                  className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-background/50 flex items-center justify-center"
-                >
-                  <ChevronLeft size={20} className="text-foreground" />
-                </button>
-                <button
-                  onClick={handleNextMedia}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-background/50 flex items-center justify-center"
-                >
-                  <ChevronRight size={20} className="text-foreground" />
-                </button>
-                <div className="absolute bottom-2 left-1/2 -translate-x-1/2 px-2 py-1 rounded-full bg-background/70 text-xs text-foreground">
-                  {currentMediaIndex + 1} / {uploadedMedia.length}
-                </div>
-              </>
-            )}
-          </div>
-        ) : (
-          <div className="relative rounded-xl overflow-hidden">
-            <img src={thankYouBanner} alt="Thank You Banner" className="w-full h-48 object-cover" />
-            <button className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-background/50 flex items-center justify-center">
-              <ChevronLeft size={20} className="text-foreground" />
-            </button>
-            <button className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-background/50 flex items-center justify-center">
-              <ChevronRight size={20} className="text-foreground" />
-            </button>
-          </div>
-        )}
-
-        {/* Upload Media Button */}
-        <button
-          onClick={() => setShowMediaEditor(true)}
-          className="w-full py-3 border border-border rounded-xl flex items-center justify-center gap-2 text-muted-foreground hover:border-primary/50 hover:text-primary transition-colors bg-card"
-        >
-          <Upload size={18} />
-          <span>
-            {uploadedMedia.length > 0
-              ? `已上傳 ${uploadedMedia.length} 個媒體 - 點擊編輯`
-              : "上傳圖片/影片"}
-          </span>
-        </button>
+        {/* Inline Media Editor */}
+        <InlineMediaEditor
+          mediaItems={mediaItems}
+          setMediaItems={setMediaItems}
+          aspectRatio={aspectRatio}
+          setAspectRatio={setAspectRatio}
+        />
 
         {/* Message Input */}
         <div className="relative">
