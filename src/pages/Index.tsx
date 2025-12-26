@@ -128,11 +128,6 @@ const Index = () => {
     setCurrentView("attend-fundraising");
   };
 
-  const handleLineChatCreditCardClick = () => {
-    setDonationAmount(totalGoal);
-    setCurrentView("payment-form");
-  };
-
   const handlePreviewAttend = () => {
     setCurrentView("attend-fundraising");
   };
@@ -182,11 +177,6 @@ const Index = () => {
 
   const handlePublicLineChatDonateClick = () => {
     setCurrentView("public-attend-fundraising");
-  };
-
-  const handlePublicLineChatCreditCardClick = () => {
-    setDonationAmount(totalGoal);
-    setCurrentView("public-payment-form");
   };
 
   const handlePublicPreviewAttend = () => {
@@ -308,7 +298,6 @@ const Index = () => {
         message={invitationData.message}
         onBack={() => setCurrentView("invitation-share")}
         onDonateClick={handleLineChatDonateClick}
-        onCreditCardClick={handleLineChatCreditCardClick}
       />
     );
   }
@@ -406,7 +395,6 @@ const Index = () => {
         message={publicInvitationData.message}
         onBack={() => setCurrentView("public-invitation-share")}
         onDonateClick={handlePublicLineChatDonateClick}
-        onCreditCardClick={handlePublicLineChatCreditCardClick}
       />
     );
   }
