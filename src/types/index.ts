@@ -53,6 +53,7 @@ export type AppView =
   | "payment-complete"
   | "public-host-settings"
   | "public-invitation-settings"
+  | "public-invitation-confirm"
   | "public-invitation-share"
   | "public-attend-fundraising"
   | "public-payment-form"
