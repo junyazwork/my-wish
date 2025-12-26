@@ -1,7 +1,10 @@
 import { useState } from "react";
-import { Calendar, X } from "lucide-react";
+import { Calendar, X, ChevronLeft, Upload } from "lucide-react";
 import { InvitationData, CartItem } from "@/types";
 import thankYouBanner from "@/assets/thank-you-banner.jpg";
+import MediaUploadEditor, { MediaItem } from "./MediaUploadEditor";
+
+type AspectRatio = "4:3" | "1:1" | "16:9";
 
 interface InvitationSettingsProps {
   cartItems: CartItem[];
@@ -14,6 +17,9 @@ const InvitationSettings = ({ cartItems, cartCount, onBack, onConfirm }: Invitat
   const [message, setMessage] = useState("");
   const [name, setName] = useState("");
   const [deadline, setDeadline] = useState("");
+  const [showMediaEditor, setShowMediaEditor] = useState(false);
+  const [uploadedMedia, setUploadedMedia] = useState<MediaItem[]>([]);
+  const [mediaAspectRatio, setMediaAspectRatio] = useState<AspectRatio>("4:3");
   const maxChars = 100;
 
   const handleConfirm = () => {
@@ -29,15 +35,43 @@ const InvitationSettings = ({ cartItems, cartCount, onBack, onConfirm }: Invitat
 
   const clearDeadline = () => setDeadline("");
 
+  const handleMediaSave = (media: MediaItem[], aspectRatio: AspectRatio) => {
+    setUploadedMedia(media);
+    setMediaAspectRatio(aspectRatio);
+    setShowMediaEditor(false);
+  };
+
+  const getAspectRatioClass = () => {
+    switch (mediaAspectRatio) {
+      case "4:3":
+        return "aspect-[4/3]";
+      case "1:1":
+        return "aspect-square";
+      case "16:9":
+        return "aspect-video";
+      default:
+        return "aspect-[4/3]";
+    }
+  };
+
+  if (showMediaEditor) {
+    return (
+      <MediaUploadEditor
+        onSave={handleMediaSave}
+        onBack={() => setShowMediaEditor(false)}
+        initialMedia={uploadedMedia}
+        initialAspectRatio={mediaAspectRatio}
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
       <header className="sticky top-0 z-40 bg-background/95 backdrop-blur-sm border-b border-border">
         <div className="flex items-center justify-between px-4 py-3">
           <button onClick={onBack} className="p-2 -ml-2 text-muted-foreground hover:text-foreground transition-colors">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M15 18l-6-6 6-6" />
-            </svg>
+            <ChevronLeft size={24} />
           </button>
 
           <h1 className="text-lg font-semibold text-foreground">邀請函</h1>
@@ -69,10 +103,43 @@ const InvitationSettings = ({ cartItems, cartCount, onBack, onConfirm }: Invitat
 
       {/* Content */}
       <div className="flex-1 p-5 space-y-4">
-        {/* Thank You Banner */}
-        <div className="rounded-2xl overflow-hidden shadow-lg">
-          <img src={thankYouBanner} alt="Thank You" className="w-full h-48 object-cover" />
-        </div>
+        {/* Thank You Banner or Uploaded Media */}
+        {uploadedMedia.length > 0 ? (
+          <div className={`rounded-2xl overflow-hidden shadow-lg ${getAspectRatioClass()}`}>
+            {uploadedMedia[0].type === "image" ? (
+              <img
+                src={uploadedMedia[0].url}
+                alt="Uploaded Media"
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <video
+                src={uploadedMedia[0].url}
+                className="w-full h-full object-cover"
+                muted
+                autoPlay
+                loop
+              />
+            )}
+          </div>
+        ) : (
+          <div className="rounded-2xl overflow-hidden shadow-lg">
+            <img src={thankYouBanner} alt="Thank You" className="w-full h-48 object-cover" />
+          </div>
+        )}
+
+        {/* Upload Media Button */}
+        <button
+          onClick={() => setShowMediaEditor(true)}
+          className="w-full py-3 border border-border rounded-xl flex items-center justify-center gap-2 text-muted-foreground hover:border-primary/50 hover:text-primary transition-colors bg-card"
+        >
+          <Upload size={18} />
+          <span>
+            {uploadedMedia.length > 0
+              ? `已上傳 ${uploadedMedia.length} 個媒體 - 點擊編輯`
+              : "上傳圖片/影片"}
+          </span>
+        </button>
 
         {/* Message Input */}
         <div className="relative">
