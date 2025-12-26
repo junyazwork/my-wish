@@ -10,12 +10,7 @@ interface InvitationSettingsProps {
   onConfirm: (data: InvitationData) => void;
 }
 
-const InvitationSettings = ({
-  cartItems,
-  cartCount,
-  onBack,
-  onConfirm,
-}: InvitationSettingsProps) => {
+const InvitationSettings = ({ cartItems, cartCount, onBack, onConfirm }: InvitationSettingsProps) => {
   const [message, setMessage] = useState("");
   const [name, setName] = useState("");
   const [deadline, setDeadline] = useState("");
@@ -79,11 +74,7 @@ const InvitationSettings = ({
       <div className="flex-1 p-5 space-y-4">
         {/* Thank You Banner */}
         <div className="rounded-2xl overflow-hidden shadow-lg">
-          <img
-            src={thankYouBanner}
-            alt="Thank You"
-            className="w-full h-48 object-cover"
-          />
+          <img src={thankYouBanner} alt="Thank You" className="w-full h-48 object-cover" />
         </div>
 
         {/* Message Input */}
@@ -111,10 +102,7 @@ const InvitationSettings = ({
 
         {/* Date Input */}
         <div className="relative">
-          <Calendar
-            size={18}
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground"
-          />
+          <Calendar size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
           <input
             type="date"
             value={deadline}
@@ -139,7 +127,7 @@ const InvitationSettings = ({
           disabled={!message || !name || !deadline}
           className="w-full py-3.5 bg-primary text-primary-foreground rounded-xl font-medium transition-all hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          確定
+          建立募資活動
         </button>
       </div>
     </div>
