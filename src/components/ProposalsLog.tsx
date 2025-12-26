@@ -50,6 +50,8 @@ const ProposalsLog = ({ onBack, onMenuClick, onCartClick, cartCount }: Proposals
     <div className="min-h-screen bg-background flex flex-col">
       <Header 
         title="提案紀錄"
+        showBack
+        onBack={onBack}
         onMenuClick={onMenuClick}
         onCartClick={onCartClick}
         cartCount={cartCount}
@@ -85,15 +87,6 @@ const ProposalsLog = ({ onBack, onMenuClick, onCartClick, cartCount }: Proposals
         })}
       </div>
 
-      {/* Bottom Button */}
-      <div className="p-4 pb-8">
-        <button
-          onClick={onBack}
-          className="w-full py-3.5 bg-primary text-primary-foreground rounded-xl font-medium transition-all hover:opacity-90"
-        >
-          返回
-        </button>
-      </div>
     </div>
   );
 };
