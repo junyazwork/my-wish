@@ -57,6 +57,7 @@ export type AppView =
   | "line-chat-room"
   | "attend-fundraising"
   | "payment-form"
+  | "credit-card-form"
   | "payment-complete"
   | "public-host-settings"
   | "public-invitation-settings"
@@ -66,4 +67,5 @@ export type AppView =
   | "public-line-chat-room"
   | "public-attend-fundraising"
   | "public-payment-form"
+  | "public-credit-card-form"
   | "public-payment-complete";
