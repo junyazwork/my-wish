@@ -1,6 +1,6 @@
 import { useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { InvitationData } from "@/types";
-import thankYouBanner from "@/assets/thank-you-banner.jpg";
 
 interface AttendFundraisingProps {
   invitation: InvitationData;
@@ -14,6 +14,9 @@ const AttendFundraising = ({
   onDonate,
 }: AttendFundraisingProps) => {
   const [amount, setAmount] = useState("");
+  const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
+  const mediaItems = invitation.mediaItems || [];
+  const aspectRatio = invitation.aspectRatio || "3:4";
 
   const totalGoal = invitation.products.reduce(
     (sum, item) => sum + item.price * item.quantity,
@@ -21,6 +24,27 @@ const AttendFundraising = ({
   );
 
   const mainProduct = invitation.products[0];
+
+  const getAspectRatioClass = () => {
+    switch (aspectRatio) {
+      case "3:4":
+        return "aspect-[3/4]";
+      case "1:1":
+        return "aspect-square";
+      case "9:16":
+        return "aspect-[9/16]";
+      default:
+        return "aspect-[3/4]";
+    }
+  };
+
+  const handlePrevMedia = () => {
+    setCurrentMediaIndex((prev) => (prev > 0 ? prev - 1 : mediaItems.length - 1));
+  };
+
+  const handleNextMedia = () => {
+    setCurrentMediaIndex((prev) => (prev < mediaItems.length - 1 ? prev + 1 : 0));
+  };
 
   const handleDonate = () => {
     const numAmount = parseInt(amount, 10);
@@ -40,15 +64,59 @@ const AttendFundraising = ({
         </div>
       </header>
 
-      {/* Banner */}
+      {/* Media Display */}
       <div className="relative">
-        <img
-          src={thankYouBanner}
-          alt="Thank You"
-          className="w-full h-56 object-cover"
-        />
-        {/* Diamond decoration */}
-        <div className="absolute right-4 top-1/2 -translate-y-1/2 w-3 h-3 bg-card/60 rotate-45" />
+        {mediaItems.length > 0 ? (
+          <>
+            <div className={`w-full ${getAspectRatioClass()} bg-muted overflow-hidden`}>
+              {mediaItems[currentMediaIndex].type === "video" ? (
+                <video
+                  src={mediaItems[currentMediaIndex].url}
+                  className="w-full h-full object-cover"
+                  controls
+                />
+              ) : (
+                <img
+                  src={mediaItems[currentMediaIndex].url}
+                  alt="邀請函媒體"
+                  className="w-full h-full object-cover"
+                />
+              )}
+            </div>
+            {/* Navigation arrows */}
+            {mediaItems.length > 1 && (
+              <>
+                <button
+                  onClick={handlePrevMedia}
+                  className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-background/80 rounded-full flex items-center justify-center text-foreground hover:bg-background transition-colors"
+                >
+                  <ChevronLeft size={20} />
+                </button>
+                <button
+                  onClick={handleNextMedia}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-background/80 rounded-full flex items-center justify-center text-foreground hover:bg-background transition-colors"
+                >
+                  <ChevronRight size={20} />
+                </button>
+                {/* Page indicators */}
+                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+                  {mediaItems.map((_, index) => (
+                    <div
+                      key={index}
+                      className={`w-2 h-2 rounded-full transition-colors ${
+                        index === currentMediaIndex ? "bg-primary" : "bg-background/60"
+                      }`}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
+          </>
+        ) : (
+          <div className="w-full h-56 bg-muted flex items-center justify-center">
+            <span className="text-muted-foreground">尚未上傳媒體</span>
+          </div>
+        )}
       </div>
 
       {/* Content */}
