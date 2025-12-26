@@ -46,6 +46,7 @@ export type AppView =
   | "proposals" 
   | "donations"
   | "invitation-settings"
+  | "invitation-confirm"
   | "invitation-share"
   | "attend-fundraising"
   | "payment-form"
