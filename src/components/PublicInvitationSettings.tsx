@@ -25,7 +25,7 @@ const PublicInvitationSettings = ({
 
   const handleConfirm = () => {
     if (!message.trim() || !name.trim() || !deadline) return;
-    
+
     onConfirm({
       host: hostData,
       message: message.trim(),
@@ -45,12 +45,20 @@ const PublicInvitationSettings = ({
           <button onClick={onBack} className="p-2 -ml-2 text-muted-foreground">
             <ChevronLeft size={24} />
           </button>
-          
+
           <h1 className="text-lg font-semibold text-foreground">邀請函</h1>
-          
+
           <div className="relative p-2 -mr-2">
             <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-primary">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                className="text-primary"
+              >
                 <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
                 <line x1="3" y1="6" x2="21" y2="6" />
                 <path d="M16 10a4 4 0 0 1-8 0" />
@@ -69,11 +77,7 @@ const PublicInvitationSettings = ({
       <div className="flex-1 p-5 space-y-4">
         {/* Banner Carousel */}
         <div className="relative rounded-xl overflow-hidden">
-          <img
-            src={thankYouBanner}
-            alt="Thank You Banner"
-            className="w-full h-48 object-cover"
-          />
+          <img src={thankYouBanner} alt="Thank You Banner" className="w-full h-48 object-cover" />
           {/* Carousel Arrows */}
           <button className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-background/50 flex items-center justify-center">
             <ChevronLeft size={20} className="text-foreground" />
@@ -124,7 +128,7 @@ const PublicInvitationSettings = ({
           disabled={!isValid}
           className="w-full py-3.5 bg-primary text-primary-foreground rounded-xl font-medium transition-all hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          確定
+          建立募資活動
         </button>
       </div>
     </div>
