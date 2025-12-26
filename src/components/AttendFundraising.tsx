@@ -1,17 +1,39 @@
 import { useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Edit3 } from "lucide-react";
 import { InvitationData } from "@/types";
+import { Progress } from "@/components/ui/progress";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+
+interface MessageData {
+  id: string;
+  content: string;
+  authorName: string;
+  createdAt: string;
+}
 
 interface AttendFundraisingProps {
   invitation: InvitationData;
   onBack: () => void;
   onDonate: (amount: number) => void;
+  messageBoardEnabled?: boolean;
+  hasDonated?: boolean;
+  currentAmount?: number;
+  proposalDate?: string;
+  messages?: MessageData[];
+  onAddMessage?: () => void;
 }
 
 const AttendFundraising = ({
   invitation,
   onBack,
   onDonate,
+  messageBoardEnabled = true,
+  hasDonated = false,
+  currentAmount = 0,
+  proposalDate,
+  messages = [],
+  onAddMessage,
 }: AttendFundraisingProps) => {
   const [amount, setAmount] = useState("");
   const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
@@ -23,7 +45,16 @@ const AttendFundraising = ({
     0
   );
 
+  const progressPercent = totalGoal > 0 ? Math.min((currentAmount / totalGoal) * 100, 100) : 0;
   const mainProduct = invitation.products[0];
+
+  // Mock data for demo
+  const displayProposalDate = proposalDate || "2025-10-01";
+  const displayDeadline = invitation.deadline || "2025-12-31";
+  const displayMessages: MessageData[] = messages.length > 0 ? messages : [
+    { id: "1", content: "加油加油希望募資能成功！！", authorName: "王大明王大明", createdAt: "2025-12-27 15:39" },
+    { id: "2", content: "加油加油希望募資能成功！！", authorName: "王大明王大明", createdAt: "2025-12-27 15:39" },
+  ];
 
   const getAspectRatioClass = () => {
     switch (aspectRatio) {
@@ -135,32 +166,49 @@ const AttendFundraising = ({
           </div>
         )}
 
-        {/* Funding Info */}
-        <div className="space-y-3">
-          <div className="flex items-center justify-between">
-            <span className="text-muted-foreground">贊助需求目標</span>
-            <span className="text-primary font-semibold text-lg">
-              ${totalGoal.toLocaleString()}
+        {/* Date & Status */}
+        <div className="flex items-center justify-between">
+          <span className="text-sm text-muted-foreground">
+            {displayProposalDate} 提案 | {displayDeadline} 截止
+          </span>
+          <Badge className="bg-primary text-primary-foreground hover:bg-primary">
+            進行中
+          </Badge>
+        </div>
+
+        {/* Progress Bar */}
+        <div className="space-y-2">
+          <Progress value={progressPercent} className="h-2" />
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-primary font-semibold">
+              ${currentAmount.toLocaleString()}
             </span>
-          </div>
-          <div className="flex items-center justify-between">
-            <span className="text-muted-foreground">已贊助金額</span>
-            <span className="text-primary font-semibold text-lg">$0</span>
+            <span className="text-muted-foreground">
+              目標 ${totalGoal.toLocaleString()} ({Math.round(progressPercent)}%)
+            </span>
           </div>
         </div>
 
-        {/* Amount Input */}
-        <input
-          type="number"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-          placeholder="10"
-          className="w-full p-4 border border-border rounded-xl bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
-        />
-      </div>
+        <Separator />
 
-      {/* Bottom Button */}
-      <div className="sticky bottom-0 bg-background border-t border-border p-4">
+        {/* Donation Amount Section */}
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-foreground font-medium">已贊助金額</span>
+            <span className="text-primary font-semibold text-lg">
+              ${hasDonated ? "100" : "0"}
+            </span>
+          </div>
+          <input
+            type="number"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            placeholder="100"
+            className="w-full p-4 border border-border rounded-xl bg-card text-foreground text-center placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+          />
+        </div>
+
+        {/* Donate Button */}
         <button
           onClick={handleDonate}
           disabled={!amount || parseInt(amount, 10) <= 0}
@@ -168,6 +216,41 @@ const AttendFundraising = ({
         >
           贊助
         </button>
+
+        {/* Message Board Section */}
+        {messageBoardEnabled && (
+          <>
+            <Separator />
+            <div className="space-y-4">
+              {/* Message Board Header */}
+              <div className="flex items-center justify-between">
+                <h2 className="text-lg font-semibold text-foreground">留言板</h2>
+                {hasDonated && (
+                  <button
+                    onClick={onAddMessage}
+                    className="flex items-center gap-1 text-primary text-sm font-medium hover:opacity-80 transition-opacity"
+                  >
+                    <Edit3 size={16} />
+                    我要留言
+                  </button>
+                )}
+              </div>
+
+              {/* Messages List */}
+              <div className="space-y-4">
+                {displayMessages.map((message) => (
+                  <div key={message.id} className="space-y-1 pb-4 border-b border-border last:border-b-0">
+                    <p className="text-foreground font-medium">{message.content}</p>
+                    <div className="flex items-center justify-between text-sm text-muted-foreground">
+                      <span>{message.authorName}</span>
+                      <span>{message.createdAt}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
