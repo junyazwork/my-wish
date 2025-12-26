@@ -4,7 +4,7 @@ import { CartItem, PublicHostData, PublicInvitationData } from "@/types";
 import thankYouBanner from "@/assets/thank-you-banner.jpg";
 import MediaUploadEditor, { MediaItem } from "./MediaUploadEditor";
 
-type AspectRatio = "4:3" | "1:1" | "16:9";
+type AspectRatio = "3:4" | "1:1" | "9:16";
 
 interface PublicInvitationSettingsProps {
   hostData: PublicHostData;
@@ -26,7 +26,7 @@ const PublicInvitationSettings = ({
   const [deadline, setDeadline] = useState("");
   const [showMediaEditor, setShowMediaEditor] = useState(false);
   const [uploadedMedia, setUploadedMedia] = useState<MediaItem[]>([]);
-  const [mediaAspectRatio, setMediaAspectRatio] = useState<AspectRatio>("4:3");
+  const [mediaAspectRatio, setMediaAspectRatio] = useState<AspectRatio>("3:4");
   const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
   const maxMessageLength = 100;
 
@@ -51,14 +51,14 @@ const PublicInvitationSettings = ({
 
   const getAspectRatioClass = () => {
     switch (mediaAspectRatio) {
-      case "4:3":
-        return "aspect-[4/3]";
+      case "3:4":
+        return "aspect-[3/4]";
       case "1:1":
         return "aspect-square";
-      case "16:9":
-        return "aspect-video";
+      case "9:16":
+        return "aspect-[9/16]";
       default:
-        return "aspect-[4/3]";
+        return "aspect-[3/4]";
     }
   };
 
