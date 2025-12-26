@@ -287,9 +287,8 @@ const Index = () => {
       <PublicInvitationShare
         invitation={publicInvitationData}
         cartCount={cartCount}
-        onBack={() => setCurrentView("public-invitation-settings")}
+        onBack={() => setCurrentView("home")}
         onPreview={handlePublicPreviewAttend}
-        onConfirmContent={handlePublicConfirmContent}
       />
     );
   }
