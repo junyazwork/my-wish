@@ -119,18 +119,18 @@ const ProposalDetail = ({ proposal, onBack, onMenuClick, onCartClick, cartCount 
                 onClick={() => setIsPublic(false)}
                 className={`px-6 py-2 text-sm rounded-l-md border transition-colors ${
                   !isPublic
-                    ? "bg-background text-foreground border-border"
-                    : "bg-primary text-primary-foreground border-primary"
+                    ? "bg-primary text-primary-foreground border-primary"
+                    : "bg-muted text-muted-foreground border-border"
                 }`}
               >
                 私密
               </button>
               <button
                 onClick={() => setIsPublic(true)}
-                className={`px-6 py-2 text-sm rounded-r-md border-t border-b border-r transition-colors ${
+                className={`px-6 py-2 text-sm rounded-r-md border-l-0 border transition-colors ${
                   isPublic
                     ? "bg-primary text-primary-foreground border-primary"
-                    : "bg-background text-foreground border-border"
+                    : "bg-muted text-muted-foreground border-border"
                 }`}
               >
                 公開
@@ -149,18 +149,18 @@ const ProposalDetail = ({ proposal, onBack, onMenuClick, onCartClick, cartCount 
                 onClick={() => setMessageBoard(false)}
                 className={`px-6 py-2 text-sm rounded-l-md border transition-colors ${
                   !messageBoard
-                    ? "bg-background text-foreground border-border"
-                    : "bg-primary text-primary-foreground border-primary"
+                    ? "bg-primary text-primary-foreground border-primary"
+                    : "bg-muted text-muted-foreground border-border"
                 }`}
               >
                 關閉
               </button>
               <button
                 onClick={() => setMessageBoard(true)}
-                className={`px-6 py-2 text-sm rounded-r-md border-t border-b border-r transition-colors ${
+                className={`px-6 py-2 text-sm rounded-r-md border-l-0 border transition-colors ${
                   messageBoard
                     ? "bg-primary text-primary-foreground border-primary"
-                    : "bg-background text-foreground border-border"
+                    : "bg-muted text-muted-foreground border-border"
                 }`}
               >
                 啟用中
@@ -179,18 +179,18 @@ const ProposalDetail = ({ proposal, onBack, onMenuClick, onCartClick, cartCount 
                   onClick={() => setNotifyEnabled(false)}
                   className={`px-6 py-2 text-sm rounded-l-md border transition-colors ${
                     !notifyEnabled
-                      ? "bg-background text-foreground border-border"
-                      : "bg-primary text-primary-foreground border-primary"
+                      ? "bg-primary text-primary-foreground border-primary"
+                      : "bg-muted text-muted-foreground border-border"
                   }`}
                 >
                   關閉
                 </button>
                 <button
                   onClick={() => setNotifyEnabled(true)}
-                  className={`px-6 py-2 text-sm rounded-r-md border-t border-b border-r transition-colors ${
+                  className={`px-6 py-2 text-sm rounded-r-md border-l-0 border transition-colors ${
                     notifyEnabled
                       ? "bg-primary text-primary-foreground border-primary"
-                      : "bg-background text-foreground border-border"
+                      : "bg-muted text-muted-foreground border-border"
                   }`}
                 >
                   啟用
