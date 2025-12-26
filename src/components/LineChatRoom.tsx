@@ -5,6 +5,7 @@ interface LineChatRoomProps {
   message: string;
   onBack: () => void;
   onDonateClick: () => void;
+  onCreditCardClick: () => void;
 }
 
 const LineChatRoom = ({
@@ -12,6 +13,7 @@ const LineChatRoom = ({
   message,
   onBack,
   onDonateClick,
+  onCreditCardClick,
 }: LineChatRoomProps) => {
   const currentTime = new Date().toLocaleTimeString("zh-TW", {
     hour: "2-digit",
@@ -102,12 +104,20 @@ const LineChatRoom = ({
               <div className="p-3 bg-card">
                 <h3 className="font-semibold text-foreground mb-1">My Wish</h3>
                 <p className="text-sm text-foreground mb-3">{message}</p>
-                <button
-                  onClick={onDonateClick}
-                  className="w-full text-center text-[#5B7BB5] font-medium py-2 border-t border-border"
-                >
-                  來去贊助
-                </button>
+                <div className="border-t border-border">
+                  <button
+                    onClick={onDonateClick}
+                    className="w-full text-center text-[#5B7BB5] font-medium py-2 border-b border-border"
+                  >
+                    來去贊助
+                  </button>
+                  <button
+                    onClick={onCreditCardClick}
+                    className="w-full text-center text-[#5B7BB5] font-medium py-2"
+                  >
+                    信用卡支付
+                  </button>
+                </div>
               </div>
             </div>
 
