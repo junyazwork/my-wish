@@ -12,6 +12,7 @@ import LineFriendSelector from "@/components/LineFriendSelector";
 import LineChatRoom from "@/components/LineChatRoom";
 import AttendFundraising from "@/components/AttendFundraising";
 import PaymentForm from "@/components/PaymentForm";
+import CreditCardForm from "@/components/CreditCardForm";
 import PaymentComplete from "@/components/PaymentComplete";
 import PublicHostSettings from "@/components/PublicHostSettings";
 import PublicInvitationSettings from "@/components/PublicInvitationSettings";
@@ -138,7 +139,15 @@ const Index = () => {
   };
 
   const handlePayment = (method: "credit" | "linepay") => {
-    toast.success(`使用 ${method === "credit" ? "信用卡" : "LinePay"} 支付`);
+    if (method === "credit") {
+      setCurrentView("credit-card-form");
+    } else {
+      toast.success("使用 LinePay 支付");
+      setCurrentView("payment-complete");
+    }
+  };
+
+  const handleCreditCardConfirm = () => {
     setCurrentView("payment-complete");
   };
 
@@ -197,7 +206,15 @@ const Index = () => {
   };
 
   const handlePublicPayment = (method: "credit" | "linepay") => {
-    toast.success(`使用 ${method === "credit" ? "信用卡" : "LinePay"} 支付`);
+    if (method === "credit") {
+      setCurrentView("public-credit-card-form");
+    } else {
+      toast.success("使用 LinePay 支付");
+      setCurrentView("public-payment-complete");
+    }
+  };
+
+  const handlePublicCreditCardConfirm = () => {
     setCurrentView("public-payment-complete");
   };
 
@@ -323,6 +340,16 @@ const Index = () => {
     );
   }
 
+  if (currentView === "credit-card-form" && invitationData) {
+    return (
+      <CreditCardForm
+        donationAmount={donationAmount}
+        onBack={() => setCurrentView("payment-form")}
+        onConfirm={handleCreditCardConfirm}
+      />
+    );
+  }
+
   if (currentView === "payment-complete" && invitationData) {
     return (
       <PaymentComplete
@@ -416,6 +443,16 @@ const Index = () => {
         donationAmount={donationAmount}
         onBack={() => setCurrentView("public-attend-fundraising")}
         onPayment={handlePublicPayment}
+      />
+    );
+  }
+
+  if (currentView === "public-credit-card-form" && publicInvitationData) {
+    return (
+      <CreditCardForm
+        donationAmount={donationAmount}
+        onBack={() => setCurrentView("public-payment-form")}
+        onConfirm={handlePublicCreditCardConfirm}
       />
     );
   }
