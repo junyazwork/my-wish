@@ -282,6 +282,11 @@ const InlineMediaEditor = ({
         )}
       </div>
 
+      {/* Hint Text */}
+      <p className="text-center text-sm text-muted-foreground">
+        最多上傳 5 張圖片或影片、共 50mb 以內。
+      </p>
+
       {/* Trash Zone - appears when long pressing or dragging */}
       {showTrashZone && (
         <div
