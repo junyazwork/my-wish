@@ -40,7 +40,7 @@ const Header = ({
               <Share2 size={20} className="text-primary-foreground" />
             </div>
           </button> : <button onClick={onCartClick} className="relative p-2 -mr-2">
-            <div className="w-10 h-10 bg-primary flex items-center justify-center rounded-xl">
+            <div className="w-10 h-10 bg-primary flex items-center justify-center rounded-full">
               <ShoppingBag size={20} className="text-primary-foreground" />
             </div>
             {cartCount > 0 && <span className="absolute -top-0.5 -right-0.5 min-w-[20px] h-5 px-1.5 bg-destructive text-destructive-foreground text-xs font-medium rounded-full flex items-center justify-center">
