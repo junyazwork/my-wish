@@ -1,4 +1,4 @@
-import { X } from "lucide-react";
+import { X, Home, Globe, FileText, Heart, LogOut } from "lucide-react";
 
 interface SlideMenuProps {
   isOpen: boolean;
@@ -8,11 +8,11 @@ interface SlideMenuProps {
 
 const SlideMenu = ({ isOpen, onClose, onNavigate }: SlideMenuProps) => {
   const menuItems = [
-    { id: "home", label: "首頁" },
-    { id: "proposals", label: "提案紀錄" },
-    { id: "donations", label: "贊助紀錄" },
-    { id: "all-campaigns", label: "所有募資活動" },
-    { id: "logout", label: "登出" },
+    { id: "home", label: "首頁", icon: Home },
+    { id: "all-campaigns", label: "所有募資活動", icon: Globe },
+    { id: "proposals", label: "提案紀錄", icon: FileText },
+    { id: "donations", label: "贊助紀錄", icon: Heart },
+    { id: "logout", label: "登出", icon: LogOut },
   ];
 
   if (!isOpen) return null;
@@ -40,18 +40,22 @@ const SlideMenu = ({ isOpen, onClose, onNavigate }: SlideMenuProps) => {
           
           {/* Menu Items */}
           <nav className="flex-1 flex flex-col items-center justify-start pt-12 gap-6">
-            {menuItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => {
-                  onNavigate(item.id);
-                  onClose();
-                }}
-                className="text-xl text-foreground/80 hover:text-foreground transition-colors py-3 px-8"
-              >
-                {item.label}
-              </button>
-            ))}
+            {menuItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => {
+                    onNavigate(item.id);
+                    onClose();
+                  }}
+                  className="flex items-center gap-3 text-xl text-foreground/80 hover:text-foreground transition-colors py-3 px-8"
+                >
+                  <Icon size={24} />
+                  <span>{item.label}</span>
+                </button>
+              );
+            })}
           </nav>
         </div>
       </div>
