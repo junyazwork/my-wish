@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ChevronLeft } from "lucide-react";
 
 interface PaymentFormProps {
   goalAmount: number;
@@ -30,6 +31,19 @@ const PaymentForm = ({
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
+      {/* Header */}
+      <header className="sticky top-0 z-40 bg-background/95 backdrop-blur-sm border-b border-border">
+        <div className="flex items-center justify-between px-4 py-3">
+          <button onClick={onBack} className="p-2 -ml-2 text-muted-foreground hover:text-foreground transition-colors">
+            <ChevronLeft size={24} />
+          </button>
+          
+          <h1 className="text-lg font-semibold text-foreground">付款資訊</h1>
+          
+          <div className="w-10" />
+        </div>
+      </header>
+
       {/* Content */}
       <div className="flex-1 p-5 space-y-6">
         {/* Amounts */}
