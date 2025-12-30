@@ -6,33 +6,33 @@
 
 @layer base {
   :root {
-    --background: 0 0% 98%;
-    --foreground: 220 20% 15%;
+    --background: 24 45% 98%;
+    --foreground: 13 100% 14%;
 
     --card: 0 0% 100%;
-    --card-foreground: 220 20% 15%;
+    --card-foreground: 13 15% 41%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 20% 15%;
+    --popover-foreground: 13 15% 41%;
 
-    --primary: 168 76% 42%;
+    --primary: 22 87% 65%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 220 14% 96%;
-    --secondary-foreground: 220 20% 25%;
+    --secondary-foreground: 13 15% 41%;
 
     --muted: 220 14% 96%;
-    --muted-foreground: 220 10% 50%;
+    --muted-foreground: 19 12% 52%;
 
-    --accent: 168 76% 42%;
+    --accent: 22 87% 65%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 14% 90%;
-    --input: 220 14% 90%;
-    --ring: 168 76% 42%;
+    --border: 16 14% 90%;
+    --input: 8 14% 90%;
+    --ring: 22 87% 65%;
 
     --radius: 0.75rem;
 
@@ -61,33 +61,33 @@
   }
 
   .dark {
-    --background: 220 20% 8%;
+    --background: 0 7% 7%;
     --foreground: 0 0% 98%;
 
-    --card: 220 20% 12%;
+    --card: 11 21% 12%;
     --card-foreground: 0 0% 98%;
 
-    --popover: 220 20% 12%;
+    --popover: 11 21% 12%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 168 76% 48%;
+    --primary: 22 87% 65%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 220 20% 18%;
     --secondary-foreground: 0 0% 90%;
 
-    --muted: 220 20% 18%;
-    --muted-foreground: 220 10% 60%;
+    --muted: 11 20% 18%;
+    --muted-foreground: 16 10% 60%;
 
-    --accent: 168 76% 48%;
+    --accent: 22 87% 65%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 62% 45%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 20% 20%;
-    --input: 220 20% 20%;
-    --ring: 168 76% 48%;
+    --border: 5 20% 20%;
+    --input: 3 20% 20%;
+    --ring: 22 87% 65%;
 
     --sidebar-background: 220 20% 10%;
     --sidebar-foreground: 0 0% 90%;
