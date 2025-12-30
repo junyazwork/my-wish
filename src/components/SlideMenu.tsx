@@ -11,6 +11,8 @@ const SlideMenu = ({ isOpen, onClose, onNavigate }: SlideMenuProps) => {
     { id: "home", label: "首頁" },
     { id: "proposals", label: "提案紀錄" },
     { id: "donations", label: "贊助紀錄" },
+    { id: "all-campaigns", label: "所有募資活動" },
+    { id: "logout", label: "登出" },
   ];
 
   if (!isOpen) return null;
