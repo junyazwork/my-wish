@@ -26,6 +26,7 @@ import PublicPaymentComplete from "@/components/PublicPaymentComplete";
 import ProposalsLog from "@/components/ProposalsLog";
 import DonationsLog from "@/components/DonationsLog";
 import AllCampaigns from "@/components/AllCampaigns";
+import LineAuthPage from "@/components/LineAuthPage";
 import { products, categories } from "@/data/products";
 import { Product, CartItem, FundingType, InvitationData, PublicHostData, PublicInvitationData, AppView, LineFriend, MediaItemData, AspectRatioType } from "@/types";
 import { toast } from "sonner";
@@ -136,15 +137,22 @@ const Index = () => {
   };
 
   const handleLogout = () => {
-    // Mock LINE logout - in production, this would call LINE Login API to unbind
-    toast.success("已成功登出，LINE 綁定已解除");
-    // Reset all state
+    // Reset all state and navigate to LINE auth page
     setCart([]);
     setInvitationData(null);
     setPublicHostData(null);
     setPublicInvitationData(null);
     setSelectedCampaignData(null);
     setDonationAmount(0);
+    setCurrentView("line-auth");
+  };
+
+  const handleLineAuthAllow = () => {
+    toast.success("LINE 認證成功");
+    setCurrentView("home");
+  };
+
+  const handleLineAuthCancel = () => {
     setCurrentView("home");
   };
 
@@ -310,6 +318,16 @@ const Index = () => {
     setCurrentView("home");
     toast.success("感謝您的贊助！");
   };
+
+  // Render LINE auth page
+  if (currentView === "line-auth") {
+    return (
+      <LineAuthPage
+        onAllow={handleLineAuthAllow}
+        onCancel={handleLineAuthCancel}
+      />
+    );
+  }
 
   // Render proposals page
   if (currentView === "proposals") {
