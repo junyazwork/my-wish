@@ -151,7 +151,7 @@
 @layer components {
   .funding-card {
     @apply relative rounded-2xl transition-all duration-300 cursor-pointer;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 10 / 6;
   }
   
   .funding-card.selected {
