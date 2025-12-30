@@ -88,8 +88,14 @@ const AttendFundraising = ({
     <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
       <header className="sticky top-0 z-40 bg-background/95 backdrop-blur-sm border-b border-border">
-        <div className="flex items-center justify-center px-4 py-3">
-          <h1 className="text-lg font-semibold text-foreground">
+        <div className="flex items-center px-4 py-3">
+          <button
+            onClick={onBack}
+            className="flex items-center text-foreground hover:opacity-70 transition-opacity"
+          >
+            <ChevronLeft size={24} />
+          </button>
+          <h1 className="flex-1 text-lg font-semibold text-foreground text-center pr-6">
             {invitation.name}的 Wish
           </h1>
         </div>
