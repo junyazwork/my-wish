@@ -25,8 +25,9 @@ import PublicPaymentForm from "@/components/PublicPaymentForm";
 import PublicPaymentComplete from "@/components/PublicPaymentComplete";
 import ProposalsLog from "@/components/ProposalsLog";
 import DonationsLog from "@/components/DonationsLog";
+import AllCampaigns from "@/components/AllCampaigns";
 import { products, categories } from "@/data/products";
-import { Product, CartItem, FundingType, InvitationData, PublicHostData, PublicInvitationData, AppView, LineFriend } from "@/types";
+import { Product, CartItem, FundingType, InvitationData, PublicHostData, PublicInvitationData, AppView, LineFriend, MediaItemData, AspectRatioType } from "@/types";
 import { toast } from "sonner";
 
 const Index = () => {
@@ -48,6 +49,9 @@ const Index = () => {
   const [publicHostData, setPublicHostData] = useState<PublicHostData | null>(null);
   const [publicInvitationData, setPublicInvitationData] = useState<PublicInvitationData | null>(null);
   const [publicSelectedLineFriends, setPublicSelectedLineFriends] = useState<LineFriend[]>([]);
+
+  // Campaign attend state (from all campaigns)
+  const [selectedCampaignData, setSelectedCampaignData] = useState<InvitationData | null>(null);
 
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
@@ -115,7 +119,52 @@ const Index = () => {
       setCurrentView("proposals");
     } else if (page === "donations") {
       setCurrentView("donations");
+    } else if (page === "all-campaigns") {
+      setCurrentView("all-campaigns");
+    } else if (page === "logout") {
+      handleLogout();
     }
+  };
+
+  const handleLogout = () => {
+    // Mock LINE logout - in production, this would call LINE Login API to unbind
+    toast.success("已成功登出，LINE 綁定已解除");
+    // Reset all state
+    setCart([]);
+    setInvitationData(null);
+    setPublicHostData(null);
+    setPublicInvitationData(null);
+    setSelectedCampaignData(null);
+    setDonationAmount(0);
+    setCurrentView("home");
+  };
+
+  const handleSelectCampaign = (campaign: {
+    id: string;
+    title: string;
+    description: string;
+    organizer: string;
+    image: string;
+    currentAmount: number;
+    goalAmount: number;
+    participants: number;
+    remainingTime: string;
+  }) => {
+    // Convert campaign to InvitationData format for AttendFundraising
+    const campaignInvitation: InvitationData = {
+      message: campaign.description,
+      name: campaign.organizer,
+      deadline: campaign.remainingTime,
+      products: [],
+      mediaItems: [{ id: "1", url: campaign.image, type: "image" as const }],
+    };
+    setSelectedCampaignData(campaignInvitation);
+    setCurrentView("campaign-attend");
+  };
+
+  const handleCampaignDonate = (amount: number) => {
+    setDonationAmount(amount);
+    setCurrentView("payment-form");
   };
 
   const handleFundingConfirm = (fundingType: FundingType) => {
@@ -273,6 +322,27 @@ const Index = () => {
         onMenuClick={() => setIsMenuOpen(true)}
         onCartClick={handleCartClick}
         cartCount={cartCount}
+      />
+    );
+  }
+
+  // Render all campaigns page
+  if (currentView === "all-campaigns") {
+    return (
+      <AllCampaigns
+        onBack={() => setCurrentView("home")}
+        onSelectCampaign={handleSelectCampaign}
+      />
+    );
+  }
+
+  // Render campaign attend page (from all campaigns)
+  if (currentView === "campaign-attend" && selectedCampaignData) {
+    return (
+      <AttendFundraising
+        invitation={selectedCampaignData}
+        onBack={() => setCurrentView("all-campaigns")}
+        onDonate={handleCampaignDonate}
       />
     );
   }
