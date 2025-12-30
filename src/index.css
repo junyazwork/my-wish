@@ -150,8 +150,8 @@
 
 @layer components {
   .funding-card {
-    @apply relative rounded-2xl p-6 transition-all duration-300 cursor-pointer;
-    min-height: 140px;
+    @apply relative rounded-2xl transition-all duration-300 cursor-pointer;
+    aspect-ratio: 16 / 9;
   }
   
   .funding-card.selected {
