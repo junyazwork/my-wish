@@ -332,6 +332,7 @@ const Index = () => {
       <AllCampaigns
         onBack={() => setCurrentView("home")}
         onSelectCampaign={handleSelectCampaign}
+        onNavigate={handleNavigate}
       />
     );
   }
