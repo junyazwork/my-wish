@@ -145,8 +145,8 @@ const InvitationConfirm = ({
           <div className="p-4 space-y-3 text-center">
             <p className="text-foreground">{invitation.message}</p>
             <button
-              onClick={onPreview}
-              className="w-full py-3 border border-border rounded-lg text-foreground font-medium hover:bg-secondary transition-colors"
+              disabled
+              className="w-full py-3 border border-border rounded-lg text-muted-foreground font-medium bg-muted cursor-not-allowed"
             >
               來去贊助
             </button>
