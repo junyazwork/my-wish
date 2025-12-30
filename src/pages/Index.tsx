@@ -395,7 +395,10 @@ const Index = () => {
   if (currentView === "funding") {
     return (
       <FundingSelection
-        onBack={() => setIsCartOpen(true)}
+        onBack={() => {
+          setCurrentView("home");
+          setIsCartOpen(true);
+        }}
         onContinueShopping={() => setCurrentView("home")}
         onConfirm={handleFundingConfirm}
         cartCount={cartCount}
