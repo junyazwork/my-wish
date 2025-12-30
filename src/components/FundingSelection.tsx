@@ -1,6 +1,8 @@
 import { FundingType } from "@/types";
-import { User, Share2, Check } from "lucide-react";
+import { Check } from "lucide-react";
 import { useState } from "react";
+import fundraisingPersonal from "@/assets/fundraising-personal.png";
+import fundraisingPublic from "@/assets/fundraising-public.png";
 
 interface FundingSelectionProps {
   onBack: () => void;
@@ -61,33 +63,27 @@ const FundingSelection = ({
         {/* Personal Fundraising Card */}
         <button
           onClick={() => setSelectedType('personal')}
-          className={`funding-card w-full gradient-personal ${selectedType === 'personal' ? 'selected' : ''}`}
+          className={`funding-card w-full overflow-hidden ${selectedType === 'personal' ? 'selected' : ''}`}
+          style={{ backgroundImage: `url(${fundraisingPersonal})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
         >
           {selectedType === 'personal' && (
             <div className="absolute top-4 left-4 w-7 h-7 rounded-full bg-card flex items-center justify-center">
               <Check size={16} className="text-primary" />
             </div>
           )}
-          <div className="flex flex-col items-center justify-center h-full text-center">
-            <User size={40} className="text-primary-foreground/90 mb-3" />
-            <span className="text-lg font-semibold text-primary-foreground">個人募資</span>
-          </div>
         </button>
 
         {/* Public Fundraising Card */}
         <button
           onClick={() => setSelectedType('public')}
-          className={`funding-card w-full gradient-public ${selectedType === 'public' ? 'selected' : ''}`}
+          className={`funding-card w-full overflow-hidden ${selectedType === 'public' ? 'selected' : ''}`}
+          style={{ backgroundImage: `url(${fundraisingPublic})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
         >
           {selectedType === 'public' && (
             <div className="absolute top-4 left-4 w-7 h-7 rounded-full bg-card flex items-center justify-center">
               <Check size={16} className="text-primary" />
             </div>
           )}
-          <div className="flex flex-col items-center justify-center h-full text-center">
-            <Share2 size={40} className="text-primary-foreground/90 mb-3" />
-            <span className="text-lg font-semibold text-primary-foreground">公益募資</span>
-          </div>
         </button>
 
       </div>
