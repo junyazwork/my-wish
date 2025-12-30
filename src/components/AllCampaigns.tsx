@@ -315,6 +315,7 @@ const AllCampaigns = ({ onBack, onSelectCampaign, onNavigate }: AllCampaignsProp
           setIsMenuOpen(false);
           onNavigate(page);
         }}
+        currentPage="all-campaigns"
       />
     </div>
   );

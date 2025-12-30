@@ -4,9 +4,10 @@ interface SlideMenuProps {
   isOpen: boolean;
   onClose: () => void;
   onNavigate: (page: string) => void;
+  currentPage?: string;
 }
 
-const SlideMenu = ({ isOpen, onClose, onNavigate }: SlideMenuProps) => {
+const SlideMenu = ({ isOpen, onClose, onNavigate, currentPage = "home" }: SlideMenuProps) => {
   const menuItems = [
     { id: "home", label: "首頁", icon: Home },
     { id: "all-campaigns", label: "所有募資活動", icon: Globe },
@@ -42,6 +43,7 @@ const SlideMenu = ({ isOpen, onClose, onNavigate }: SlideMenuProps) => {
           <nav className="flex-1 flex flex-col items-center justify-start pt-12 gap-6">
             {menuItems.map((item) => {
               const Icon = item.icon;
+              const isActive = currentPage === item.id;
               return (
                 <button
                   key={item.id}
@@ -49,7 +51,11 @@ const SlideMenu = ({ isOpen, onClose, onNavigate }: SlideMenuProps) => {
                     onNavigate(item.id);
                     onClose();
                   }}
-                  className="flex items-center gap-3 text-xl text-foreground/80 hover:text-foreground transition-colors py-3 px-8"
+                  className={`flex items-center gap-3 text-xl transition-colors py-3 px-8 rounded-full ${
+                    isActive
+                      ? "text-primary bg-primary/10 font-semibold"
+                      : "text-foreground/80 hover:text-foreground"
+                  }`}
                 >
                   <Icon size={24} />
                   <span>{item.label}</span>

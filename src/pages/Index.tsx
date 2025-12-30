@@ -69,6 +69,15 @@ const Index = () => {
     return cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   }, [cart]);
 
+  // Get current page for slide menu active state
+  const getCurrentMenuPage = (): string => {
+    if (currentView === "home") return "home";
+    if (currentView === "all-campaigns" || currentView === "campaign-attend") return "all-campaigns";
+    if (currentView === "proposals") return "proposals";
+    if (currentView === "donations") return "donations";
+    return "home";
+  };
+
   const handleProductClick = (product: Product) => {
     setSelectedProduct(product);
     setIsDrawerOpen(true);
@@ -305,24 +314,40 @@ const Index = () => {
   // Render proposals page
   if (currentView === "proposals") {
     return (
-      <ProposalsLog
-        onBack={() => setCurrentView("home")}
-        onMenuClick={() => setIsMenuOpen(true)}
-        onCartClick={handleCartClick}
-        cartCount={cartCount}
-      />
+      <>
+        <ProposalsLog
+          onBack={() => setCurrentView("home")}
+          onMenuClick={() => setIsMenuOpen(true)}
+          onCartClick={handleCartClick}
+          cartCount={cartCount}
+        />
+        <SlideMenu
+          isOpen={isMenuOpen}
+          onClose={() => setIsMenuOpen(false)}
+          onNavigate={handleNavigate}
+          currentPage="proposals"
+        />
+      </>
     );
   }
 
   // Render donations page
   if (currentView === "donations") {
     return (
-      <DonationsLog
-        onBack={() => setCurrentView("home")}
-        onMenuClick={() => setIsMenuOpen(true)}
-        onCartClick={handleCartClick}
-        cartCount={cartCount}
-      />
+      <>
+        <DonationsLog
+          onBack={() => setCurrentView("home")}
+          onMenuClick={() => setIsMenuOpen(true)}
+          onCartClick={handleCartClick}
+          cartCount={cartCount}
+        />
+        <SlideMenu
+          isOpen={isMenuOpen}
+          onClose={() => setIsMenuOpen(false)}
+          onNavigate={handleNavigate}
+          currentPage="donations"
+        />
+      </>
     );
   }
 
@@ -609,6 +634,7 @@ const Index = () => {
         isOpen={isMenuOpen}
         onClose={() => setIsMenuOpen(false)}
         onNavigate={handleNavigate}
+        currentPage="home"
       />
       
       <ProductDrawer
