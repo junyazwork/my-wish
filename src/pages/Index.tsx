@@ -376,6 +376,7 @@ const Index = () => {
         onBack={() => setCurrentView("proposals")}
         onDonate={handleDonate}
         messageBoardEnabled={true}
+        isProposalOwner={true}
       />
     );
   }
@@ -389,6 +390,7 @@ const Index = () => {
         onBack={() => setCurrentView("proposals")}
         onDonate={handlePublicDonate}
         messageBoardEnabled={true}
+        isProposalOwner={true}
       />
     );
   }

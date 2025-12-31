@@ -24,6 +24,7 @@ interface PublicAttendFundraisingProps {
   proposalDate?: string;
   messages?: MessageData[];
   onAddMessage?: () => void;
+  isProposalOwner?: boolean;
 }
 
 const PublicAttendFundraising = ({
@@ -37,6 +38,7 @@ const PublicAttendFundraising = ({
   proposalDate,
   messages = [],
   onAddMessage,
+  isProposalOwner = false,
 }: PublicAttendFundraisingProps) => {
   const [amount, setAmount] = useState("");
   const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
@@ -278,45 +280,49 @@ const PublicAttendFundraising = ({
                         <span>{message.createdAt}</span>
                       </div>
                       
-                      {/* Reply Section */}
-                      {repliedMessages[message.id] && replyingMessageId !== message.id && (
-                        <div className="mt-2 pl-3 border-l-2 border-primary/30">
-                          <p className="text-sm text-muted-foreground">{repliedMessages[message.id]}</p>
-                        </div>
-                      )}
-                      
-                      {replyingMessageId === message.id ? (
-                        <div className="mt-2 space-y-2">
-                          <input
-                            type="text"
-                            value={replyText}
-                            onChange={(e) => setReplyText(e.target.value)}
-                            placeholder="輸入回覆內容..."
-                            className="w-full p-3 border border-border rounded-lg bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 text-sm"
-                          />
-                          <div className="flex gap-2">
+                      {/* Reply Section - Only for proposal owner */}
+                      {isProposalOwner && (
+                        <>
+                          {repliedMessages[message.id] && replyingMessageId !== message.id && (
+                            <div className="mt-2 pl-3 border-l-2 border-primary/30">
+                              <p className="text-sm text-muted-foreground">{repliedMessages[message.id]}</p>
+                            </div>
+                          )}
+                          
+                          {replyingMessageId === message.id ? (
+                            <div className="mt-2 space-y-2">
+                              <input
+                                type="text"
+                                value={replyText}
+                                onChange={(e) => setReplyText(e.target.value)}
+                                placeholder="輸入回覆內容..."
+                                className="w-full p-3 border border-border rounded-lg bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 text-sm"
+                              />
+                              <div className="flex gap-2">
+                                <button
+                                  onClick={() => handleReplySubmit(message.id)}
+                                  disabled={!replyText.trim()}
+                                  className="px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                  送出
+                                </button>
+                                <button
+                                  onClick={handleReplyCancel}
+                                  className="px-4 py-2 border border-border text-muted-foreground rounded-lg text-sm font-medium hover:bg-muted transition-colors"
+                                >
+                                  取消
+                                </button>
+                              </div>
+                            </div>
+                          ) : (
                             <button
-                              onClick={() => handleReplySubmit(message.id)}
-                              disabled={!replyText.trim()}
-                              className="px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+                              onClick={() => handleReplyClick(message.id)}
+                              className="mt-2 text-sm text-primary font-medium hover:opacity-80 transition-opacity"
                             >
-                              送出
+                              {repliedMessages[message.id] ? "修改留言" : "回覆留言"}
                             </button>
-                            <button
-                              onClick={handleReplyCancel}
-                              className="px-4 py-2 border border-border text-muted-foreground rounded-lg text-sm font-medium hover:bg-muted transition-colors"
-                            >
-                              取消
-                            </button>
-                          </div>
-                        </div>
-                      ) : (
-                        <button
-                          onClick={() => handleReplyClick(message.id)}
-                          className="mt-2 text-sm text-primary font-medium hover:opacity-80 transition-opacity"
-                        >
-                          {repliedMessages[message.id] ? "修改留言" : "回覆留言"}
-                        </button>
+                          )}
+                        </>
                       )}
                     </div>
                   ))}
