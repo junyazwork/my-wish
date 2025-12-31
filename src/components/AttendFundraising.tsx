@@ -11,6 +11,7 @@ interface MessageData {
   authorName: string;
   createdAt: string;
   reply?: string;
+  replyTime?: string;
 }
 
 interface AttendFundraisingProps {
@@ -42,7 +43,7 @@ const AttendFundraising = ({
   const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
   const [replyingMessageId, setReplyingMessageId] = useState<string | null>(null);
   const [replyText, setReplyText] = useState("");
-  const [repliedMessages, setRepliedMessages] = useState<Record<string, string>>({});
+  const [repliedMessages, setRepliedMessages] = useState<Record<string, { text: string; time: string }>>({});
   const mediaItems = invitation.mediaItems || [];
   const aspectRatio = invitation.aspectRatio || "3:4";
 
@@ -93,7 +94,7 @@ const AttendFundraising = ({
   const handleReplyClick = (messageId: string) => {
     if (repliedMessages[messageId]) {
       // Already replied, show edit mode with existing reply
-      setReplyText(repliedMessages[messageId]);
+      setReplyText(repliedMessages[messageId].text);
     } else {
       setReplyText("");
     }
@@ -102,9 +103,11 @@ const AttendFundraising = ({
 
   const handleReplySubmit = (messageId: string) => {
     if (replyText.trim()) {
+      const now = new Date();
+      const timeString = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
       setRepliedMessages((prev) => ({
         ...prev,
-        [messageId]: replyText.trim(),
+        [messageId]: { text: replyText.trim(), time: timeString },
       }));
       setReplyingMessageId(null);
       setReplyText("");
@@ -114,6 +117,14 @@ const AttendFundraising = ({
   const handleReplyCancel = () => {
     setReplyingMessageId(null);
     setReplyText("");
+  };
+
+  const handleReplyDelete = (messageId: string) => {
+    setRepliedMessages((prev) => {
+      const updated = { ...prev };
+      delete updated[messageId];
+      return updated;
+    });
   };
 
   return (
@@ -284,15 +295,17 @@ const AttendFundraising = ({
                       <span>{message.createdAt}</span>
                     </div>
                     
-                    {/* Reply Section - Only for proposal owner */}
+                    {/* Reply Display - Visible to all users */}
+                    {repliedMessages[message.id] && replyingMessageId !== message.id && (
+                      <div className="mt-2 pl-3 border-l-2 border-primary/30">
+                        <p className="text-sm text-foreground">{repliedMessages[message.id].text}</p>
+                        <span className="text-xs text-muted-foreground">{repliedMessages[message.id].time}</span>
+                      </div>
+                    )}
+                    
+                    {/* Reply Controls - Only for proposal owner */}
                     {isProposalOwner && (
                       <>
-                        {repliedMessages[message.id] && replyingMessageId !== message.id && (
-                          <div className="mt-2 pl-3 border-l-2 border-primary/30">
-                            <p className="text-sm text-muted-foreground">{repliedMessages[message.id]}</p>
-                          </div>
-                        )}
-                        
                         {replyingMessageId === message.id ? (
                           <div className="mt-2 space-y-2">
                             <input
@@ -319,12 +332,22 @@ const AttendFundraising = ({
                             </div>
                           </div>
                         ) : (
-                          <button
-                            onClick={() => handleReplyClick(message.id)}
-                            className="mt-2 text-sm text-primary font-medium hover:opacity-80 transition-opacity"
-                          >
-                            {repliedMessages[message.id] ? "修改留言" : "回覆留言"}
-                          </button>
+                          <div className="flex gap-2 mt-2">
+                            <button
+                              onClick={() => handleReplyClick(message.id)}
+                              className="text-sm text-primary font-medium hover:opacity-80 transition-opacity"
+                            >
+                              {repliedMessages[message.id] ? "修改留言" : "回覆留言"}
+                            </button>
+                            {repliedMessages[message.id] && (
+                              <button
+                                onClick={() => handleReplyDelete(message.id)}
+                                className="text-sm text-destructive font-medium hover:opacity-80 transition-opacity"
+                              >
+                                刪除留言
+                              </button>
+                            )}
+                          </div>
                         )}
                       </>
                     )}
