@@ -40,7 +40,7 @@ const ProductCard = ({
           onClick={handleAddToWishlist}
         >
           <Heart className="h-3.5 w-3.5" />
-          加入願望清單
+          放入許願池
         </Button>
       </div>
     </div>
