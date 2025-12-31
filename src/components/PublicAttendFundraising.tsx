@@ -10,6 +10,7 @@ interface MessageData {
   content: string;
   authorName: string;
   createdAt: string;
+  reply?: string;
 }
 
 interface PublicAttendFundraisingProps {
@@ -39,6 +40,9 @@ const PublicAttendFundraising = ({
 }: PublicAttendFundraisingProps) => {
   const [amount, setAmount] = useState("");
   const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
+  const [replyingMessageId, setReplyingMessageId] = useState<string | null>(null);
+  const [replyText, setReplyText] = useState("");
+  const [repliedMessages, setRepliedMessages] = useState<Record<string, string>>({});
   const mediaItems = invitation.mediaItems || [];
   const aspectRatio = invitation.aspectRatio || "3:4";
 
@@ -84,6 +88,31 @@ const PublicAttendFundraising = ({
     if (donationAmount > 0) {
       onDonate(donationAmount);
     }
+  };
+
+  const handleReplyClick = (messageId: string) => {
+    if (repliedMessages[messageId]) {
+      setReplyText(repliedMessages[messageId]);
+    } else {
+      setReplyText("");
+    }
+    setReplyingMessageId(messageId);
+  };
+
+  const handleReplySubmit = (messageId: string) => {
+    if (replyText.trim()) {
+      setRepliedMessages((prev) => ({
+        ...prev,
+        [messageId]: replyText.trim(),
+      }));
+      setReplyingMessageId(null);
+      setReplyText("");
+    }
+  };
+
+  const handleReplyCancel = () => {
+    setReplyingMessageId(null);
+    setReplyText("");
   };
 
   return (
@@ -242,12 +271,53 @@ const PublicAttendFundraising = ({
                 {/* Messages List */}
                 <div className="space-y-4">
                   {displayMessages.map((message) => (
-                    <div key={message.id} className="space-y-1 pb-4 border-b border-border last:border-b-0">
+                    <div key={message.id} className="space-y-2 pb-4 border-b border-border last:border-b-0">
                       <p className="text-foreground font-medium">{message.content}</p>
                       <div className="flex items-center justify-between text-sm text-muted-foreground">
                         <span>{message.authorName}</span>
                         <span>{message.createdAt}</span>
                       </div>
+                      
+                      {/* Reply Section */}
+                      {repliedMessages[message.id] && replyingMessageId !== message.id && (
+                        <div className="mt-2 pl-3 border-l-2 border-primary/30">
+                          <p className="text-sm text-muted-foreground">{repliedMessages[message.id]}</p>
+                        </div>
+                      )}
+                      
+                      {replyingMessageId === message.id ? (
+                        <div className="mt-2 space-y-2">
+                          <input
+                            type="text"
+                            value={replyText}
+                            onChange={(e) => setReplyText(e.target.value)}
+                            placeholder="輸入回覆內容..."
+                            className="w-full p-3 border border-border rounded-lg bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 text-sm"
+                          />
+                          <div className="flex gap-2">
+                            <button
+                              onClick={() => handleReplySubmit(message.id)}
+                              disabled={!replyText.trim()}
+                              className="px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                              送出
+                            </button>
+                            <button
+                              onClick={handleReplyCancel}
+                              className="px-4 py-2 border border-border text-muted-foreground rounded-lg text-sm font-medium hover:bg-muted transition-colors"
+                            >
+                              取消
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => handleReplyClick(message.id)}
+                          className="mt-2 text-sm text-primary font-medium hover:opacity-80 transition-opacity"
+                        >
+                          {repliedMessages[message.id] ? "修改留言" : "回覆留言"}
+                        </button>
+                      )}
                     </div>
                   ))}
                 </div>
