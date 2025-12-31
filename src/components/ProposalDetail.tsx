@@ -39,9 +39,10 @@ interface ProposalDetailProps {
   onBack: () => void;
   onMenuClick: () => void;
   onShareClick: () => void;
+  onViewMessageBoard?: () => void;
 }
 
-const ProposalDetail = ({ proposal, onBack, onMenuClick, onShareClick }: ProposalDetailProps) => {
+const ProposalDetail = ({ proposal, onBack, onMenuClick, onShareClick, onViewMessageBoard }: ProposalDetailProps) => {
   const [isPublic, setIsPublic] = useState(proposal.isPublic);
   const [messageBoard, setMessageBoard] = useState(proposal.messageBoard);
   const [notifyEnabled, setNotifyEnabled] = useState(proposal.notifyBeforeDeadline);
@@ -144,27 +145,37 @@ const ProposalDetail = ({ proposal, onBack, onMenuClick, onShareClick }: Proposa
           {/* 留言板功能 */}
           <div>
             <h3 className="text-lg font-medium text-foreground mb-3">留言板功能</h3>
-            <div className="flex gap-0">
-              <button
-                onClick={() => setMessageBoard(false)}
-                className={`px-6 py-2 text-sm rounded-l-md border transition-colors ${
-                  !messageBoard
-                    ? "bg-primary text-primary-foreground border-primary"
-                    : "bg-muted text-muted-foreground border-border"
-                }`}
-              >
-                關閉
-              </button>
-              <button
-                onClick={() => setMessageBoard(true)}
-                className={`px-6 py-2 text-sm rounded-r-md border-l-0 border transition-colors ${
-                  messageBoard
-                    ? "bg-primary text-primary-foreground border-primary"
-                    : "bg-muted text-muted-foreground border-border"
-                }`}
-              >
-                啟用中
-              </button>
+            <div className="flex items-center gap-4">
+              <div className="flex gap-0">
+                <button
+                  onClick={() => setMessageBoard(false)}
+                  className={`px-6 py-2 text-sm rounded-l-md border transition-colors ${
+                    !messageBoard
+                      ? "bg-primary text-primary-foreground border-primary"
+                      : "bg-muted text-muted-foreground border-border"
+                  }`}
+                >
+                  關閉
+                </button>
+                <button
+                  onClick={() => setMessageBoard(true)}
+                  className={`px-6 py-2 text-sm rounded-r-md border-l-0 border transition-colors ${
+                    messageBoard
+                      ? "bg-primary text-primary-foreground border-primary"
+                      : "bg-muted text-muted-foreground border-border"
+                  }`}
+                >
+                  啟用中
+                </button>
+              </div>
+              {messageBoard && onViewMessageBoard && (
+                <button
+                  onClick={onViewMessageBoard}
+                  className="px-4 py-2 text-sm rounded-md border border-primary text-primary hover:bg-primary/10 transition-colors"
+                >
+                  查看留言板
+                </button>
+              )}
             </div>
           </div>
 

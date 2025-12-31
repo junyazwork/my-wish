@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ChevronLeft, ChevronRight, Edit3 } from "lucide-react";
-import { PublicInvitationData } from "@/types";
+import { PublicInvitationData, InvitationData, PublicHostData } from "@/types";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -13,7 +13,8 @@ interface MessageData {
 }
 
 interface PublicAttendFundraisingProps {
-  invitation: PublicInvitationData;
+  invitation: PublicInvitationData | InvitationData;
+  hostData?: PublicHostData | null;
   onBack: () => void;
   onDonate: (amount: number) => void;
   messageBoardEnabled?: boolean;
@@ -26,6 +27,7 @@ interface PublicAttendFundraisingProps {
 
 const PublicAttendFundraising = ({
   invitation,
+  hostData,
   onBack,
   onDonate,
   messageBoardEnabled = true,
