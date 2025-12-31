@@ -183,7 +183,7 @@ const AllCampaigns = ({
               <button onClick={() => setActiveFilter(filter.id)} className={`text-sm transition-colors ${activeFilter === filter.id ? "text-primary font-medium" : "text-muted-foreground"}`}>
                 {filter.label}
               </button>
-              {index < filters.length - 1 && <span className="text-muted-foreground/50 mx-[12px]">|</span>}
+              {index < filters.length - 1 && <span className="text-muted-foreground/50 mx-[16px]">|</span>}
             </div>)}
         </div>
       </div>
