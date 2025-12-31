@@ -329,6 +329,24 @@ const Index = () => {
     );
   }
 
+  // Handle viewing attend fundraising from proposal detail
+  const handleViewAttendFundraising = (proposalId: string, isPublic: boolean) => {
+    // Create mock invitation data from proposal for preview
+    const mockInvitation: InvitationData = {
+      message: "這是募資活動的訊息內容",
+      name: "募資活動",
+      deadline: "2025-12-31",
+      products: [],
+      mediaItems: [],
+    };
+    setInvitationData(mockInvitation);
+    if (isPublic) {
+      setCurrentView("proposal-attend-public");
+    } else {
+      setCurrentView("proposal-attend-personal");
+    }
+  };
+
   // Render proposals page
   if (currentView === "proposals") {
     return (
@@ -338,6 +356,7 @@ const Index = () => {
           onMenuClick={() => setIsMenuOpen(true)}
           onCartClick={handleCartClick}
           cartCount={cartCount}
+          onViewAttendFundraising={handleViewAttendFundraising}
         />
         <SlideMenu
           isOpen={isMenuOpen}
@@ -346,6 +365,31 @@ const Index = () => {
           currentPage="proposals"
         />
       </>
+    );
+  }
+
+  // Render proposal attend personal (from proposal detail message board)
+  if (currentView === "proposal-attend-personal" && invitationData) {
+    return (
+      <AttendFundraising
+        invitation={invitationData}
+        onBack={() => setCurrentView("proposals")}
+        onDonate={handleDonate}
+        messageBoardEnabled={true}
+      />
+    );
+  }
+
+  // Render proposal attend public (from proposal detail message board)
+  if (currentView === "proposal-attend-public" && invitationData) {
+    return (
+      <PublicAttendFundraising
+        invitation={invitationData}
+        hostData={publicHostData}
+        onBack={() => setCurrentView("proposals")}
+        onDonate={handlePublicDonate}
+        messageBoardEnabled={true}
+      />
     );
   }
 

@@ -85,4 +85,6 @@ export type AppView =
   | "public-payment-form"
   | "public-credit-card-form"
   | "public-linepay-form"
-  | "public-payment-complete";
+  | "public-payment-complete"
+  | "proposal-attend-personal"
+  | "proposal-attend-public";

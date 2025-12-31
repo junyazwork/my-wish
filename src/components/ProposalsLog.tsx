@@ -31,9 +31,10 @@ interface ProposalsLogProps {
   onMenuClick: () => void;
   onCartClick: () => void;
   cartCount: number;
+  onViewAttendFundraising?: (proposalId: string, isPublic: boolean) => void;
 }
 
-const ProposalsLog = ({ onBack, onMenuClick, onCartClick, cartCount }: ProposalsLogProps) => {
+const ProposalsLog = ({ onBack, onMenuClick, onCartClick, cartCount, onViewAttendFundraising }: ProposalsLogProps) => {
   const [selectedProposal, setSelectedProposal] = useState<ProposalItem | null>(null);
 
   // Mock data for proposals
@@ -148,12 +149,19 @@ const ProposalsLog = ({ onBack, onMenuClick, onCartClick, cartCount }: Proposals
       alert("已複製募資活動連結！");
     };
 
+    const handleViewMessageBoard = () => {
+      if (onViewAttendFundraising) {
+        onViewAttendFundraising(selectedProposal.id, selectedProposal.isPublic);
+      }
+    };
+
     return (
       <ProposalDetail
         proposal={selectedProposal}
         onBack={() => setSelectedProposal(null)}
         onMenuClick={onMenuClick}
         onShareClick={handleShare}
+        onViewMessageBoard={handleViewMessageBoard}
       />
     );
   }
