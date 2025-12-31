@@ -170,6 +170,6 @@
 }
 
 .btn-shimmer {
-  animation: shimmer 1.5s ease-in-out infinite;
+  animation: shimmer 2.5s ease-in-out infinite;
   border-color: hsl(var(--primary) / 0.4);
 }
