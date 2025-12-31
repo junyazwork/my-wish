@@ -1,4 +1,4 @@
-import { ShoppingBag, Share2, Menu } from "lucide-react";
+import { Share2, Menu, ShoppingBag } from "lucide-react";
 interface HeaderProps {
   cartCount?: number;
   onMenuClick?: () => void;
