@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Mail } from "lucide-react";
 import Header from "./Header";
 import { Progress } from "./ui/progress";
@@ -10,14 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "./ui/table";
-
-interface DonationRecord {
-  id: string;
-  lineName: string;
-  amount: number;
-  date: string;
-  email?: string;
-}
+import { useCampaigns, DonationRecord } from "@/contexts/CampaignsContext";
 
 interface ProposalDetailData {
   id: string;
@@ -43,10 +36,16 @@ interface ProposalDetailProps {
 }
 
 const ProposalDetail = ({ proposal, onBack, onMenuClick, onShareClick, onViewMessageBoard }: ProposalDetailProps) => {
+  const { updateCampaignVisibility } = useCampaigns();
   const [isPublic, setIsPublic] = useState(proposal.isPublic);
   const [messageBoard, setMessageBoard] = useState(proposal.messageBoard);
   const [notifyEnabled, setNotifyEnabled] = useState(proposal.notifyBeforeDeadline);
   const [notifyDays, setNotifyDays] = useState(proposal.notifyDays);
+
+  // Update shared context when isPublic changes
+  useEffect(() => {
+    updateCampaignVisibility(proposal.id, isPublic);
+  }, [isPublic, proposal.id, updateCampaignVisibility]);
 
   const getProgressPercentage = (current: number, goal: number) => {
     if (goal === 0) return 0;

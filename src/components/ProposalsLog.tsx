@@ -3,13 +3,7 @@ import { ChevronRight } from "lucide-react";
 import Header from "./Header";
 import { Progress } from "./ui/progress";
 import ProposalDetail from "./ProposalDetail";
-
-interface DonationRecord {
-  id: string;
-  lineName: string;
-  amount: number;
-  date: string;
-}
+import { useCampaigns, DonationRecord } from "@/contexts/CampaignsContext";
 
 interface ProposalItem {
   id: string;
@@ -35,91 +29,24 @@ interface ProposalsLogProps {
 }
 
 const ProposalsLog = ({ onBack, onMenuClick, onCartClick, cartCount, onViewAttendFundraising }: ProposalsLogProps) => {
+  const { campaigns } = useCampaigns();
   const [selectedProposal, setSelectedProposal] = useState<ProposalItem | null>(null);
 
-  // Mock data for proposals
-  const proposals: ProposalItem[] = [
-    { 
-      id: "1", 
-      name: "Zimmer 生日募資",
-      proposalDate: "2025-10-01",
-      deadline: "2025-12-31", 
-      status: "building", 
-      currentAmount: 0, 
-      goalAmount: 6000,
-      isPublic: false,
-      messageBoard: true,
-      notifyBeforeDeadline: true,
-      notifyDays: 14,
-      donations: []
-    },
-    { 
-      id: "2", 
-      name: "聖誕節派對",
-      proposalDate: "2025-11-01",
-      deadline: "2025-12-25", 
-      status: "active", 
-      currentAmount: 1500, 
-      goalAmount: 3260,
-      isPublic: true,
-      messageBoard: true,
-      notifyBeforeDeadline: true,
-      notifyDays: 7,
-      donations: [
-        { id: "2-1", lineName: "王大明王大明", amount: 100, date: "2025-12-27 15:39" },
-        { id: "2-2", lineName: "王大明王大明", amount: 100, date: "2025-12-27 15:39" },
-        { id: "2-3", lineName: "王大明王大明", amount: 100, date: "2025-12-27 15:39" },
-      ]
-    },
-    { 
-      id: "3", 
-      name: "畢業旅行基金",
-      proposalDate: "2025-10-15",
-      deadline: "2025-12-25", 
-      status: "active", 
-      currentAmount: 4200, 
-      goalAmount: 6000,
-      isPublic: false,
-      messageBoard: false,
-      notifyBeforeDeadline: false,
-      notifyDays: 14,
-      donations: [
-        { id: "3-1", lineName: "陳小華", amount: 500, date: "2025-12-20 10:00" },
-        { id: "3-2", lineName: "林美美", amount: 300, date: "2025-12-21 14:30" },
-      ]
-    },
-    { 
-      id: "4", 
-      name: "新年禮物",
-      proposalDate: "2025-12-01",
-      deadline: "2026-01-08", 
-      status: "building", 
-      currentAmount: 0, 
-      goalAmount: 6000,
-      isPublic: true,
-      messageBoard: true,
-      notifyBeforeDeadline: true,
-      notifyDays: 14,
-      donations: []
-    },
-    { 
-      id: "5", 
-      name: "公益募資活動",
-      proposalDate: "2025-09-01",
-      deadline: "2025-12-10", 
-      status: "active", 
-      currentAmount: 8500, 
-      goalAmount: 10160,
-      isPublic: true,
-      messageBoard: true,
-      notifyBeforeDeadline: true,
-      notifyDays: 14,
-      donations: [
-        { id: "5-1", lineName: "張三", amount: 1000, date: "2025-12-01 09:00" },
-        { id: "5-2", lineName: "李四", amount: 2000, date: "2025-12-02 11:30" },
-      ]
-    },
-  ];
+  // Convert campaigns to ProposalItem format
+  const proposals: ProposalItem[] = campaigns.map(campaign => ({
+    id: campaign.id,
+    name: campaign.title,
+    proposalDate: campaign.proposalDate || campaign.createdAt.toISOString().split('T')[0],
+    deadline: campaign.deadline || campaign.remainingTime,
+    status: campaign.status === "ended" ? "active" : (campaign.currentAmount > 0 ? "active" : "building"),
+    currentAmount: campaign.currentAmount,
+    goalAmount: campaign.goalAmount,
+    isPublic: campaign.isPublic,
+    messageBoard: campaign.messageBoard ?? true,
+    notifyBeforeDeadline: campaign.notifyBeforeDeadline ?? true,
+    notifyDays: campaign.notifyDays ?? 14,
+    donations: campaign.donations || []
+  }));
 
   const getStatusBadge = (status: "building" | "active") => {
     if (status === "building") {
