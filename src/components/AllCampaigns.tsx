@@ -21,6 +21,7 @@ interface Campaign {
   remainingTime: string;
   status: "active" | "ended";
   createdAt: Date;
+  isPublic: boolean; // Only public campaigns appear in AllCampaigns list
 }
 interface AllCampaignsProps {
   onBack: () => void;
@@ -28,7 +29,7 @@ interface AllCampaignsProps {
   onNavigate: (page: string) => void;
 }
 const mockCampaigns: Campaign[] = [
-// 即將結束 (ending soon)
+// 即將結束 (ending soon) - public campaigns
 {
   id: "1",
   title: "沈浸式學習 全母語夏令營",
@@ -40,7 +41,8 @@ const mockCampaigns: Campaign[] = [
   participants: 491,
   remainingTime: "2天3時17分",
   status: "active",
-  createdAt: new Date("2024-12-01")
+  createdAt: new Date("2024-12-01"),
+  isPublic: true
 }, {
   id: "2",
   title: "偏鄉孩童教育計畫",
@@ -52,9 +54,10 @@ const mockCampaigns: Campaign[] = [
   participants: 234,
   remainingTime: "1天8時30分",
   status: "active",
-  createdAt: new Date("2024-12-10")
+  createdAt: new Date("2024-12-10"),
+  isPublic: true
 },
-// 最新募資 (newest)
+// 最新募資 (newest) - one public, one private
 {
   id: "3",
   title: "海洋保育淨灘計畫",
@@ -66,7 +69,8 @@ const mockCampaigns: Campaign[] = [
   participants: 89,
   remainingTime: "29天12時45分",
   status: "active",
-  createdAt: new Date("2024-12-28")
+  createdAt: new Date("2024-12-28"),
+  isPublic: true
 }, {
   id: "4",
   title: "獨居長者送餐服務",
@@ -78,7 +82,8 @@ const mockCampaigns: Campaign[] = [
   participants: 56,
   remainingTime: "25天6時20分",
   status: "active",
-  createdAt: new Date("2024-12-27")
+  createdAt: new Date("2024-12-27"),
+  isPublic: false // Private campaign - won't appear in list
 },
 // 已結束 (ended)
 {
@@ -92,7 +97,8 @@ const mockCampaigns: Campaign[] = [
   participants: 342,
   remainingTime: "已結束",
   status: "ended",
-  createdAt: new Date("2024-11-01")
+  createdAt: new Date("2024-11-01"),
+  isPublic: true
 }, {
   id: "6",
   title: "流浪動物救援行動",
@@ -104,7 +110,8 @@ const mockCampaigns: Campaign[] = [
   participants: 156,
   remainingTime: "已結束",
   status: "ended",
-  createdAt: new Date("2024-10-15")
+  createdAt: new Date("2024-10-15"),
+  isPublic: true
 }];
 type FilterType = "ending" | "newest" | "ended" | "all";
 const AllCampaigns = ({
@@ -131,10 +138,13 @@ const AllCampaigns = ({
     label: "全部募資"
   }];
   const getFilteredCampaigns = () => {
+    // Only show public campaigns in the list
+    const publicCampaigns = mockCampaigns.filter(c => c.isPublic);
+    
     switch (activeFilter) {
       case "ending":
         // Active campaigns with less than 5 days remaining
-        return mockCampaigns.filter(c => c.status === "active").sort((a, b) => {
+        return publicCampaigns.filter(c => c.status === "active").sort((a, b) => {
           // Sort by remaining time (shorter first)
           const getMinutes = (time: string) => {
             const days = parseInt(time.match(/(\d+)天/)?.[1] || "0");
@@ -145,14 +155,14 @@ const AllCampaigns = ({
         });
       case "newest":
         // Sort by creation date (newest first)
-        return mockCampaigns.filter(c => c.status === "active").sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+        return publicCampaigns.filter(c => c.status === "active").sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
       case "ended":
         // Only ended campaigns
-        return mockCampaigns.filter(c => c.status === "ended");
+        return publicCampaigns.filter(c => c.status === "ended");
       case "all":
       default:
         // All campaigns, active first
-        return [...mockCampaigns].sort((a, b) => {
+        return [...publicCampaigns].sort((a, b) => {
           if (a.status === "active" && b.status === "ended") return -1;
           if (a.status === "ended" && b.status === "active") return 1;
           return b.createdAt.getTime() - a.createdAt.getTime();
