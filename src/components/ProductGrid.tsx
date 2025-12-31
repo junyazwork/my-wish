@@ -4,9 +4,10 @@ import { Product } from "@/types";
 interface ProductGridProps {
   products: Product[];
   onProductClick: (product: Product) => void;
+  onAddToWishlist: (product: Product) => void;
 }
 
-const ProductGrid = ({ products, onProductClick }: ProductGridProps) => {
+const ProductGrid = ({ products, onProductClick, onAddToWishlist }: ProductGridProps) => {
   if (products.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-16 px-4">
@@ -22,6 +23,7 @@ const ProductGrid = ({ products, onProductClick }: ProductGridProps) => {
           key={product.id}
           product={product}
           onClick={() => onProductClick(product)}
+          onAddToWishlist={onAddToWishlist}
         />
       ))}
     </div>

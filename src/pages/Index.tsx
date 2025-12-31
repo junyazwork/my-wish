@@ -105,6 +105,20 @@ const Index = () => {
     }
   };
 
+  const handleAddToWishlist = (product: Product) => {
+    setCart((prev) => {
+      const existingIndex = prev.findIndex((item) => item.id === product.id);
+      if (existingIndex >= 0) {
+        const updated = [...prev];
+        updated[existingIndex].quantity += 1;
+        return updated;
+      }
+      return [...prev, { ...product, quantity: 1 }];
+    });
+    setIsCartOpen(true);
+    toast.success(`已加入「${product.name}」到願望清單`);
+  };
+
   const handleCartConfirm = () => {
     setIsCartOpen(false);
     setCurrentView("funding");
@@ -695,6 +709,7 @@ const Index = () => {
       <ProductGrid
         products={filteredProducts}
         onProductClick={handleProductClick}
+        onAddToWishlist={handleAddToWishlist}
       />
       
       <SlideMenu
