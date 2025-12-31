@@ -27,7 +27,7 @@ const ProductCard = ({
         </div>
       </button>
       <div className="px-3 pb-3">
-        <Button variant="outline" size="sm" className="w-full text-xs gap-1.5" onClick={handleAddToWishlist}>
+        <Button size="sm" className="w-full text-xs gap-1.5 bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm" onClick={handleAddToWishlist}>
           <Plus className="h-3.5 w-3.5" />
           放入許願池
         </Button>
