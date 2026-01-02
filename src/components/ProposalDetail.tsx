@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Mail } from "lucide-react";
+import { Mail, Send } from "lucide-react";
 import Header from "./Header";
 import { Progress } from "./ui/progress";
 import {
@@ -10,6 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "./ui/table";
+import { Button } from "./ui/button";
 import { useCampaigns, DonationRecord } from "@/contexts/CampaignsContext";
 
 interface ProposalDetailData {
@@ -33,9 +34,10 @@ interface ProposalDetailProps {
   onMenuClick: () => void;
   onShareClick: () => void;
   onViewMessageBoard?: () => void;
+  onSendThankYouLetter?: () => void;
 }
 
-const ProposalDetail = ({ proposal, onBack, onMenuClick, onShareClick, onViewMessageBoard }: ProposalDetailProps) => {
+const ProposalDetail = ({ proposal, onBack, onMenuClick, onShareClick, onViewMessageBoard, onSendThankYouLetter }: ProposalDetailProps) => {
   const { updateCampaignVisibility } = useCampaigns();
   const [isPublic, setIsPublic] = useState(proposal.isPublic);
   const [messageBoard, setMessageBoard] = useState(proposal.messageBoard);
@@ -121,6 +123,19 @@ const ProposalDetail = ({ proposal, onBack, onMenuClick, onShareClick, onViewMes
 
         {/* Divider */}
         <div className="h-px bg-border" />
+
+        {/* Send Thank You Letter Button - Only show when goal is reached */}
+        {isGoalReached && onSendThankYouLetter && (
+          <div className="px-4 pt-6">
+            <Button
+              onClick={onSendThankYouLetter}
+              className="w-full h-12 text-base font-medium bg-success hover:bg-success/90"
+            >
+              <Send className="w-5 h-5 mr-2" />
+              發送感謝信
+            </Button>
+          </div>
+        )}
 
         {/* Settings Section */}
         <div className="px-4 py-6 space-y-6">

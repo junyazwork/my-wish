@@ -3,6 +3,7 @@ import { ChevronRight } from "lucide-react";
 import Header from "./Header";
 import { Progress } from "./ui/progress";
 import ProposalDetail from "./ProposalDetail";
+import ThankYouLetterEditor from "./ThankYouLetterEditor";
 import { useCampaigns, DonationRecord } from "@/contexts/CampaignsContext";
 
 interface ProposalItem {
@@ -31,6 +32,7 @@ interface ProposalsLogProps {
 const ProposalsLog = ({ onBack, onMenuClick, onCartClick, cartCount, onViewAttendFundraising }: ProposalsLogProps) => {
   const { campaigns } = useCampaigns();
   const [selectedProposal, setSelectedProposal] = useState<ProposalItem | null>(null);
+  const [showThankYouEditor, setShowThankYouEditor] = useState(false);
 
   // Convert campaigns to ProposalItem format
   const proposals: ProposalItem[] = campaigns.map(campaign => ({
@@ -57,6 +59,18 @@ const ProposalsLog = ({ onBack, onMenuClick, onCartClick, cartCount, onViewAtten
     return current >= goal && goal > 0;
   };
 
+  // Show thank you letter editor
+  if (showThankYouEditor && selectedProposal) {
+    return (
+      <ThankYouLetterEditor
+        campaignName={selectedProposal.name}
+        donations={selectedProposal.donations}
+        onBack={() => setShowThankYouEditor(false)}
+        onMenuClick={onMenuClick}
+      />
+    );
+  }
+
   // Show detail page if a proposal is selected
   if (selectedProposal) {
     const handleShare = () => {
@@ -71,6 +85,10 @@ const ProposalsLog = ({ onBack, onMenuClick, onCartClick, cartCount, onViewAtten
       }
     };
 
+    const handleSendThankYouLetter = () => {
+      setShowThankYouEditor(true);
+    };
+
     return (
       <ProposalDetail
         proposal={selectedProposal}
@@ -78,6 +96,7 @@ const ProposalsLog = ({ onBack, onMenuClick, onCartClick, cartCount, onViewAtten
         onMenuClick={onMenuClick}
         onShareClick={handleShare}
         onViewMessageBoard={handleViewMessageBoard}
+        onSendThankYouLetter={handleSendThankYouLetter}
       />
     );
   }
