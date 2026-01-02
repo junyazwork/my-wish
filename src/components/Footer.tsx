@@ -52,7 +52,7 @@ const Footer = () => {
         
         {/* Brand Section */}
         <div className="text-center mb-6">
-          <h2 className="text-xl font-bold tracking-wide">
+          <h2 className="text-xl font-bold tracking-wide text-right">
             <span className="font-black">MY WISH</span> ONLINE
           </h2>
           <p className="text-sm mt-1 text-right">願望實現股份有限公司</p>
