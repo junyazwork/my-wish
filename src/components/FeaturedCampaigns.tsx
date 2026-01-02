@@ -1,12 +1,15 @@
 import { useMemo } from "react";
 import { useCampaigns, Campaign } from "@/contexts/CampaignsContext";
 import { Progress } from "@/components/ui/progress";
+import { Button } from "@/components/ui/button";
+import { ChevronRight } from "lucide-react";
 
 interface FeaturedCampaignsProps {
   onSelectCampaign: (campaign: Campaign) => void;
+  onViewAll: () => void;
 }
 
-const FeaturedCampaigns = ({ onSelectCampaign }: FeaturedCampaignsProps) => {
+const FeaturedCampaigns = ({ onSelectCampaign, onViewAll }: FeaturedCampaignsProps) => {
   const { campaigns } = useCampaigns();
 
   // Get 3 random active campaigns that are ending soon (public only)
@@ -23,7 +26,18 @@ const FeaturedCampaigns = ({ onSelectCampaign }: FeaturedCampaignsProps) => {
 
   return (
     <div className="px-4 py-4">
-      <h2 className="text-lg font-semibold mb-3 text-foreground">熱門募資活動</h2>
+      <div className="flex items-center justify-between mb-3">
+        <h2 className="text-lg font-semibold text-foreground">熱門募資活動</h2>
+        <Button
+          variant="ghost"
+          size="sm"
+          className="text-primary hover:text-primary/80 px-2"
+          onClick={onViewAll}
+        >
+          查看更多
+          <ChevronRight className="w-4 h-4 ml-1" />
+        </Button>
+      </div>
       <div className="space-y-3">
         {featuredCampaigns.map((campaign) => {
           const progress = Math.min(
