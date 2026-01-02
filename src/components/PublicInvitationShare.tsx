@@ -10,6 +10,8 @@ interface PublicInvitationShareProps {
   onBack: () => void;
   onPreview: () => void;
   onLineShare: () => void;
+  currentAmount?: number;
+  goalAmount?: number;
 }
 
 const PublicInvitationShare = ({
@@ -18,10 +20,13 @@ const PublicInvitationShare = ({
   onBack,
   onPreview,
   onLineShare,
+  currentAmount = 0,
+  goalAmount = 0,
 }: PublicInvitationShareProps) => {
   const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
   const mediaItems = invitation.mediaItems || [];
   const aspectRatio = invitation.aspectRatio || "3:4";
+  const isGoalReached = currentAmount >= goalAmount && goalAmount > 0;
 
   const getAspectRatioClass = () => {
     switch (aspectRatio) {
@@ -154,9 +159,13 @@ const PublicInvitationShare = ({
             <p className="text-foreground">{invitation.message}</p>
             <button
               disabled
-              className="w-full py-3 border border-border rounded-lg text-muted-foreground font-medium bg-muted cursor-not-allowed"
+              className={`w-full py-3 border rounded-lg font-medium cursor-not-allowed ${
+                isGoalReached 
+                  ? "border-success bg-success/10 text-success" 
+                  : "border-border bg-muted text-muted-foreground"
+              }`}
             >
-              來去贊助
+              {isGoalReached ? "已達標" : "來去贊助"}
             </button>
           </div>
         </div>
