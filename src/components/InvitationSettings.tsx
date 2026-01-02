@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Calendar, X, ChevronLeft } from "lucide-react";
 import { InvitationData, CartItem } from "@/types";
 import InlineMediaEditor, { MediaItem, AspectRatio } from "./InlineMediaEditor";
+import Footer from "./Footer";
 
 interface InvitationSettingsProps {
   cartItems: CartItem[];
@@ -74,7 +75,7 @@ const InvitationSettings = ({ cartItems, cartCount, onBack, onConfirm }: Invitat
       </header>
 
       {/* Content */}
-      <div className="flex-1 p-5 space-y-4">
+      <main className="flex-1 p-5 space-y-4">
         {/* Inline Media Editor */}
         <InlineMediaEditor
           mediaItems={mediaItems}
@@ -124,7 +125,7 @@ const InvitationSettings = ({ cartItems, cartCount, onBack, onConfirm }: Invitat
             </button>
           )}
         </div>
-      </div>
+      </main>
 
       {/* Bottom Button */}
       <div className="sticky bottom-0 bg-background border-t border-border p-4">
@@ -136,6 +137,8 @@ const InvitationSettings = ({ cartItems, cartCount, onBack, onConfirm }: Invitat
           建立募資活動
         </button>
       </div>
+
+      <Footer />
     </div>
   );
 };

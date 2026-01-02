@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ChevronLeft, Calendar } from "lucide-react";
 import { CartItem, PublicHostData, PublicInvitationData } from "@/types";
 import InlineMediaEditor, { MediaItem, AspectRatio } from "./InlineMediaEditor";
+import Footer from "./Footer";
 
 interface PublicInvitationSettingsProps {
   hostData: PublicHostData;
@@ -82,7 +83,7 @@ const PublicInvitationSettings = ({
       </header>
 
       {/* Content */}
-      <div className="flex-1 p-5 space-y-4">
+      <main className="flex-1 p-5 space-y-4">
         {/* Inline Media Editor */}
         <InlineMediaEditor
           mediaItems={mediaItems}
@@ -123,7 +124,7 @@ const PublicInvitationSettings = ({
             className="w-full pl-10 pr-4 py-3 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
           />
         </div>
-      </div>
+      </main>
 
       {/* Bottom Button */}
       <div className="sticky bottom-0 bg-background border-t border-border p-4">
@@ -135,6 +136,8 @@ const PublicInvitationSettings = ({
           建立募資活動
         </button>
       </div>
+
+      <Footer />
     </div>
   );
 };
