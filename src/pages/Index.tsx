@@ -34,7 +34,7 @@ import { toast } from "sonner";
 const Index = () => {
   const [currentView, setCurrentView] = useState<AppView>("home");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [activeCategory, setActiveCategory] = useState(categories[0].id);
+  const [activeCategory, setActiveCategory] = useState("all");
   const [activeSubcategory, setActiveSubcategory] = useState<string | null>(null);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -56,7 +56,7 @@ const Index = () => {
 
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
-      if (product.category !== activeCategory) return false;
+      if (activeCategory !== "all" && product.category !== activeCategory) return false;
       if (activeSubcategory && product.subcategory !== activeSubcategory) return false;
       return true;
     });

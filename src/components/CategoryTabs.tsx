@@ -47,8 +47,8 @@ const CategoryTabs = ({
         </SelectContent>
       </Select>
 
-      {/* Subcategory Dropdown */}
-      {currentCategory?.subcategories && currentCategory.subcategories.length > 0 && (
+      {/* Subcategory Dropdown - hidden when "all" is selected */}
+      {activeCategory !== "all" && currentCategory?.subcategories && currentCategory.subcategories.length > 0 && (
         <Select
           value={activeSubcategory || "all"}
           onValueChange={(value) => onSubcategoryChange(value === "all" ? null : value)}
