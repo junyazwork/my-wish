@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Check, ChevronLeft, ChevronRight } from "lucide-react";
 import { InvitationData } from "@/types";
+import Footer from "./Footer";
 
 interface InvitationConfirmProps {
   invitation: InvitationData;
@@ -83,7 +84,7 @@ const InvitationConfirm = ({
       </header>
 
       {/* Content */}
-      <div className="flex-1 p-5">
+      <main className="flex-1 p-5">
         {/* Invitation Card */}
         <div className="rounded-2xl overflow-hidden border border-border bg-card shadow-lg">
           {/* Media Display */}
@@ -152,7 +153,7 @@ const InvitationConfirm = ({
             </button>
           </div>
         </div>
-      </div>
+      </main>
 
       {/* Bottom Buttons */}
       <div className="sticky bottom-0 bg-background border-t border-border p-4 flex gap-3">
@@ -169,6 +170,8 @@ const InvitationConfirm = ({
           確認內容
         </button>
       </div>
+
+      <Footer />
     </div>
   );
 };
