@@ -39,11 +39,9 @@ const Header = ({
             <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
               <Share2 size={20} className="text-primary-foreground" />
             </div>
-          </button> : <button onClick={onCartClick} className="relative p-2 -mr-2">
-            <div className="w-10 h-10 bg-primary flex items-center justify-center rounded-full">
-              <ShoppingBag size={20} className="text-primary-foreground" />
-            </div>
-            {cartCount > 0 && <span className="absolute -top-0.5 -right-0.5 min-w-[20px] h-5 px-1.5 bg-destructive text-destructive-foreground text-xs font-medium rounded-full flex items-center justify-center">
+          </button> : <button onClick={onCartClick} className="relative p-2 -mr-2 text-muted-foreground hover:text-foreground transition-colors">
+            <ShoppingBag size={22} />
+            {cartCount > 0 && <span className="absolute top-0.5 right-0.5 min-w-[18px] h-[18px] px-1 bg-destructive text-destructive-foreground text-[10px] font-medium rounded-full flex items-center justify-center">
                 {cartCount}
               </span>}
           </button>}
