@@ -79,7 +79,7 @@ const Footer = () => {
         </div>
         
         {/* Copyright */}
-        <p className="text-center text-sm">
+        <p className="text-right text-sm">
           Copyright ©2025 MY WISH ONLINE All rights reserved.
         </p>
       </div>
