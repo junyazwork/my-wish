@@ -55,7 +55,7 @@ const Footer = () => {
           <h2 className="text-xl font-bold tracking-wide">
             <span className="font-black">MY WISH</span> ONLINE
           </h2>
-          <p className="text-sm mt-1">願望實現股份有限公司</p>
+          <p className="text-sm mt-1 text-right">願望實現股份有限公司</p>
         </div>
         
         {/* Social Icons */}
