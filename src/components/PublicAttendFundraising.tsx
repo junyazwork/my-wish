@@ -56,6 +56,7 @@ const PublicAttendFundraising = ({
   );
 
   const progressPercent = totalGoal > 0 ? Math.min((currentAmount / totalGoal) * 100, 100) : 0;
+  const isGoalReached = currentAmount >= totalGoal && totalGoal > 0;
   const firstProduct = invitation.products[0];
 
   // Mock data for demo
@@ -225,16 +226,20 @@ const PublicAttendFundraising = ({
             <span className="text-sm text-muted-foreground">
               {displayProposalDate} 提案 | {displayDeadline} 截止
             </span>
-            <Badge className="bg-primary text-primary-foreground hover:bg-primary">
-              進行中
+            <Badge className={isGoalReached ? "bg-success text-success-foreground hover:bg-success" : "bg-primary text-primary-foreground hover:bg-primary"}>
+              {isGoalReached ? "已達標" : "進行中"}
             </Badge>
           </div>
 
           {/* Progress Bar */}
           <div className="space-y-2">
-            <Progress value={progressPercent} className="h-2" />
+            <Progress 
+              value={progressPercent} 
+              className="h-2" 
+              indicatorClassName={isGoalReached ? "bg-success" : undefined}
+            />
             <div className="flex items-center justify-between text-sm">
-              <span className="text-primary font-semibold">
+              <span className={isGoalReached ? "text-success font-semibold" : "text-primary font-semibold"}>
                 ${currentAmount.toLocaleString()}
               </span>
               <span className="text-muted-foreground">
@@ -265,10 +270,10 @@ const PublicAttendFundraising = ({
           {/* Donate Button */}
           <button
             onClick={handleDonate}
-            disabled={!amount || parseInt(amount) <= 0}
+            disabled={!amount || parseInt(amount) <= 0 || isGoalReached}
             className="w-full py-3.5 bg-primary text-primary-foreground rounded-xl font-medium transition-all hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            贊助
+            {isGoalReached ? "已達標" : "贊助"}
           </button>
 
           {/* Message Board Section */}

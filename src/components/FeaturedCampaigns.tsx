@@ -44,6 +44,7 @@ const FeaturedCampaigns = ({ onSelectCampaign, onViewAll }: FeaturedCampaignsPro
             (campaign.currentAmount / campaign.goalAmount) * 100,
             100
           );
+          const isGoalReached = campaign.currentAmount >= campaign.goalAmount && campaign.goalAmount > 0;
 
           return (
             <div
@@ -64,13 +65,17 @@ const FeaturedCampaigns = ({ onSelectCampaign, onViewAll }: FeaturedCampaignsPro
                   {campaign.organizer}
                 </p>
                 <div className="mt-2">
-                  <Progress value={progress} className="h-1.5" />
+                  <Progress 
+                    value={progress} 
+                    className="h-1.5" 
+                    indicatorClassName={isGoalReached ? "bg-success" : undefined}
+                  />
                   <div className="flex justify-between items-center mt-1">
-                    <span className="text-xs text-primary font-medium">
+                    <span className={`text-xs font-medium ${isGoalReached ? "text-success" : "text-primary"}`}>
                       ${campaign.currentAmount.toLocaleString()}
                     </span>
                     <span className="text-xs text-muted-foreground">
-                      剩餘 {campaign.remainingTime}
+                      {isGoalReached ? "已達標" : `剩餘 ${campaign.remainingTime}`}
                     </span>
                   </div>
                 </div>
