@@ -9,6 +9,8 @@ interface PublicInvitationConfirmProps {
   onBack: () => void;
   onPreview: () => void;
   onConfirm: () => void;
+  currentAmount?: number;
+  goalAmount?: number;
 }
 
 const PublicInvitationConfirm = ({
@@ -17,10 +19,13 @@ const PublicInvitationConfirm = ({
   onBack,
   onPreview,
   onConfirm,
+  currentAmount = 0,
+  goalAmount = 0,
 }: PublicInvitationConfirmProps) => {
   const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
   const mediaItems = invitation.mediaItems || [];
   const aspectRatio = invitation.aspectRatio || "3:4";
+  const isGoalReached = currentAmount >= goalAmount && goalAmount > 0;
 
   const getAspectRatioClass = () => {
     switch (aspectRatio) {
@@ -147,9 +152,13 @@ const PublicInvitationConfirm = ({
             <p className="text-foreground">{invitation.message}</p>
             <button
               disabled
-              className="w-full py-3 border border-border rounded-lg text-muted-foreground font-medium bg-muted cursor-not-allowed"
+              className={`w-full py-3 border rounded-lg font-medium cursor-not-allowed ${
+                isGoalReached 
+                  ? "border-success bg-success/10 text-success" 
+                  : "border-border bg-muted text-muted-foreground"
+              }`}
             >
-              來去贊助
+              {isGoalReached ? "已達標" : "來去贊助"}
             </button>
           </div>
         </div>
