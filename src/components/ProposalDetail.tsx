@@ -65,7 +65,7 @@ const ProposalDetail = ({ proposal, onBack, onMenuClick, onShareClick, onViewMes
     // Check if goal is reached
     if (proposal.currentAmount >= proposal.goalAmount && proposal.goalAmount > 0) {
       return (
-        <span className="px-3 py-1 text-sm rounded bg-green-600 text-white">
+        <span className="px-3 py-1 text-sm rounded text-white" style={{ backgroundColor: 'hsl(176 100% 32%)' }}>
           已達標
         </span>
       );
