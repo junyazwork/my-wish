@@ -150,26 +150,12 @@
 
 @layer components {
   .funding-card {
-    @apply bg-card rounded-2xl p-4 border border-border transition-all duration-200;
-    
-    &.selected {
-      @apply ring-2 ring-primary scale-[1.02];
-    }
+    @apply relative rounded-2xl transition-all duration-300 cursor-pointer;
+    aspect-ratio: 10 / 6;
   }
-}
-
-@keyframes shimmer {
-  0%, 100% {
-    box-shadow: 0 0 4px hsl(var(--primary) / 0.3), 0 0 8px hsl(var(--primary) / 0.2);
-    border-color: hsl(var(--primary) / 0.4);
+  
+  .funding-card.selected {
+    @apply ring-4 ring-primary/30;
+    transform: scale(1.02);
   }
-  50% {
-    box-shadow: 0 0 12px hsl(var(--primary) / 0.6), 0 0 20px hsl(var(--primary) / 0.4);
-    border-color: hsl(var(--primary) / 0.8);
-  }
-}
-
-.btn-shimmer {
-  animation: shimmer 2.5s ease-in-out infinite;
-  border-color: hsl(var(--primary) / 0.4);
 }
