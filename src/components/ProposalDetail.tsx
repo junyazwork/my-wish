@@ -53,6 +53,8 @@ const ProposalDetail = ({ proposal, onBack, onMenuClick, onShareClick, onViewMes
   };
 
   const percentage = getProgressPercentage(proposal.currentAmount, proposal.goalAmount);
+  const isGoalReached = proposal.currentAmount >= proposal.goalAmount && proposal.goalAmount > 0;
+  const tealColor = 'hsl(176 100% 32%)';
 
   const getStatusBadge = (status: "building" | "active") => {
     if (status === "building") {
@@ -63,9 +65,9 @@ const ProposalDetail = ({ proposal, onBack, onMenuClick, onShareClick, onViewMes
       );
     }
     // Check if goal is reached
-    if (proposal.currentAmount >= proposal.goalAmount && proposal.goalAmount > 0) {
+    if (isGoalReached) {
       return (
-        <span className="px-3 py-1 text-sm rounded text-white" style={{ backgroundColor: 'hsl(176 100% 32%)' }}>
+        <span className="px-3 py-1 text-sm rounded text-white" style={{ backgroundColor: tealColor }}>
           已達標
         </span>
       );
@@ -100,12 +102,19 @@ const ProposalDetail = ({ proposal, onBack, onMenuClick, onShareClick, onViewMes
 
           {/* Progress Bar */}
           <div className="mb-2">
-            <Progress value={percentage} className="h-3 bg-muted" />
+            <Progress 
+              value={percentage} 
+              className="h-3 bg-muted" 
+              indicatorClassName={isGoalReached ? "bg-[hsl(176_100%_32%)]" : undefined}
+            />
           </div>
 
           {/* Amount Info */}
           <div className="flex justify-between items-center mb-6">
-            <span className="text-lg font-medium text-primary">
+            <span 
+              className="text-lg font-medium"
+              style={{ color: isGoalReached ? tealColor : 'hsl(var(--primary))' }}
+            >
               $ {proposal.currentAmount.toLocaleString()}
             </span>
             <span className="text-muted-foreground text-sm">
