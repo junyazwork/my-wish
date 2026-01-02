@@ -70,6 +70,10 @@ const AllCampaigns = ({
   const getProgressPercentage = (current: number, goal: number) => {
     return Math.min(current / goal * 100, 100);
   };
+
+  const isGoalReached = (current: number, goal: number) => {
+    return current >= goal && goal > 0;
+  };
   const filteredCampaigns = getFilteredCampaigns();
   return <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
@@ -100,74 +104,89 @@ const AllCampaigns = ({
       <div className="flex-1 overflow-auto p-4 space-y-6">
         {filteredCampaigns.length === 0 ? <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
             <p>目前沒有符合條件的募資活動</p>
-          </div> : filteredCampaigns.map(campaign => <div key={campaign.id} className="bg-card rounded-2xl overflow-hidden shadow-sm border border-border">
-              {/* Campaign Image */}
-              <div className="aspect-[4/3] overflow-hidden relative">
-                <img src={campaign.image} alt={campaign.title} className="w-full h-full object-cover" />
-                {campaign.status === "ended" && <div className="absolute inset-0 bg-foreground/50 flex items-center justify-center">
-                    <div className="bg-background/90 rounded-full px-4 py-2 flex items-center gap-2">
-                      <CheckCircle size={18} className="text-primary" />
-                      <span className="font-medium text-foreground">已達成目標</span>
-                    </div>
-                  </div>}
-              </div>
+          </div> : filteredCampaigns.map(campaign => {
+            const goalReached = isGoalReached(campaign.currentAmount, campaign.goalAmount);
+            const isDisabled = campaign.status === "ended" || goalReached;
+            
+            return (
+              <div key={campaign.id} className="bg-card rounded-2xl overflow-hidden shadow-sm border border-border">
+                {/* Campaign Image */}
+                <div className="aspect-[4/3] overflow-hidden relative">
+                  <img src={campaign.image} alt={campaign.title} className="w-full h-full object-cover" />
+                  {(campaign.status === "ended" || goalReached) && <div className="absolute inset-0 bg-foreground/50 flex items-center justify-center">
+                      <div className="bg-background/90 rounded-full px-4 py-2 flex items-center gap-2">
+                        <CheckCircle size={18} className="text-success" />
+                        <span className="font-medium text-foreground">已達成目標</span>
+                      </div>
+                    </div>}
+                </div>
 
-              {/* Campaign Info */}
-              <div className="p-4 space-y-3">
-                <h3 className="text-lg font-semibold text-foreground">
-                  {campaign.title}
-                </h3>
-                <p className="text-sm text-muted-foreground line-clamp-2">
-                  {campaign.description}
-                </p>
+                {/* Campaign Info */}
+                <div className="p-4 space-y-3">
+                  <h3 className="text-lg font-semibold text-foreground">
+                    {campaign.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground line-clamp-2">
+                    {campaign.description}
+                  </p>
 
-                {/* Organizer and Time */}
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">
-                    發起人 <span className="text-foreground">{campaign.organizer}</span>
-                  </span>
-                  <div className="flex items-center gap-1 text-muted-foreground">
-                    <Hourglass size={14} />
-                    <span>募資倒數</span>
-                    <span className={campaign.status === "ended" ? "text-muted-foreground" : "text-primary"}>
-                      {campaign.remainingTime}
+                  {/* Organizer and Time */}
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">
+                      發起人 <span className="text-foreground">{campaign.organizer}</span>
                     </span>
+                    <div className="flex items-center gap-1 text-muted-foreground">
+                      <Hourglass size={14} />
+                      <span>募資倒數</span>
+                      <span className={campaign.status === "ended" ? "text-muted-foreground" : "text-primary"}>
+                        {campaign.remainingTime}
+                      </span>
+                    </div>
                   </div>
+
+                  {/* Amount Info */}
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-xs text-muted-foreground">已募得</p>
+                      <p className={`text-xl font-bold ${goalReached ? "text-success" : "text-primary"}`}>
+                        ${campaign.currentAmount.toLocaleString()}
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-xs text-muted-foreground">目標金額</p>
+                      <p className="text-xl font-semibold text-foreground">
+                        $ {campaign.goalAmount.toLocaleString()}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Progress Bar */}
+                  <Progress 
+                    value={getProgressPercentage(campaign.currentAmount, campaign.goalAmount)} 
+                    className="h-2" 
+                    indicatorClassName={goalReached ? "bg-success" : undefined}
+                  />
+
+                  {/* Participants */}
+                  <p className="text-sm text-muted-foreground">
+                    <span className="text-lg font-semibold text-foreground">
+                      {campaign.participants}
+                    </span>{" "}
+                    人已參與
+                  </p>
+
+                  {/* Sponsor Button */}
+                  <Button 
+                    onClick={() => onSelectCampaign(campaign)} 
+                    disabled={isDisabled} 
+                    className={`w-full rounded-full py-6 ${isDisabled ? "bg-muted text-muted-foreground cursor-not-allowed" : "bg-primary hover:bg-primary/90 text-primary-foreground"}`}
+                  >
+                    {campaign.status === "ended" ? "募資已結束" : goalReached ? "已達標" : "贊助"}
+                  </Button>
                 </div>
-
-                {/* Amount Info */}
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-xs text-muted-foreground">已募得</p>
-                    <p className="text-xl font-bold text-primary">
-                      ${campaign.currentAmount.toLocaleString()}
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-xs text-muted-foreground">目標金額</p>
-                    <p className="text-xl font-semibold text-foreground">
-                      $ {campaign.goalAmount.toLocaleString()}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Progress Bar */}
-                <Progress value={getProgressPercentage(campaign.currentAmount, campaign.goalAmount)} className="h-2" />
-
-                {/* Participants */}
-                <p className="text-sm text-muted-foreground">
-                  <span className="text-lg font-semibold text-foreground">
-                    {campaign.participants}
-                  </span>{" "}
-                  人已參與
-                </p>
-
-                {/* Sponsor Button */}
-                <Button onClick={() => onSelectCampaign(campaign)} disabled={campaign.status === "ended"} className={`w-full rounded-full py-6 ${campaign.status === "ended" ? "bg-muted text-muted-foreground cursor-not-allowed" : "bg-primary hover:bg-primary/90 text-primary-foreground"}`}>
-                  {campaign.status === "ended" ? "募資已結束" : "贊助"}
-                </Button>
               </div>
-            </div>)}
+            );
+          })}
       </div>
 
       {/* Slide Menu */}

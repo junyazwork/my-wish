@@ -48,24 +48,13 @@ const ProposalsLog = ({ onBack, onMenuClick, onCartClick, cartCount, onViewAtten
     donations: campaign.donations || []
   }));
 
-  const getStatusBadge = (status: "building" | "active") => {
-    if (status === "building") {
-      return (
-        <span className="px-3 py-1 text-sm rounded bg-muted text-muted-foreground">
-          建立中
-        </span>
-      );
-    }
-    return (
-      <span className="px-3 py-1 text-sm rounded bg-primary text-primary-foreground">
-        執行中
-      </span>
-    );
-  };
-
   const getProgressPercentage = (current: number, goal: number) => {
     if (goal === 0) return 0;
     return Math.min((current / goal) * 100, 100);
+  };
+
+  const isGoalReached = (current: number, goal: number) => {
+    return current >= goal && goal > 0;
   };
 
   // Show detail page if a proposal is selected
@@ -108,6 +97,7 @@ const ProposalsLog = ({ onBack, onMenuClick, onCartClick, cartCount, onViewAtten
       <div className="flex-1 overflow-auto">
         {proposals.map((proposal) => {
           const percentage = getProgressPercentage(proposal.currentAmount, proposal.goalAmount);
+          const goalReached = isGoalReached(proposal.currentAmount, proposal.goalAmount);
           
           return (
             <div key={proposal.id} className="border-b border-border">
@@ -123,12 +113,16 @@ const ProposalsLog = ({ onBack, onMenuClick, onCartClick, cartCount, onViewAtten
                 
                 {/* Progress Bar */}
                 <div className="mb-2">
-                  <Progress value={percentage} className="h-3 bg-muted" />
+                  <Progress 
+                    value={percentage} 
+                    className="h-3 bg-muted" 
+                    indicatorClassName={goalReached ? "bg-success" : undefined}
+                  />
                 </div>
                 
                 {/* Amount Info */}
                 <div className="flex justify-between items-center">
-                  <span className="text-primary font-medium">
+                  <span className={goalReached ? "text-success font-medium" : "text-primary font-medium"}>
                     ${proposal.currentAmount.toLocaleString()}
                   </span>
                   <span className="text-muted-foreground text-sm">
