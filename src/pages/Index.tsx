@@ -29,6 +29,7 @@ import ProposalsLog from "@/components/ProposalsLog";
 import DonationsLog from "@/components/DonationsLog";
 import AllCampaigns from "@/components/AllCampaigns";
 import LineAuthPage from "@/components/LineAuthPage";
+import Footer from "@/components/Footer";
 import { products, categories } from "@/data/products";
 import { Product, CartItem, FundingType, InvitationData, PublicHostData, PublicInvitationData, AppView, LineFriend, MediaItemData, AspectRatioType } from "@/types";
 import { toast } from "sonner";
@@ -693,34 +694,38 @@ const Index = () => {
 
   // Render home page
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       <Header
         cartCount={cartCount}
         onMenuClick={() => setIsMenuOpen(true)}
         onCartClick={handleCartClick}
       />
       
-      <BannerSlider />
+      <main className="flex-1">
+        <BannerSlider />
+        
+        <FeaturedCampaigns onSelectCampaign={handleSelectCampaign} onViewAll={() => setCurrentView("all-campaigns")} />
+        
+        <div className="px-4 pt-4">
+          <h2 className="text-lg font-semibold text-foreground mb-3">想要實現你的願望？</h2>
+        </div>
+        
+        <CategoryTabs
+          categories={categories}
+          activeCategory={activeCategory}
+          activeSubcategory={activeSubcategory}
+          onCategoryChange={setActiveCategory}
+          onSubcategoryChange={setActiveSubcategory}
+        />
+        
+        <ProductGrid
+          products={filteredProducts}
+          onProductClick={handleProductClick}
+          onAddToWishlist={handleAddToWishlist}
+        />
+      </main>
       
-      <FeaturedCampaigns onSelectCampaign={handleSelectCampaign} onViewAll={() => setCurrentView("all-campaigns")} />
-      
-      <div className="px-4 pt-4">
-        <h2 className="text-lg font-semibold text-foreground mb-3">想要實現你的願望？</h2>
-      </div>
-      
-      <CategoryTabs
-        categories={categories}
-        activeCategory={activeCategory}
-        activeSubcategory={activeSubcategory}
-        onCategoryChange={setActiveCategory}
-        onSubcategoryChange={setActiveSubcategory}
-      />
-      
-      <ProductGrid
-        products={filteredProducts}
-        onProductClick={handleProductClick}
-        onAddToWishlist={handleAddToWishlist}
-      />
+      <Footer />
       
       <SlideMenu
         isOpen={isMenuOpen}
