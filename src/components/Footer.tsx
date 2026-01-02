@@ -59,7 +59,7 @@ const Footer = () => {
         </div>
         
         {/* Social Icons */}
-        <div className="flex justify-center gap-4 mb-6">
+        <div className="flex justify-end gap-4 mb-6">
           <a 
             href="https://instagram.com" 
             target="_blank" 
