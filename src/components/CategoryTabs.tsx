@@ -38,6 +38,7 @@ const CategoryTabs = ({
           <SelectValue placeholder="選擇分類" />
         </SelectTrigger>
         <SelectContent className="bg-card">
+          <SelectItem value="all">全部</SelectItem>
           {categories.map((category) => (
             <SelectItem key={category.id} value={category.id}>
               {category.name}
