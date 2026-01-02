@@ -62,6 +62,14 @@ const ProposalDetail = ({ proposal, onBack, onMenuClick, onShareClick, onViewMes
         </span>
       );
     }
+    // Check if goal is reached
+    if (proposal.currentAmount >= proposal.goalAmount && proposal.goalAmount > 0) {
+      return (
+        <span className="px-3 py-1 text-sm rounded bg-green-600 text-white">
+          已達標
+        </span>
+      );
+    }
     return (
       <span className="px-3 py-1 text-sm rounded bg-primary text-primary-foreground">
         進行中
