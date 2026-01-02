@@ -78,10 +78,9 @@ const ProductDrawer = ({ product, isOpen, onClose, onAddToCart }: ProductDrawerP
           {/* Add to Cart Button */}
           <button
             onClick={handleAddToCart}
-            className="w-full py-4 bg-primary text-primary-foreground font-semibold rounded-xl transition-all hover:opacity-90 active:scale-[0.98] flex items-center justify-center gap-2"
+            className="w-full py-4 bg-primary text-primary-foreground font-semibold rounded-xl transition-all hover:opacity-90 active:scale-[0.98]"
           >
-            <Plus size={18} />
-            加入許願池
+            加入清單
           </button>
         </div>
       </div>
