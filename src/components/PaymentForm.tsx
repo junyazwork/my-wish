@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ChevronLeft } from "lucide-react";
+import Footer from "./Footer";
 
 interface PaymentFormProps {
   goalAmount: number;
@@ -45,7 +46,7 @@ const PaymentForm = ({
       </header>
 
       {/* Content */}
-      <div className="flex-1 p-5 space-y-6">
+      <main className="flex-1 p-5 space-y-6">
         {/* Amounts */}
         <div className="space-y-3">
           <div className="flex items-center justify-between">
@@ -161,7 +162,7 @@ const PaymentForm = ({
             />
           </div>
         </div>
-      </div>
+      </main>
 
       {/* Bottom Buttons */}
       <div className="sticky bottom-0 bg-background border-t border-border p-4 flex gap-3">
@@ -180,6 +181,8 @@ const PaymentForm = ({
           LINEPAY
         </button>
       </div>
+
+      <Footer />
     </div>
   );
 };

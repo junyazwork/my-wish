@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ChevronLeft, Smartphone } from "lucide-react";
+import Footer from "./Footer";
 
 interface LinePayFormProps {
   donationAmount: number;
@@ -39,7 +40,7 @@ const LinePayForm = ({
       </header>
 
       {/* Content */}
-      <div className="flex-1 flex flex-col items-center justify-center p-6 space-y-8">
+      <main className="flex-1 flex flex-col items-center justify-center p-6 space-y-8">
         {/* LINE Pay Logo */}
         <div className="w-24 h-24 bg-white rounded-2xl flex items-center justify-center shadow-lg">
           <span className="text-[#00C300] text-2xl font-bold">LINE</span>
@@ -69,7 +70,7 @@ const LinePayForm = ({
             <span>處理中...</span>
           </div>
         )}
-      </div>
+      </main>
 
       {/* Bottom Button */}
       <div className="sticky bottom-0 bg-[#00C300] p-4">
@@ -81,6 +82,8 @@ const LinePayForm = ({
           {isProcessing ? "處理中..." : "確認付款"}
         </button>
       </div>
+
+      <Footer />
     </div>
   );
 };

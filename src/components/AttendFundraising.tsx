@@ -4,6 +4,7 @@ import { InvitationData } from "@/types";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import Footer from "./Footer";
 
 interface MessageData {
   id: string;
@@ -200,7 +201,7 @@ const AttendFundraising = ({
       </div>
 
       {/* Content */}
-      <div className="flex-1 p-5 space-y-4">
+      <main className="flex-1 p-5 space-y-4">
         {/* Product Card */}
         {mainProduct && (
           <div className="flex items-center gap-3 p-3 bg-card rounded-xl border border-border">
@@ -357,7 +358,9 @@ const AttendFundraising = ({
             </div>
           </>
         )}
-      </div>
+      </main>
+
+      <Footer />
     </div>
   );
 };

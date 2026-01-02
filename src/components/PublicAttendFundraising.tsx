@@ -4,6 +4,7 @@ import { PublicInvitationData, InvitationData, PublicHostData } from "@/types";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import Footer from "./Footer";
 
 interface MessageData {
   id: string;
@@ -148,7 +149,7 @@ const PublicAttendFundraising = ({
       </header>
 
       {/* Content */}
-      <div className="flex-1">
+      <main className="flex-1">
         {/* Media Display */}
         <div className="relative">
           {mediaItems.length > 0 ? (
@@ -362,7 +363,9 @@ const PublicAttendFundraising = ({
             </>
           )}
         </div>
-      </div>
+      </main>
+
+      <Footer />
     </div>
   );
 };
