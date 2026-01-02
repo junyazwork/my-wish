@@ -39,6 +39,7 @@ const Index = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState("all");
   const [activeSubcategory, setActiveSubcategory] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -59,11 +60,20 @@ const Index = () => {
 
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
+      // Search filter
+      if (searchQuery.trim()) {
+        const query = searchQuery.toLowerCase();
+        const matchesName = product.name.toLowerCase().includes(query);
+        const matchesCategory = product.category?.toLowerCase().includes(query);
+        const matchesSubcategory = product.subcategory?.toLowerCase().includes(query);
+        if (!matchesName && !matchesCategory && !matchesSubcategory) return false;
+      }
+      // Category filter
       if (activeCategory !== "all" && product.category !== activeCategory) return false;
       if (activeSubcategory && product.subcategory !== activeSubcategory) return false;
       return true;
     });
-  }, [activeCategory, activeSubcategory]);
+  }, [activeCategory, activeSubcategory, searchQuery]);
 
   const cartCount = useMemo(() => {
     return cart.reduce((sum, item) => sum + item.quantity, 0);
@@ -699,6 +709,8 @@ const Index = () => {
         cartCount={cartCount}
         onMenuClick={() => setIsMenuOpen(true)}
         onCartClick={handleCartClick}
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
       />
       
       <main className="flex-1">
