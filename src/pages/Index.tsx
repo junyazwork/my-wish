@@ -702,7 +702,7 @@ const Index = () => {
       
       <BannerSlider />
       
-      <FeaturedCampaigns onSelectCampaign={handleSelectCampaign} />
+      <FeaturedCampaigns onSelectCampaign={handleSelectCampaign} onViewAll={() => setCurrentView("all-campaigns")} />
       
       <div className="px-4 pt-4">
         <h2 className="text-lg font-semibold text-foreground mb-3">想要實現你的願望？</h2>
