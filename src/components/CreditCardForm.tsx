@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ChevronLeft } from "lucide-react";
+import Footer from "./Footer";
 
 interface CreditCardFormProps {
   donationAmount: number;
@@ -52,7 +53,7 @@ const CreditCardForm = ({
       </header>
 
       {/* Content */}
-      <div className="flex-1 p-5 space-y-6">
+      <main className="flex-1 p-5 space-y-6">
         {/* Amount Display */}
         <div className="bg-card rounded-xl p-4 border border-border">
           <div className="flex items-center justify-between">
@@ -126,7 +127,7 @@ const CreditCardForm = ({
         <p className="text-xs text-muted-foreground text-center">
           您的付款資訊將以安全加密方式處理
         </p>
-      </div>
+      </main>
 
       {/* Bottom Button */}
       <div className="sticky bottom-0 bg-background border-t border-border p-4">
@@ -138,6 +139,8 @@ const CreditCardForm = ({
           確認付款
         </button>
       </div>
+
+      <Footer />
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import thankYouBanner from "@/assets/thank-you-banner.jpg";
+import Footer from "./Footer";
 
 interface MediaItem {
   id: string;
@@ -94,7 +95,7 @@ const PaymentComplete = ({ recipientName, onFinish, mediaItems = [], aspectRatio
           />
         )}
       </div>
-      <div className="flex-1 p-6 space-y-4">
+      <main className="flex-1 p-6 space-y-4">
         <h1 className="text-xl font-bold text-primary">
           {recipientName}感謝您的贊助！
         </h1>
@@ -103,7 +104,7 @@ const PaymentComplete = ({ recipientName, onFinish, mediaItems = [], aspectRatio
           <p>成案後將會開立電子發票給您</p>
           <p>未成案將全額退費!</p>
         </div>
-      </div>
+      </main>
 
       {/* Bottom Button */}
       <div className="sticky bottom-0 bg-background border-t border-border p-4">
@@ -114,6 +115,8 @@ const PaymentComplete = ({ recipientName, onFinish, mediaItems = [], aspectRatio
           到MyWishOnline官方帳號
         </button>
       </div>
+
+      <Footer />
     </div>
   );
 };
