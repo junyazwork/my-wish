@@ -1,4 +1,5 @@
-import { Share2, Menu, Heart } from "lucide-react";
+import { Share2, Menu, Heart, Search, X } from "lucide-react";
+
 interface HeaderProps {
   cartCount?: number;
   onMenuClick?: () => void;
@@ -8,7 +9,10 @@ interface HeaderProps {
   showBack?: boolean;
   onBack?: () => void;
   showShare?: boolean;
+  searchQuery?: string;
+  onSearchChange?: (query: string) => void;
 }
+
 const Header = ({
   cartCount = 0,
   onMenuClick,
@@ -18,7 +22,13 @@ const Header = ({
   showBack,
   onBack,
   showShare,
+  searchQuery = "",
+  onSearchChange,
 }: HeaderProps) => {
+  const handleClearSearch = () => {
+    onSearchChange?.("");
+  };
+
   return (
     <header className="sticky top-0 z-40 bg-background/95 backdrop-blur-sm border-b border-border">
       <div className="flex items-center justify-between px-4 py-3">
@@ -42,11 +52,22 @@ const Header = ({
         ) : (
           <div className="flex-1 mx-3">
             <div className="relative">
+              <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
               <input
                 type="text"
+                value={searchQuery}
+                onChange={(e) => onSearchChange?.(e.target.value)}
                 placeholder="搜尋願望商品"
-                className="w-full px-4 py-2.5 bg-secondary rounded-full text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
+                className="w-full pl-10 pr-10 py-2.5 bg-secondary rounded-full text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
               />
+              {searchQuery && (
+                <button
+                  onClick={handleClearSearch}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  <X size={16} />
+                </button>
+              )}
             </div>
           </div>
         )}
@@ -74,4 +95,5 @@ const Header = ({
     </header>
   );
 };
+
 export default Header;
