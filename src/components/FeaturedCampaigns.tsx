@@ -31,7 +31,7 @@ const FeaturedCampaigns = ({ onSelectCampaign, onViewAll }: FeaturedCampaignsPro
         <Button
           variant="ghost"
           size="sm"
-          className="text-primary hover:text-primary/80 px-2"
+          className="text-primary hover:text-primary hover:bg-transparent px-2"
           onClick={onViewAll}
         >
           查看更多
