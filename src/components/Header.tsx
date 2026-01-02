@@ -1,4 +1,4 @@
-import { Share2, Menu, ShoppingBag } from "lucide-react";
+import { Share2, Menu, Heart } from "lucide-react";
 interface HeaderProps {
   cartCount?: number;
   onMenuClick?: () => void;
@@ -40,7 +40,7 @@ const Header = ({
               <Share2 size={20} className="text-primary-foreground" />
             </div>
           </button> : <button onClick={onCartClick} className="relative p-2 -mr-2 text-muted-foreground hover:text-foreground transition-colors">
-            <ShoppingBag size={22} />
+            <Heart size={22} />
             {cartCount > 0 && <span className="absolute top-0.5 right-0.5 min-w-[18px] h-[18px] px-1 bg-destructive text-destructive-foreground text-[10px] font-medium rounded-full flex items-center justify-center">
                 {cartCount}
               </span>}
