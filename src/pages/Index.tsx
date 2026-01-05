@@ -656,7 +656,7 @@ const Index = () => {
     return (
       <PublicAttendFundraising
         invitation={publicInvitationData}
-        onBack={() => setCurrentView("public-invitation-share")}
+        onBack={() => setCurrentView("public-line-chat-room")}
         onDonate={handlePublicDonate}
       />
     );
