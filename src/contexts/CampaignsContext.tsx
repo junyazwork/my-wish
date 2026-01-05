@@ -1,3 +1,4 @@
+// CampaignsContext - Manages campaign state across the application
 import { createContext, useContext, useState, ReactNode } from "react";
 import { CartItem } from "@/types";
 import product1 from "@/assets/product-1.jpg";
