@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import Header from "./Header";
 import { Progress } from "./ui/progress";
+import { useCampaigns, Campaign } from "@/contexts/CampaignsContext";
 
 interface DonationRecord {
   id: string;
@@ -23,46 +24,26 @@ interface DonationsLogProps {
   onMenuClick: () => void;
   onCartClick: () => void;
   cartCount: number;
+  onSelectCampaign: (campaign: Campaign) => void;
 }
 
-const DonationsLog = ({ onBack, onMenuClick, onCartClick, cartCount }: DonationsLogProps) => {
+const DonationsLog = ({ onBack, onMenuClick, onCartClick, cartCount, onSelectCampaign }: DonationsLogProps) => {
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const { campaigns } = useCampaigns();
 
-  // Mock data for fundraising activities with donations
-  const activities: FundraisingActivity[] = [
-    {
-      id: "1",
-      name: "Zimmer 生日募資",
-      currentAmount: 1500,
-      goalAmount: 3000,
-      donations: [
-        { id: "1-1", date: "2025-12-09", amount: 500, status: "success" },
-        { id: "1-2", date: "2025-12-10", amount: 500, status: "success" },
-        { id: "1-3", date: "2025-12-11", amount: 500, status: "success" },
-      ]
-    },
-    {
-      id: "2",
-      name: "公益募資活動",
-      currentAmount: 2500,
-      goalAmount: 10000,
-      donations: [
-        { id: "2-1", date: "2025-12-08", amount: 1000, status: "success" },
-        { id: "2-2", date: "2025-12-09", amount: 1500, status: "success" },
-        { id: "2-3", date: "2025-12-10", amount: 500, status: "failed" },
-      ]
-    },
-    {
-      id: "3",
-      name: "畢業旅行基金",
-      currentAmount: 4200,
-      goalAmount: 6000,
-      donations: [
-        { id: "3-1", date: "2025-12-05", amount: 2000, status: "success" },
-        { id: "3-2", date: "2025-12-07", amount: 2200, status: "success" },
-      ]
-    },
-  ];
+  // Transform campaigns to activities format
+  const activities: FundraisingActivity[] = campaigns.map(campaign => ({
+    id: campaign.id,
+    name: campaign.title,
+    currentAmount: campaign.currentAmount,
+    goalAmount: campaign.goalAmount,
+    donations: campaign.donations?.map(d => ({
+      id: d.id,
+      date: d.date.split(' ')[0],
+      amount: d.amount,
+      status: "success" as const,
+    })) || []
+  }));
 
   const getProgressPercentage = (current: number, goal: number) => {
     if (goal === 0) return 0;
@@ -86,6 +67,14 @@ const DonationsLog = ({ onBack, onMenuClick, onCartClick, cartCount }: Donations
 
   const toggleExpand = (id: string) => {
     setExpandedId(expandedId === id ? null : id);
+  };
+
+  const handleTitleClick = (e: React.MouseEvent, activityId: string) => {
+    e.stopPropagation();
+    const campaign = campaigns.find(c => c.id === activityId);
+    if (campaign) {
+      onSelectCampaign(campaign);
+    }
   };
 
   return (
@@ -113,7 +102,12 @@ const DonationsLog = ({ onBack, onMenuClick, onCartClick, cartCount }: Donations
                 onClick={() => toggleExpand(activity.id)}
               >
                 <div className="flex justify-between items-center mb-3">
-                  <span className="text-lg font-medium text-foreground">{activity.name}</span>
+                  <button
+                    onClick={(e) => handleTitleClick(e, activity.id)}
+                    className="text-lg font-medium text-foreground hover:text-primary transition-colors text-left"
+                  >
+                    {activity.name}
+                  </button>
                   {isExpanded ? (
                     <ChevronUp className="w-5 h-5 text-muted-foreground" />
                   ) : (
