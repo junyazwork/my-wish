@@ -5,6 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import Footer from "./Footer";
+import WishlistItem from "./WishlistItem";
 
 interface MessageData {
   id: string;
@@ -55,7 +56,6 @@ const AttendFundraising = ({
 
   const progressPercent = totalGoal > 0 ? Math.min((currentAmount / totalGoal) * 100, 100) : 0;
   const isGoalReached = currentAmount >= totalGoal && totalGoal > 0;
-  const mainProduct = invitation.products[0];
 
   // Mock data for demo
   const displayProposalDate = proposalDate || "2025-10-01";
@@ -203,17 +203,15 @@ const AttendFundraising = ({
 
       {/* Content */}
       <main className="flex-1 p-5 space-y-4">
-        {/* Product Card */}
-        {mainProduct && (
-          <div className="flex items-center gap-3 p-3 bg-card rounded-xl border border-border">
-            <img
-              src={mainProduct.image}
-              alt={mainProduct.name}
-              className="w-16 h-16 object-cover rounded-lg"
-            />
-            <p className="flex-1 text-sm text-foreground line-clamp-2">
-              {mainProduct.name}
-            </p>
+        {/* Wishlist Section */}
+        {invitation.products.length > 0 && (
+          <div className="space-y-3">
+            <h3 className="text-lg font-medium text-foreground">我的願望清單</h3>
+            <div className="space-y-3">
+              {invitation.products.map((product) => (
+                <WishlistItem key={product.id} item={product} />
+              ))}
+            </div>
           </div>
         )}
 
