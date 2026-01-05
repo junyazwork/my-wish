@@ -203,6 +203,14 @@ const AttendFundraising = ({
 
       {/* Content */}
       <main className="flex-1 p-5 space-y-4">
+        {/* Invitation Message */}
+        {invitation.message && (
+          <div className="space-y-2">
+            <p className="text-foreground whitespace-pre-wrap">{invitation.message}</p>
+            <p className="text-sm text-muted-foreground text-right">— {invitation.name}</p>
+          </div>
+        )}
+
         {/* Wishlist Section */}
         {invitation.products.length > 0 && (
           <div className="space-y-3">
