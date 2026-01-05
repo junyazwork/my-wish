@@ -134,6 +134,7 @@ const InvitationSettings = ({ cartItems, cartCount, onBack, onConfirm }: Invitat
 
         {/* Settings Section */}
         <div className="pt-2">
+          <h3 className="text-lg font-medium text-foreground mb-4">活動設定</h3>
           <FundraisingSettings
             isPublic={isPublic}
             onIsPublicChange={setIsPublic}
