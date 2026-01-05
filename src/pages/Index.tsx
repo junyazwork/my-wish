@@ -423,6 +423,29 @@ const Index = () => {
     );
   }
 
+  // Handle selecting campaign from donations log
+  const handleDonationsCampaignSelect = (campaign: {
+    id: string;
+    title: string;
+    description: string;
+    organizer: string;
+    image: string;
+    currentAmount: number;
+    goalAmount: number;
+    participants: number;
+    remainingTime: string;
+  }) => {
+    const campaignInvitation: InvitationData = {
+      message: campaign.description,
+      name: campaign.organizer,
+      deadline: campaign.remainingTime,
+      products: [],
+      mediaItems: [{ id: "1", url: campaign.image, type: "image" as const }],
+    };
+    setSelectedCampaignData(campaignInvitation);
+    setCurrentView("public-attend-fundraising");
+  };
+
   // Render donations page
   if (currentView === "donations") {
     return (
@@ -432,6 +455,7 @@ const Index = () => {
           onMenuClick={() => setIsMenuOpen(true)}
           onCartClick={handleCartClick}
           cartCount={cartCount}
+          onSelectCampaign={handleDonationsCampaignSelect}
         />
         <SlideMenu
           isOpen={isMenuOpen}
