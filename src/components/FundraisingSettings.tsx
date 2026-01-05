@@ -51,7 +51,7 @@ const FundraisingSettings = ({
             leftLabel="關閉"
             rightLabel="啟用"
           />
-          {showViewMessageBoardButton && messageBoard && onViewMessageBoard && (
+          {showViewMessageBoardButton && onViewMessageBoard && (
             <button
               onClick={onViewMessageBoard}
               className="px-4 py-2 text-sm rounded-md border border-primary text-primary hover:bg-primary/10 transition-colors"
