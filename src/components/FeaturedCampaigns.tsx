@@ -53,7 +53,7 @@ const FeaturedCampaigns = ({ onSelectCampaign, onViewAll }: FeaturedCampaignsPro
               onClick={() => onSelectCampaign(campaign)}
             >
               <img
-                src={campaign.mediaItems?.[0]?.url || campaign.image}
+                src={campaign.image}
                 alt={campaign.title}
                 className="w-20 h-20 object-cover rounded-md flex-shrink-0"
               />
