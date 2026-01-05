@@ -5,6 +5,7 @@ import { Progress } from "./ui/progress";
 import ProposalDetail from "./ProposalDetail";
 import ThankYouLetterEditor from "./ThankYouLetterEditor";
 import { useCampaigns, DonationRecord } from "@/contexts/CampaignsContext";
+import { CartItem } from "@/types";
 
 interface ProposalItem {
   id: string;
@@ -19,6 +20,7 @@ interface ProposalItem {
   notifyBeforeDeadline: boolean;
   notifyDays: number;
   donations: DonationRecord[];
+  products: CartItem[];
 }
 
 interface ProposalsLogProps {
@@ -47,7 +49,8 @@ const ProposalsLog = ({ onBack, onMenuClick, onCartClick, cartCount, onViewAtten
     messageBoard: campaign.messageBoard ?? true,
     notifyBeforeDeadline: campaign.notifyBeforeDeadline ?? true,
     notifyDays: campaign.notifyDays ?? 14,
-    donations: campaign.donations || []
+    donations: campaign.donations || [],
+    products: campaign.products || []
   }));
 
   const getProgressPercentage = (current: number, goal: number) => {
