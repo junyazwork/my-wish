@@ -4,6 +4,7 @@ import { InvitationData } from "@/types";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import WishlistItem from "./WishlistItem";
 import Footer from "./Footer";
 
 interface MessageData {
@@ -55,7 +56,6 @@ const AttendFundraising = ({
 
   const progressPercent = totalGoal > 0 ? Math.min((currentAmount / totalGoal) * 100, 100) : 0;
   const isGoalReached = currentAmount >= totalGoal && totalGoal > 0;
-  const mainProduct = invitation.products[0];
 
   // Mock data for demo
   const displayProposalDate = proposalDate || "2025-10-01";
@@ -201,23 +201,29 @@ const AttendFundraising = ({
         )}
       </div>
 
+      {/* Wishlist Section - Below Media */}
+      {invitation.products.length > 0 && (
+        <div className="px-5 py-4">
+          <h3 className="text-lg font-medium text-foreground mb-3">願望清單</h3>
+          <div className="space-y-3">
+            {invitation.products.map((product) => (
+              <WishlistItem key={product.id} item={product} />
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Content */}
       <main className="flex-1 p-5 space-y-4">
-        {/* Product Card */}
-        {mainProduct && (
-          <div className="flex items-center gap-3 p-3 bg-card rounded-xl border border-border">
-            <img
-              src={mainProduct.image}
-              alt={mainProduct.name}
-              className="w-16 h-16 object-cover rounded-lg"
-            />
-            <p className="flex-1 text-sm text-foreground line-clamp-2">
-              {mainProduct.name}
-            </p>
-          </div>
-        )}
-
         {/* Date & Status */}
+        <div className="flex items-center justify-between">
+          <span className="text-sm text-muted-foreground">
+            {displayProposalDate} 提案 | {displayDeadline} 截止
+          </span>
+          <Badge className={isGoalReached ? "bg-success text-success-foreground hover:bg-success" : "bg-primary text-primary-foreground hover:bg-primary"}>
+            {isGoalReached ? "已達標" : "進行中"}
+          </Badge>
+        </div>
         <div className="flex items-center justify-between">
           <span className="text-sm text-muted-foreground">
             {displayProposalDate} 提案 | {displayDeadline} 截止
