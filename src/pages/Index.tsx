@@ -539,7 +539,7 @@ const Index = () => {
     return (
       <AttendFundraising
         invitation={invitationData}
-        onBack={() => setCurrentView("invitation-share")}
+        onBack={() => setCurrentView("line-chat-room")}
         onDonate={handleDonate}
       />
     );
