@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ChevronLeft, Calendar } from "lucide-react";
 import { CartItem, PublicHostData, PublicInvitationData } from "@/types";
 import InlineMediaEditor, { MediaItem, AspectRatio } from "./InlineMediaEditor";
+import WishlistItem from "./WishlistItem";
 import Footer from "./Footer";
 
 interface PublicInvitationSettingsProps {
@@ -138,18 +139,7 @@ const PublicInvitationSettings = ({
           <h3 className="text-base font-medium text-foreground mb-3">我的願望清單</h3>
           <div className="space-y-3">
             {cartItems.map((item) => (
-              <div key={item.id} className="flex items-center gap-3 p-3 bg-card border border-border rounded-xl">
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className="w-16 h-16 object-cover rounded-lg"
-                />
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-foreground truncate">{item.name}</p>
-                  <p className="text-sm text-muted-foreground">數量: {item.quantity}</p>
-                  <p className="text-sm font-medium text-primary">${item.price.toLocaleString()}</p>
-                </div>
-              </div>
+              <WishlistItem key={item.id} item={item} />
             ))}
           </div>
         </div>

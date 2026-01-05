@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { PublicInvitationData } from "@/types";
 import { toast } from "sonner";
+import WishlistItem from "./WishlistItem";
 import Footer from "./Footer";
 
 interface PublicInvitationShareProps {
@@ -176,18 +177,7 @@ const PublicInvitationShare = ({
             <h3 className="text-base font-medium text-foreground mb-3">我的願望清單</h3>
             <div className="space-y-3">
               {invitation.products.map((item) => (
-                <div key={item.id} className="flex items-center gap-3 p-3 bg-card border border-border rounded-xl">
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="w-16 h-16 object-cover rounded-lg"
-                  />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-foreground truncate">{item.name}</p>
-                    <p className="text-sm text-muted-foreground">數量: {item.quantity}</p>
-                    <p className="text-sm font-medium text-primary">${item.price.toLocaleString()}</p>
-                  </div>
-                </div>
+                <WishlistItem key={item.id} item={item} />
               ))}
             </div>
           </div>
