@@ -2,14 +2,7 @@ import { useState, useEffect } from "react";
 import { Mail, Send } from "lucide-react";
 import Header from "./Header";
 import { Progress } from "./ui/progress";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "./ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
 import { Button } from "./ui/button";
 import { useCampaigns, DonationRecord } from "@/contexts/CampaignsContext";
 
@@ -37,7 +30,14 @@ interface ProposalDetailProps {
   onSendThankYouLetter?: () => void;
 }
 
-const ProposalDetail = ({ proposal, onBack, onMenuClick, onShareClick, onViewMessageBoard, onSendThankYouLetter }: ProposalDetailProps) => {
+const ProposalDetail = ({
+  proposal,
+  onBack,
+  onMenuClick,
+  onShareClick,
+  onViewMessageBoard,
+  onSendThankYouLetter,
+}: ProposalDetailProps) => {
   const { updateCampaignVisibility } = useCampaigns();
   const [isPublic, setIsPublic] = useState(proposal.isPublic);
   const [messageBoard, setMessageBoard] = useState(proposal.messageBoard);
@@ -59,30 +59,18 @@ const ProposalDetail = ({ proposal, onBack, onMenuClick, onShareClick, onViewMes
 
   const getStatusBadge = (status: "building" | "active") => {
     if (status === "building") {
-      return (
-        <span className="px-3 py-1 text-sm rounded bg-muted text-muted-foreground">
-          建立中
-        </span>
-      );
+      return <span className="px-3 py-1 text-sm rounded bg-muted text-muted-foreground">建立中</span>;
     }
     // Check if goal is reached
     if (isGoalReached) {
-      return (
-        <span className="px-3 py-1 text-sm rounded bg-success text-success-foreground">
-          已達標
-        </span>
-      );
+      return <span className="px-3 py-1 text-sm rounded bg-success text-success-foreground">已達標</span>;
     }
-    return (
-      <span className="px-3 py-1 text-sm rounded bg-primary text-primary-foreground">
-        進行中
-      </span>
-    );
+    return <span className="px-3 py-1 text-sm rounded bg-primary text-primary-foreground">進行中</span>;
   };
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <Header 
+      <Header
         title={proposal.name}
         showBack
         onBack={onBack}
@@ -103,9 +91,9 @@ const ProposalDetail = ({ proposal, onBack, onMenuClick, onShareClick, onViewMes
 
           {/* Progress Bar */}
           <div className="mb-2">
-            <Progress 
-              value={percentage} 
-              className="h-3 bg-muted" 
+            <Progress
+              value={percentage}
+              className="h-3 bg-muted"
               indicatorClassName={isGoalReached ? "bg-success" : undefined}
             />
           </div>
@@ -192,7 +180,7 @@ const ProposalDetail = ({ proposal, onBack, onMenuClick, onShareClick, onViewMes
                       : "bg-muted text-muted-foreground border-border"
                   }`}
                 >
-                  啟用中
+                  啟用
                 </button>
               </div>
               {messageBoard && onViewMessageBoard && (
@@ -208,9 +196,7 @@ const ProposalDetail = ({ proposal, onBack, onMenuClick, onShareClick, onViewMes
 
           {/* 截止前尚未達成目標時通知增資或放棄 */}
           <div>
-            <h3 className="text-lg font-medium text-foreground mb-3">
-              截止前尚未達成目標時通知增資或放棄
-            </h3>
+            <h3 className="text-lg font-medium text-foreground mb-3">截止前尚未達成目標時通知增資或放棄</h3>
             <div className="flex items-center gap-3">
               <div className="flex gap-0">
                 <button
@@ -253,7 +239,7 @@ const ProposalDetail = ({ proposal, onBack, onMenuClick, onShareClick, onViewMes
         {/* 贊助紀錄 */}
         <div className="px-4 py-6">
           <h3 className="text-lg font-medium text-foreground mb-4">贊助紀錄</h3>
-          
+
           <Table>
             <TableHeader>
               <TableRow>
