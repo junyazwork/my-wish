@@ -73,10 +73,11 @@ const Header = ({
         )}
 
         {showShare ? (
-          <button onClick={onShareClick} className="relative p-2 -mr-2">
-            <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
-              <Share2 size={20} className="text-primary-foreground" />
-            </div>
+          <button
+            onClick={onShareClick}
+            className="relative p-2 -mr-2 text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <Share2 size={22} />
           </button>
         ) : (
           <button
