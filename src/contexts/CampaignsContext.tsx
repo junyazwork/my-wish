@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, ReactNode } from "react";
-import { CartItem, MediaItemData, AspectRatioType } from "@/types";
+import { CartItem } from "@/types";
 import product1 from "@/assets/product-1.jpg";
 import product2 from "@/assets/product-2.jpg";
 import product3 from "@/assets/product-3.jpg";
@@ -28,8 +28,6 @@ export interface Campaign {
   notifyDays?: number;
   donations?: DonationRecord[];
   products?: CartItem[];
-  mediaItems?: MediaItemData[];
-  aspectRatio?: AspectRatioType;
 }
 
 export interface DonationRecord {
@@ -75,11 +73,7 @@ const initialCampaigns: Campaign[] = [
     products: [
       { id: "p1", name: "精選咖啡禮盒", price: 580, image: product1, category: "食品", quantity: 2 },
       { id: "p2", name: "手工餅乾組合", price: 320, image: product2, category: "食品", quantity: 1 },
-    ],
-    mediaItems: [
-      { id: "m1", url: product1, type: "image" },
-    ],
-    aspectRatio: "3:4"
+    ]
   },
   {
     id: "2",
@@ -102,11 +96,7 @@ const initialCampaigns: Campaign[] = [
     donations: [],
     products: [
       { id: "p3", name: "教育圖書套組", price: 1200, image: product2, category: "教育", quantity: 3 },
-    ],
-    mediaItems: [
-      { id: "m2", url: product2, type: "image" },
-    ],
-    aspectRatio: "1:1"
+    ]
   },
   // From AllCampaigns - 最新募資
   {
@@ -130,11 +120,7 @@ const initialCampaigns: Campaign[] = [
     donations: [],
     products: [
       { id: "p4", name: "環保淨灘工具組", price: 450, image: product3, category: "環保", quantity: 5 },
-    ],
-    mediaItems: [
-      { id: "m3", url: product3, type: "image" },
-    ],
-    aspectRatio: "3:4"
+    ]
   },
   {
     id: "4",
@@ -148,7 +134,7 @@ const initialCampaigns: Campaign[] = [
     remainingTime: "25天6時20分",
     status: "active",
     createdAt: new Date("2024-12-27"),
-    isPublic: false,
+    isPublic: false, // Private campaign
     proposalDate: "2024-12-05",
     deadline: "2025-02-10",
     messageBoard: true,
@@ -157,11 +143,7 @@ const initialCampaigns: Campaign[] = [
     donations: [],
     products: [
       { id: "p5", name: "營養餐點食材", price: 280, image: product4, category: "食品", quantity: 10 },
-    ],
-    mediaItems: [
-      { id: "m4", url: product4, type: "image" },
-    ],
-    aspectRatio: "1:1"
+    ]
   },
   // From AllCampaigns - 已結束
   {
@@ -188,11 +170,7 @@ const initialCampaigns: Campaign[] = [
     ],
     products: [
       { id: "p6", name: "兒童繪本經典套書", price: 890, image: product5, category: "書籍", quantity: 4 },
-    ],
-    mediaItems: [
-      { id: "m5", url: product5, type: "image" },
-    ],
-    aspectRatio: "3:4"
+    ]
   },
   {
     id: "6",
@@ -216,11 +194,7 @@ const initialCampaigns: Campaign[] = [
     products: [
       { id: "p7", name: "寵物飼料大包裝", price: 650, image: product6, category: "寵物", quantity: 8 },
       { id: "p8", name: "寵物醫療用品", price: 420, image: product6, category: "寵物", quantity: 3 },
-    ],
-    mediaItems: [
-      { id: "m6", url: product6, type: "image" },
-    ],
-    aspectRatio: "1:1"
+    ]
   }
 ];
 
