@@ -133,7 +133,10 @@ const ArchitecturePage = () => {
 
         {/* Main Flow */}
         <section className="bg-card rounded-lg p-4 border border-border">
-          <h2 className="text-base font-semibold text-foreground mb-4">首頁入口流程</h2>
+          <h2 className="text-base font-semibold text-foreground mb-2">首頁入口流程</h2>
+          <p className="text-sm text-muted-foreground mb-4">
+            使用者進入首頁後，可瀏覽商品列表並點選商品查看詳情，加入購物車後可進行結帳。亦可透過側邊選單存取募資活動與紀錄管理功能。
+          </p>
           <div className="space-y-3">
             <div className="flex items-center gap-2 flex-wrap">
               <PageLink name="首頁" component="Index" route="/" />
@@ -156,7 +159,10 @@ const ArchitecturePage = () => {
 
         {/* Funding Selection */}
         <section className="bg-card rounded-lg p-4 border border-border">
-          <h2 className="text-base font-semibold text-foreground mb-4">募資類型選擇</h2>
+          <h2 className="text-base font-semibold text-foreground mb-2">募資類型選擇</h2>
+          <p className="text-sm text-muted-foreground mb-4">
+            完成購物車商品選擇後，使用者需選擇募資類型。「個人募資」適用於親友間的禮物募集，「公益募資」則適用於公開的慈善活動。
+          </p>
           <div className="flex items-center gap-2 flex-wrap">
             <PageLink name="購物車" component="CartDrawer" isComponent />
             <span className="text-muted-foreground">→</span>
@@ -168,7 +174,10 @@ const ArchitecturePage = () => {
 
         {/* Personal Fundraising Flow */}
         <section className="bg-card rounded-lg p-4 border border-border">
-          <h2 className="text-base font-semibold text-foreground mb-4">個人募資流程</h2>
+          <h2 className="text-base font-semibold text-foreground mb-2">個人募資流程</h2>
+          <p className="text-sm text-muted-foreground mb-4">
+            主辦人設定邀請函內容並確認後，可透過 LINE 分享給親友。受邀者點擊連結後可查看募資詳情並選擇贊助金額，最後透過信用卡或 LINE Pay 完成付款。
+          </p>
           <div className="space-y-2">
             <div className="flex items-center gap-2 flex-wrap">
               <PageLink name="邀請設定" component="InvitationSettings" isComponent />
@@ -206,7 +215,10 @@ const ArchitecturePage = () => {
 
         {/* Public Fundraising Flow */}
         <section className="bg-card rounded-lg p-4 border border-border">
-          <h2 className="text-base font-semibold text-foreground mb-4">公益募資流程</h2>
+          <h2 className="text-base font-semibold text-foreground mb-2">公益募資流程</h2>
+          <p className="text-sm text-muted-foreground mb-4">
+            主持人先設定個人資訊與公開募資活動內容，確認後可分享募資連結至社群平台。任何人透過連結皆可參與贊助，填寫資料後完成付款。
+          </p>
           <div className="space-y-2">
             <div className="flex items-center gap-2 flex-wrap">
               <PageLink name="主持人設定" component="PublicHostSettings" isComponent />
@@ -236,7 +248,10 @@ const ArchitecturePage = () => {
 
         {/* Proposals & Records */}
         <section className="bg-card rounded-lg p-4 border border-border">
-          <h2 className="text-base font-semibold text-foreground mb-4">紀錄管理</h2>
+          <h2 className="text-base font-semibold text-foreground mb-2">紀錄管理</h2>
+          <p className="text-sm text-muted-foreground mb-4">
+            使用者可透過提案紀錄查看自己發起的募資活動詳情與進度，亦可瀏覽所有公開的募資活動進行贊助。贊助紀錄則記錄個人的歷史贊助項目。
+          </p>
           <div className="space-y-2">
             <div className="flex items-center gap-2 flex-wrap">
               <PageLink name="提案紀錄" component="ProposalsLog" isComponent />
@@ -256,7 +271,10 @@ const ArchitecturePage = () => {
 
         {/* Static Pages */}
         <section className="bg-card rounded-lg p-4 border border-border">
-          <h2 className="text-base font-semibold text-foreground mb-4">靜態頁面（Footer 連結）</h2>
+          <h2 className="text-base font-semibold text-foreground mb-2">靜態頁面（Footer 連結）</h2>
+          <p className="text-sm text-muted-foreground mb-4">
+            提供平台的基本資訊與政策說明，使用者可從頁面底部的 Footer 區域存取這些頁面。
+          </p>
           <div className="grid grid-cols-2 gap-2">
             <PageLink name="關於我們" component="AboutPage" route="/about" />
             <PageLink name="贊助政策" component="SponsorPolicyPage" route="/sponsor-policy" />
