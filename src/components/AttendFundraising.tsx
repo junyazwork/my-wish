@@ -4,7 +4,6 @@ import { InvitationData } from "@/types";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Card, CardContent } from "@/components/ui/card";
 import Footer from "./Footer";
 import WishlistItem from "./WishlistItem";
 
@@ -206,16 +205,10 @@ const AttendFundraising = ({
       <main className="flex-1 p-5 space-y-4">
         {/* Invitation Message */}
         {invitation.message && (
-          <Card className="relative overflow-hidden bg-gradient-to-br from-card to-muted/30 border-border/50">
-            <CardContent className="p-5">
-              <div className="absolute top-3 left-3 text-5xl text-primary/20 font-serif leading-none">"</div>
-              <div className="relative z-10 pt-4 pl-4">
-                <p className="text-foreground whitespace-pre-wrap leading-relaxed">{invitation.message}</p>
-                <p className="text-sm text-muted-foreground text-right mt-3 font-medium">— {invitation.name}</p>
-              </div>
-              <div className="absolute bottom-3 right-3 text-5xl text-primary/20 font-serif leading-none rotate-180">"</div>
-            </CardContent>
-          </Card>
+          <div className="space-y-2">
+            <p className="text-foreground whitespace-pre-wrap">{invitation.message}</p>
+            <p className="text-sm text-muted-foreground text-right">— {invitation.name}</p>
+          </div>
         )}
 
         {/* Wishlist Section */}
