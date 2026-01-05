@@ -35,7 +35,10 @@ import { products, categories } from "@/data/products";
 import { Product, CartItem, FundingType, InvitationData, PublicHostData, PublicInvitationData, AppView, LineFriend, MediaItemData, AspectRatioType } from "@/types";
 import { toast } from "sonner";
 
+import { useCampaigns } from "@/contexts/CampaignsContext";
+
 const Index = () => {
+  const { getCampaignById } = useCampaigns();
   const [currentView, setCurrentView] = useState<AppView>("home");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState("all");
@@ -194,13 +197,14 @@ const Index = () => {
     goalAmount: number;
     participants: number;
     remainingTime: string;
+    products?: CartItem[];
   }) => {
     // Convert campaign to InvitationData format for AttendFundraising
     const campaignInvitation: InvitationData = {
       message: campaign.description,
       name: campaign.organizer,
       deadline: campaign.remainingTime,
-      products: [],
+      products: campaign.products || [],
       mediaItems: [{ id: "1", url: campaign.image, type: "image" as const }],
     };
     setSelectedCampaignData(campaignInvitation);
@@ -359,15 +363,16 @@ const Index = () => {
 
   // Handle viewing attend fundraising from proposal detail
   const handleViewAttendFundraising = (proposalId: string, isPublic: boolean) => {
-    // Create mock invitation data from proposal for preview
-    const mockInvitation: InvitationData = {
-      message: "這是募資活動的訊息內容",
-      name: "募資活動",
-      deadline: "2025-12-31",
-      products: [],
-      mediaItems: [],
+    // Get campaign data from context
+    const campaign = getCampaignById(proposalId);
+    const proposalInvitation: InvitationData = {
+      message: campaign?.description || "這是募資活動的訊息內容",
+      name: campaign?.organizer || "募資活動",
+      deadline: campaign?.deadline || "2025-12-31",
+      products: campaign?.products || [],
+      mediaItems: campaign?.image ? [{ id: "1", url: campaign.image, type: "image" as const }] : [],
     };
-    setInvitationData(mockInvitation);
+    setInvitationData(proposalInvitation);
     if (isPublic) {
       setCurrentView("proposal-attend-public");
     } else {
@@ -434,12 +439,13 @@ const Index = () => {
     goalAmount: number;
     participants: number;
     remainingTime: string;
+    products?: CartItem[];
   }) => {
     const campaignInvitation: InvitationData = {
       message: campaign.description,
       name: campaign.organizer,
       deadline: campaign.remainingTime,
-      products: [],
+      products: campaign.products || [],
       mediaItems: [{ id: "1", url: campaign.image, type: "image" as const }],
     };
     setSelectedCampaignData(campaignInvitation);
