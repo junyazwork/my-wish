@@ -29,6 +29,7 @@ import ProposalsLog from "@/components/ProposalsLog";
 import DonationsLog from "@/components/DonationsLog";
 import AllCampaigns from "@/components/AllCampaigns";
 import LineAuthPage from "@/components/LineAuthPage";
+import SearchResults from "@/components/SearchResults";
 import Footer from "@/components/Footer";
 import { products, categories } from "@/data/products";
 import { Product, CartItem, FundingType, InvitationData, PublicHostData, PublicInvitationData, AppView, LineFriend, MediaItemData, AspectRatioType } from "@/types";
@@ -714,27 +715,39 @@ const Index = () => {
       />
       
       <main className="flex-1">
-        <BannerSlider />
-        
-        <FeaturedCampaigns onSelectCampaign={handleSelectCampaign} onViewAll={() => setCurrentView("all-campaigns")} />
-        
-        <div className="px-4 pt-4">
-          <h2 className="text-lg font-semibold text-foreground mb-3">想要實現你的願望？</h2>
-        </div>
-        
-        <CategoryTabs
-          categories={categories}
-          activeCategory={activeCategory}
-          activeSubcategory={activeSubcategory}
-          onCategoryChange={setActiveCategory}
-          onSubcategoryChange={setActiveSubcategory}
-        />
-        
-        <ProductGrid
-          products={filteredProducts}
-          onProductClick={handleProductClick}
-          onAddToWishlist={handleAddToWishlist}
-        />
+        {searchQuery.trim() ? (
+          <SearchResults
+            query={searchQuery}
+            results={filteredProducts}
+            onProductClick={handleProductClick}
+            onAddToWishlist={handleAddToWishlist}
+            onClearSearch={() => setSearchQuery("")}
+          />
+        ) : (
+          <>
+            <BannerSlider />
+            
+            <FeaturedCampaigns onSelectCampaign={handleSelectCampaign} onViewAll={() => setCurrentView("all-campaigns")} />
+            
+            <div className="px-4 pt-4">
+              <h2 className="text-lg font-semibold text-foreground mb-3">想要實現你的願望？</h2>
+            </div>
+            
+            <CategoryTabs
+              categories={categories}
+              activeCategory={activeCategory}
+              activeSubcategory={activeSubcategory}
+              onCategoryChange={setActiveCategory}
+              onSubcategoryChange={setActiveSubcategory}
+            />
+            
+            <ProductGrid
+              products={filteredProducts}
+              onProductClick={handleProductClick}
+              onAddToWishlist={handleAddToWishlist}
+            />
+          </>
+        )}
       </main>
       
       <Footer />
