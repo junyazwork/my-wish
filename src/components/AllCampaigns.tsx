@@ -110,9 +110,13 @@ const AllCampaigns = ({
             
             return (
               <div key={campaign.id} className="bg-card rounded-2xl overflow-hidden shadow-sm border border-border">
-                {/* Campaign Image */}
+                {/* Campaign Image - Use mediaItems first, fallback to image */}
                 <div className="aspect-[4/3] overflow-hidden relative">
-                  <img src={campaign.image} alt={campaign.title} className="w-full h-full object-cover" />
+                  <img 
+                    src={campaign.mediaItems?.[0]?.url || campaign.image} 
+                    alt={campaign.title} 
+                    className="w-full h-full object-cover" 
+                  />
                   {(campaign.status === "ended" || goalReached) && <div className="absolute inset-0 bg-foreground/50 flex items-center justify-center">
                       <div className="bg-background/90 rounded-full px-4 py-2 flex items-center gap-2">
                         <CheckCircle size={18} className="text-success" />
