@@ -5,6 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import Footer from "./Footer";
+import WishlistItem from "./WishlistItem";
 
 interface MessageData {
   id: string;
@@ -206,17 +207,15 @@ const PublicAttendFundraising = ({
         </div>
 
         <div className="p-5 space-y-4">
-          {/* Product Info */}
-          {firstProduct && (
-            <div className="flex items-center gap-3 p-3 bg-card rounded-xl border border-border">
-              <img
-                src={firstProduct.image}
-                alt={firstProduct.name}
-                className="w-16 h-16 object-cover rounded-lg"
-              />
-              <p className="text-sm text-foreground flex-1 line-clamp-2">
-                {firstProduct.name}
-              </p>
+          {/* Wishlist Section */}
+          {invitation.products.length > 0 && (
+            <div className="space-y-3">
+              <h3 className="text-lg font-medium text-foreground">我的願望清單</h3>
+              <div className="space-y-3">
+                {invitation.products.map((product) => (
+                  <WishlistItem key={product.id} item={product} />
+                ))}
+              </div>
             </div>
           )}
 
