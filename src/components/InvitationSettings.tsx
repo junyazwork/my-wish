@@ -3,6 +3,7 @@ import { Calendar, X, ChevronLeft, Heart } from "lucide-react";
 import { InvitationData, CartItem } from "@/types";
 import InlineMediaEditor, { MediaItem, AspectRatio } from "./InlineMediaEditor";
 import WishlistItem from "./WishlistItem";
+import FundraisingSettings from "./FundraisingSettings";
 import Footer from "./Footer";
 
 interface InvitationSettingsProps {
@@ -132,103 +133,17 @@ const InvitationSettings = ({ cartItems, cartCount, onBack, onConfirm }: Invitat
         </div>
 
         {/* Settings Section */}
-        <div className="space-y-6 pt-2">
-          {/* 募資活動 */}
-          <div>
-            <h3 className="text-base font-medium text-foreground mb-3">募資活動</h3>
-            <div className="flex gap-0">
-              <button
-                onClick={() => setIsPublic(false)}
-                className={`px-6 py-2 text-sm rounded-l-md border transition-colors ${
-                  !isPublic
-                    ? "bg-primary text-primary-foreground border-primary"
-                    : "bg-muted text-muted-foreground border-border"
-                }`}
-              >
-                私密
-              </button>
-              <button
-                onClick={() => setIsPublic(true)}
-                className={`px-6 py-2 text-sm rounded-r-md border-l-0 border transition-colors ${
-                  isPublic
-                    ? "bg-primary text-primary-foreground border-primary"
-                    : "bg-muted text-muted-foreground border-border"
-                }`}
-              >
-                公開
-              </button>
-            </div>
-            <p className="text-sm text-muted-foreground mt-2">
-              設為私密時，募資網頁只有收到 LINE 邀請函的好友才能查看。
-            </p>
-          </div>
-
-          {/* 留言板功能 */}
-          <div>
-            <h3 className="text-base font-medium text-foreground mb-3">留言板功能</h3>
-            <div className="flex gap-0">
-              <button
-                onClick={() => setMessageBoard(false)}
-                className={`px-6 py-2 text-sm rounded-l-md border transition-colors ${
-                  !messageBoard
-                    ? "bg-primary text-primary-foreground border-primary"
-                    : "bg-muted text-muted-foreground border-border"
-                }`}
-              >
-                關閉
-              </button>
-              <button
-                onClick={() => setMessageBoard(true)}
-                className={`px-6 py-2 text-sm rounded-r-md border-l-0 border transition-colors ${
-                  messageBoard
-                    ? "bg-primary text-primary-foreground border-primary"
-                    : "bg-muted text-muted-foreground border-border"
-                }`}
-              >
-                啟用
-              </button>
-            </div>
-          </div>
-
-          {/* 截止前尚未達成目標時通知增資或放棄 */}
-          <div>
-            <h3 className="text-base font-medium text-foreground mb-3">
-              截止前尚未達成目標時通知增資或放棄
-            </h3>
-            <div className="flex items-center gap-3">
-              <div className="flex gap-0">
-                <button
-                  onClick={() => setNotifyEnabled(false)}
-                  className={`px-6 py-2 text-sm rounded-l-md border transition-colors ${
-                    !notifyEnabled
-                      ? "bg-primary text-primary-foreground border-primary"
-                      : "bg-muted text-muted-foreground border-border"
-                  }`}
-                >
-                  關閉
-                </button>
-                <button
-                  onClick={() => setNotifyEnabled(true)}
-                  className={`px-6 py-2 text-sm rounded-r-md border-l-0 border transition-colors ${
-                    notifyEnabled
-                      ? "bg-primary text-primary-foreground border-primary"
-                      : "bg-muted text-muted-foreground border-border"
-                  }`}
-                >
-                  啟用
-                </button>
-              </div>
-              <div className="flex items-center gap-2">
-                <input
-                  type="number"
-                  value={notifyDays}
-                  onChange={(e) => setNotifyDays(parseInt(e.target.value) || 0)}
-                  className="w-16 px-3 py-2 text-center border border-border rounded-md bg-background text-foreground"
-                />
-                <span className="text-muted-foreground text-sm">天前發送通知</span>
-              </div>
-            </div>
-          </div>
+        <div className="pt-2">
+          <FundraisingSettings
+            isPublic={isPublic}
+            onIsPublicChange={setIsPublic}
+            messageBoard={messageBoard}
+            onMessageBoardChange={setMessageBoard}
+            notifyEnabled={notifyEnabled}
+            onNotifyEnabledChange={setNotifyEnabled}
+            notifyDays={notifyDays}
+            onNotifyDaysChange={setNotifyDays}
+          />
         </div>
       </main>
 
