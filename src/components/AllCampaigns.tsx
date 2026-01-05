@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Menu, Hourglass, CheckCircle } from "lucide-react";
+import { ChevronLeft, Hourglass, CheckCircle } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import SlideMenu from "@/components/SlideMenu";
@@ -79,8 +79,8 @@ const AllCampaigns = ({
       {/* Header */}
       <header className="sticky top-0 z-40 bg-background/95 backdrop-blur-sm border-b border-border">
         <div className="flex items-center px-4 py-3">
-          <button onClick={() => setIsMenuOpen(true)} className="flex items-center text-foreground hover:opacity-70 transition-opacity">
-            <Menu size={24} />
+          <button onClick={onBack} className="p-2 -ml-2 text-muted-foreground hover:text-foreground transition-colors">
+            <ChevronLeft size={24} />
           </button>
           <h1 className="flex-1 text-lg font-semibold text-foreground text-center pr-6">
             所有募資活動
