@@ -163,7 +163,7 @@ const ArchitecturePage = () => {
         <section className="bg-card rounded-lg p-4 border border-border">
           <h2 className="text-base font-semibold text-foreground mb-2">募資類型選擇</h2>
           <p className="text-sm text-muted-foreground mb-4">
-            完成購物車商品選擇後，使用者需選擇募資類型。「個人募資」適用於親友間的禮物募集，「公益募資」則適用於公益活動。
+            完成願望清單商品選擇後，使用者需選擇募資類型。「個人募資」適用於親友間的禮物募集，「公益募資」則適用於公益活動。
           </p>
           <div className="flex items-center gap-2 flex-wrap">
             <PageLink name="願望清單" component="CartDrawer" isComponent />
