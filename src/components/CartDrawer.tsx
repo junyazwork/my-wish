@@ -20,10 +20,7 @@ const CartDrawer = ({
   onContinueShopping,
   onConfirm,
 }: CartDrawerProps) => {
-  const totalAmount = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
+  const totalAmount = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   if (!isOpen) return null;
 
@@ -32,18 +29,8 @@ const CartDrawer = ({
       {/* Header */}
       <header className="sticky top-0 z-40 bg-background/95 backdrop-blur-sm border-b border-border">
         <div className="flex items-center justify-between px-4 py-3">
-          <button
-            onClick={onClose}
-            className="p-2 -ml-2 text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
+          <button onClick={onClose} className="p-2 -ml-2 text-muted-foreground hover:text-foreground transition-colors">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M15 18l-6-6 6-6" />
             </svg>
           </button>
@@ -65,33 +52,27 @@ const CartDrawer = ({
       <div className="flex-1 overflow-y-auto">
         {cartItems.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-muted-foreground">
-            <p>購物車是空的</p>
+            <p>願望清單是空的</p>
           </div>
         ) : (
           <div className="divide-y divide-border">
             {cartItems.map((item) => (
               <div key={item.id} className="p-4">
-                <h3 className="text-foreground font-medium leading-relaxed mb-2">
-                  {item.name}
-                </h3>
+                <h3 className="text-foreground font-medium leading-relaxed mb-2">{item.name}</h3>
                 <div className="flex items-center justify-between">
                   <span className="text-muted-foreground">
                     {item.price.toLocaleString()} x {item.quantity}
                   </span>
                   <div className="flex items-center gap-2">
                     <button
-                      onClick={() =>
-                        onUpdateQuantity(item.id, item.quantity + 1)
-                      }
+                      onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
                       className="w-9 h-9 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-foreground transition-colors"
                     >
                       <Plus size={18} />
                     </button>
                     <button
                       onClick={() =>
-                        item.quantity > 1
-                          ? onUpdateQuantity(item.id, item.quantity - 1)
-                          : onRemoveItem(item.id)
+                        item.quantity > 1 ? onUpdateQuantity(item.id, item.quantity - 1) : onRemoveItem(item.id)
                       }
                       className="w-9 h-9 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-foreground transition-colors"
                     >
@@ -115,9 +96,7 @@ const CartDrawer = ({
       <div className="sticky bottom-0 bg-background border-t border-border p-4">
         <div className="flex items-center justify-between mb-4">
           <span className="text-muted-foreground">總計</span>
-          <span className="text-3xl font-bold text-foreground">
-            ${totalAmount.toLocaleString()}
-          </span>
+          <span className="text-3xl font-bold text-foreground">${totalAmount.toLocaleString()}</span>
         </div>
         <div className="flex gap-3">
           <button

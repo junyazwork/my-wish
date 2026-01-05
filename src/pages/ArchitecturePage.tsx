@@ -48,7 +48,7 @@ const ArchitecturePage = () => {
     // Products
     { name: "商品列表", component: "ProductGrid", isComponent: true },
     { name: "商品詳情", component: "ProductDrawer", isComponent: true },
-    { name: "購物車", component: "CartDrawer", isComponent: true },
+    { name: "願望清單", component: "CartDrawer", isComponent: true },
 
     // Funding Selection
     { name: "募資類型選擇", component: "FundingSelection", isComponent: true },
@@ -137,7 +137,7 @@ const ArchitecturePage = () => {
         <section className="bg-card rounded-lg p-4 border border-border">
           <h2 className="text-base font-semibold text-foreground mb-2">首頁入口流程</h2>
           <p className="text-sm text-muted-foreground mb-4">
-            使用者進入首頁後，可瀏覽商品列表並點選商品查看詳情，加入購物車後可進行發起募資的流程。亦可透過側邊選單存取募資活動與紀錄管理功能。
+            使用者進入首頁後，可瀏覽商品列表並點選商品查看詳情，加入願望清單後可進行發起募資的流程。亦可透過側邊選單存取募資活動與紀錄管理功能。
           </p>
           <div className="space-y-3">
             <div className="flex items-center gap-2 flex-wrap">
@@ -147,7 +147,7 @@ const ArchitecturePage = () => {
               <span className="text-muted-foreground">→</span>
               <PageLink name="商品詳情" component="ProductDrawer" isComponent />
               <span className="text-muted-foreground">→</span>
-              <PageLink name="購物車" component="CartDrawer" isComponent />
+              <PageLink name="願望清單" component="CartDrawer" isComponent />
             </div>
             <div className="flex items-center gap-2 flex-wrap">
               <PageLink name="首頁" component="Index" route="/" />
@@ -166,7 +166,7 @@ const ArchitecturePage = () => {
             完成購物車商品選擇後，使用者需選擇募資類型。「個人募資」適用於親友間的禮物募集，「公益募資」則適用於公益活動。
           </p>
           <div className="flex items-center gap-2 flex-wrap">
-            <PageLink name="購物車" component="CartDrawer" isComponent />
+            <PageLink name="願望清單" component="CartDrawer" isComponent />
             <span className="text-muted-foreground">→</span>
             <PageLink name="募資類型選擇" component="FundingSelection" isComponent />
             <span className="text-muted-foreground">→</span>
