@@ -49,7 +49,7 @@ const FeaturedCampaigns = ({ onSelectCampaign, onViewAll }: FeaturedCampaignsPro
           return (
             <div
               key={campaign.id}
-              className="flex gap-3 p-3 bg-card rounded-lg border border-border cursor-pointer hover:bg-accent/50 transition-colors"
+              className="flex gap-3 p-3 bg-card rounded-xl shadow-card border border-border cursor-pointer"
               onClick={() => onSelectCampaign(campaign)}
             >
               <img
