@@ -6,6 +6,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from ".
 import { Button } from "./ui/button";
 import { useCampaigns, DonationRecord } from "@/contexts/CampaignsContext";
 import FundraisingSettings from "./FundraisingSettings";
+import WishlistItem from "./WishlistItem";
+import { CartItem } from "@/types";
 
 interface ProposalDetailData {
   id: string;
@@ -20,6 +22,7 @@ interface ProposalDetailData {
   notifyBeforeDeadline: boolean;
   notifyDays: number;
   donations: DonationRecord[];
+  products: CartItem[];
 }
 
 interface ProposalDetailProps {
@@ -125,6 +128,21 @@ const ProposalDetail = ({
             </Button>
           </div>
         )}
+
+        {/* Wishlist Section */}
+        {proposal.products.length > 0 && (
+          <div className="px-4 py-6">
+            <h3 className="text-lg font-medium text-foreground mb-4">我的願望清單</h3>
+            <div className="space-y-3">
+              {proposal.products.map((product) => (
+                <WishlistItem key={product.id} item={product} />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Divider */}
+        <div className="h-px bg-border" />
 
         {/* Settings Section */}
         <div className="px-4 py-6">
