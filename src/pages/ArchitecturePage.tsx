@@ -11,8 +11,8 @@ interface PageLinkProps {
 const PageLink = ({ name, component, route, isComponent }: PageLinkProps) => {
   if (route) {
     return (
-      <Link 
-        to={route} 
+      <Link
+        to={route}
         className="inline-flex items-center gap-1 px-2 py-1 bg-primary/10 hover:bg-primary/20 rounded text-primary text-xs font-medium transition-colors"
       >
         {name}
@@ -20,9 +20,11 @@ const PageLink = ({ name, component, route, isComponent }: PageLinkProps) => {
       </Link>
     );
   }
-  
+
   return (
-    <span className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium ${isComponent ? 'bg-secondary text-muted-foreground' : 'bg-accent/50 text-accent-foreground'}`}>
+    <span
+      className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium ${isComponent ? "bg-secondary text-muted-foreground" : "bg-accent/50 text-accent-foreground"}`}
+    >
       {name}
     </span>
   );
@@ -35,22 +37,22 @@ const ArchitecturePage = () => {
     // Main Entry
     { name: "首頁", component: "Index", route: "/" },
     { name: "LINE 授權", component: "LineAuthPage", isComponent: true },
-    
+
     // Navigation
     { name: "側邊選單", component: "SlideMenu", isComponent: true },
     { name: "所有募資活動", component: "AllCampaigns", isComponent: true },
     { name: "提案紀錄", component: "ProposalsLog", isComponent: true },
     { name: "贊助紀錄", component: "DonationsLog", isComponent: true },
     { name: "提案詳情", component: "ProposalDetail", isComponent: true },
-    
+
     // Products
     { name: "商品列表", component: "ProductGrid", isComponent: true },
     { name: "商品詳情", component: "ProductDrawer", isComponent: true },
     { name: "購物車", component: "CartDrawer", isComponent: true },
-    
+
     // Funding Selection
     { name: "募資類型選擇", component: "FundingSelection", isComponent: true },
-    
+
     // Personal Flow
     { name: "邀請設定", component: "InvitationSettings", isComponent: true },
     { name: "邀請確認", component: "InvitationConfirm", isComponent: true },
@@ -62,7 +64,7 @@ const ArchitecturePage = () => {
     { name: "信用卡表單", component: "CreditCardForm", isComponent: true },
     { name: "LINE Pay 表單", component: "LinePayForm", isComponent: true },
     { name: "付款完成", component: "PaymentComplete", isComponent: true },
-    
+
     // Public Flow
     { name: "主持人設定", component: "PublicHostSettings", isComponent: true },
     { name: "公開邀請設定", component: "PublicInvitationSettings", isComponent: true },
@@ -71,7 +73,7 @@ const ArchitecturePage = () => {
     { name: "公開募資參與", component: "PublicAttendFundraising", isComponent: true },
     { name: "公開付款表單", component: "PublicPaymentForm", isComponent: true },
     { name: "公開付款完成", component: "PublicPaymentComplete", isComponent: true },
-    
+
     // Static Pages
     { name: "關於我們", component: "AboutPage", route: "/about" },
     { name: "贊助政策", component: "SponsorPolicyPage", route: "/sponsor-policy" },
@@ -82,8 +84,8 @@ const ArchitecturePage = () => {
     { name: "聯絡我們", component: "ContactPage", route: "/contact" },
   ];
 
-  const routedPages = pages.filter(p => p.route);
-  const componentPages = pages.filter(p => p.isComponent);
+  const routedPages = pages.filter((p) => p.route);
+  const componentPages = pages.filter((p) => p.isComponent);
 
   return (
     <div className="min-h-screen bg-background">
@@ -135,7 +137,7 @@ const ArchitecturePage = () => {
         <section className="bg-card rounded-lg p-4 border border-border">
           <h2 className="text-base font-semibold text-foreground mb-2">首頁入口流程</h2>
           <p className="text-sm text-muted-foreground mb-4">
-            使用者進入首頁後，可瀏覽商品列表並點選商品查看詳情，加入購物車後可進行結帳。亦可透過側邊選單存取募資活動與紀錄管理功能。
+            使用者進入首頁後，可瀏覽商品列表並點選商品查看詳情，加入購物車後可進行發起募資的流程。亦可透過側邊選單存取募資活動與紀錄管理功能。
           </p>
           <div className="space-y-3">
             <div className="flex items-center gap-2 flex-wrap">
@@ -161,7 +163,7 @@ const ArchitecturePage = () => {
         <section className="bg-card rounded-lg p-4 border border-border">
           <h2 className="text-base font-semibold text-foreground mb-2">募資類型選擇</h2>
           <p className="text-sm text-muted-foreground mb-4">
-            完成購物車商品選擇後，使用者需選擇募資類型。「個人募資」適用於親友間的禮物募集，「公益募資」則適用於公開的慈善活動。
+            完成購物車商品選擇後，使用者需選擇募資類型。「個人募資」適用於親友間的禮物募集，「公益募資」則適用於公益活動。
           </p>
           <div className="flex items-center gap-2 flex-wrap">
             <PageLink name="購物車" component="CartDrawer" isComponent />
@@ -176,7 +178,8 @@ const ArchitecturePage = () => {
         <section className="bg-card rounded-lg p-4 border border-border">
           <h2 className="text-base font-semibold text-foreground mb-2">個人募資流程</h2>
           <p className="text-sm text-muted-foreground mb-4">
-            主辦人設定邀請函內容並確認後，可透過 LINE 分享給親友。受邀者點擊連結後可查看募資詳情並選擇贊助金額，最後透過信用卡或 LINE Pay 完成付款。
+            主辦人設定邀請函內容並確認後，可透過 LINE
+            或網址分享給親友。受邀者點擊連結後可查看募資詳情並選擇贊助金額，最後透過信用卡或 LINE Pay 完成付款。
           </p>
           <div className="space-y-2">
             <div className="flex items-center gap-2 flex-wrap">
@@ -311,9 +314,7 @@ const ArchitecturePage = () => {
         </section>
 
         {/* Last Updated */}
-        <div className="text-center text-xs text-muted-foreground py-4">
-          最後更新：2026 年 1 月
-        </div>
+        <div className="text-center text-xs text-muted-foreground py-4">最後更新：2026 年 1 月</div>
       </div>
     </div>
   );
