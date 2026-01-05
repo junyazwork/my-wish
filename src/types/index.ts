@@ -54,6 +54,10 @@ export interface PublicInvitationData {
   products: CartItem[];
   mediaItems?: MediaItemData[];
   aspectRatio?: AspectRatioType;
+  isPublic?: boolean;
+  messageBoard?: boolean;
+  notifyEnabled?: boolean;
+  notifyDays?: number;
 }
 
 export interface LineFriend {
