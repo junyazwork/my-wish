@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp, ExternalLink } from "lucide-react";
 import Header from "./Header";
 import { Progress } from "./ui/progress";
 import { useCampaigns, Campaign } from "@/contexts/CampaignsContext";
@@ -104,9 +104,10 @@ const DonationsLog = ({ onBack, onMenuClick, onCartClick, cartCount, onSelectCam
                 <div className="flex justify-between items-center mb-3">
                   <button
                     onClick={(e) => handleTitleClick(e, activity.id)}
-                    className="text-lg font-medium text-foreground hover:text-primary transition-colors text-left"
+                    className="flex items-center gap-1.5 text-lg font-medium text-foreground hover:text-primary transition-colors text-left"
                   >
                     {activity.name}
+                    <ExternalLink className="w-4 h-4" />
                   </button>
                   {isExpanded ? (
                     <ChevronUp className="w-5 h-5 text-muted-foreground" />
