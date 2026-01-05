@@ -7,6 +7,13 @@ import product4 from "@/assets/product-4.jpg";
 import product5 from "@/assets/product-5.jpg";
 import product6 from "@/assets/product-6.jpg";
 
+export interface MediaItem {
+  id: string;
+  type: "image" | "video";
+  url: string;
+  aspectRatio?: "3:4" | "1:1" | "9:16";
+}
+
 export interface Campaign {
   id: string;
   title: string;
@@ -28,6 +35,9 @@ export interface Campaign {
   notifyDays?: number;
   donations?: DonationRecord[];
   products?: CartItem[];
+  mediaItems?: MediaItem[];
+  message?: string;
+  name?: string;
 }
 
 export interface DonationRecord {
@@ -73,7 +83,12 @@ const initialCampaigns: Campaign[] = [
     products: [
       { id: "p1", name: "精選咖啡禮盒", price: 580, image: product1, category: "食品", quantity: 2 },
       { id: "p2", name: "手工餅乾組合", price: 320, image: product2, category: "食品", quantity: 1 },
-    ]
+    ],
+    mediaItems: [
+      { id: "m1", type: "image", url: product1, aspectRatio: "3:4" }
+    ],
+    message: "希望大家能支持這次的夏令營活動！",
+    name: "Zimmer"
   },
   {
     id: "2",
@@ -96,7 +111,12 @@ const initialCampaigns: Campaign[] = [
     donations: [],
     products: [
       { id: "p3", name: "教育圖書套組", price: 1200, image: product2, category: "教育", quantity: 3 },
-    ]
+    ],
+    mediaItems: [
+      { id: "m2", type: "image", url: product2, aspectRatio: "3:4" }
+    ],
+    message: "讓每個孩子都有平等的學習機會",
+    name: "教育基金會"
   },
   // From AllCampaigns - 最新募資
   {
@@ -120,7 +140,12 @@ const initialCampaigns: Campaign[] = [
     donations: [],
     products: [
       { id: "p4", name: "環保淨灘工具組", price: 450, image: product3, category: "環保", quantity: 5 },
-    ]
+    ],
+    mediaItems: [
+      { id: "m3", type: "image", url: product3, aspectRatio: "1:1" }
+    ],
+    message: "一起守護我們的海洋",
+    name: "海洋守護者"
   },
   {
     id: "4",
@@ -143,7 +168,12 @@ const initialCampaigns: Campaign[] = [
     donations: [],
     products: [
       { id: "p5", name: "營養餐點食材", price: 280, image: product4, category: "食品", quantity: 10 },
-    ]
+    ],
+    mediaItems: [
+      { id: "m4", type: "image", url: product4, aspectRatio: "3:4" }
+    ],
+    message: "關懷長者，從一餐開始",
+    name: "銀髮關懷協會"
   },
   // From AllCampaigns - 已結束
   {
@@ -170,7 +200,12 @@ const initialCampaigns: Campaign[] = [
     ],
     products: [
       { id: "p6", name: "兒童繪本經典套書", price: 890, image: product5, category: "書籍", quantity: 4 },
-    ]
+    ],
+    mediaItems: [
+      { id: "m5", type: "image", url: product5, aspectRatio: "3:4" }
+    ],
+    message: "讓閱讀的種子在每個孩子心中發芽",
+    name: "閱讀推廣協會"
   },
   {
     id: "6",
@@ -194,7 +229,12 @@ const initialCampaigns: Campaign[] = [
     products: [
       { id: "p7", name: "寵物飼料大包裝", price: 650, image: product6, category: "寵物", quantity: 8 },
       { id: "p8", name: "寵物醫療用品", price: 420, image: product6, category: "寵物", quantity: 3 },
-    ]
+    ],
+    mediaItems: [
+      { id: "m6", type: "image", url: product6, aspectRatio: "1:1" }
+    ],
+    message: "給流浪毛孩一個溫暖的家",
+    name: "動物之家"
   }
 ];
 
