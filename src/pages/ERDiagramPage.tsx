@@ -98,97 +98,252 @@ const ERDiagramPage = () => {
           </div>
         </section>
 
-        {/* Entity Descriptions */}
-        <section className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mb-8">
-          <div className="bg-card rounded-lg border p-4">
-            <h3 className="font-bold text-primary mb-2">👤 User</h3>
-            <p className="text-sm text-muted-foreground mb-2">系統使用者，可以是募資發起人或贊助者</p>
-            <ul className="text-xs space-y-1 text-muted-foreground">
-              <li>• id: 唯一識別碼</li>
-              <li>• name: 使用者名稱</li>
-              <li>• email: 電子郵件</li>
-              <li>• avatar: 頭像圖片</li>
-              <li>• phone: 聯絡電話</li>
-            </ul>
+        {/* Detailed Schema Definitions */}
+        <section className="space-y-6 mb-8">
+          <h2 className="text-lg font-bold">📋 資料表欄位詳細定義</h2>
+          
+          {/* User Table */}
+          <div className="bg-card rounded-lg border overflow-hidden">
+            <div className="bg-primary/10 px-4 py-3 border-b">
+              <h3 className="font-bold text-primary">👤 User (使用者)</h3>
+              <p className="text-xs text-muted-foreground">系統使用者，可以是募資發起人或贊助者</p>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="bg-muted/50">
+                  <tr>
+                    <th className="text-left px-4 py-2 font-medium">欄位名稱</th>
+                    <th className="text-left px-4 py-2 font-medium">資料型態</th>
+                    <th className="text-left px-4 py-2 font-medium">約束條件</th>
+                    <th className="text-left px-4 py-2 font-medium">說明</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y">
+                  <tr><td className="px-4 py-2 font-mono text-xs">id</td><td className="px-4 py-2 font-mono text-xs">UUID</td><td className="px-4 py-2"><span className="bg-primary/20 text-primary text-xs px-1.5 py-0.5 rounded">PK</span></td><td className="px-4 py-2 text-muted-foreground">唯一識別碼</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">name</td><td className="px-4 py-2 font-mono text-xs">VARCHAR(100)</td><td className="px-4 py-2"><span className="bg-destructive/20 text-destructive text-xs px-1.5 py-0.5 rounded">NOT NULL</span></td><td className="px-4 py-2 text-muted-foreground">使用者名稱</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">email</td><td className="px-4 py-2 font-mono text-xs">VARCHAR(255)</td><td className="px-4 py-2"><span className="bg-destructive/20 text-destructive text-xs px-1.5 py-0.5 rounded">NOT NULL</span> <span className="bg-accent/50 text-accent-foreground text-xs px-1.5 py-0.5 rounded">UNIQUE</span></td><td className="px-4 py-2 text-muted-foreground">電子郵件（唯一）</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">avatar</td><td className="px-4 py-2 font-mono text-xs">TEXT</td><td className="px-4 py-2"><span className="bg-muted text-muted-foreground text-xs px-1.5 py-0.5 rounded">NULLABLE</span></td><td className="px-4 py-2 text-muted-foreground">頭像圖片 URL</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">phone</td><td className="px-4 py-2 font-mono text-xs">VARCHAR(20)</td><td className="px-4 py-2"><span className="bg-muted text-muted-foreground text-xs px-1.5 py-0.5 rounded">NULLABLE</span></td><td className="px-4 py-2 text-muted-foreground">聯絡電話</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">line_id</td><td className="px-4 py-2 font-mono text-xs">VARCHAR(50)</td><td className="px-4 py-2"><span className="bg-muted text-muted-foreground text-xs px-1.5 py-0.5 rounded">NULLABLE</span> <span className="bg-accent/50 text-accent-foreground text-xs px-1.5 py-0.5 rounded">UNIQUE</span></td><td className="px-4 py-2 text-muted-foreground">LINE 用戶 ID</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">created_at</td><td className="px-4 py-2 font-mono text-xs">TIMESTAMPTZ</td><td className="px-4 py-2"><span className="bg-secondary text-secondary-foreground text-xs px-1.5 py-0.5 rounded">DEFAULT NOW()</span></td><td className="px-4 py-2 text-muted-foreground">建立時間</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">updated_at</td><td className="px-4 py-2 font-mono text-xs">TIMESTAMPTZ</td><td className="px-4 py-2"><span className="bg-secondary text-secondary-foreground text-xs px-1.5 py-0.5 rounded">DEFAULT NOW()</span></td><td className="px-4 py-2 text-muted-foreground">更新時間</td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
 
-          <div className="bg-card rounded-lg border p-4">
-            <h3 className="font-bold text-primary mb-2">🎯 Campaign</h3>
-            <p className="text-sm text-muted-foreground mb-2">募資活動，包含個人禮物募資與公益募資</p>
-            <ul className="text-xs space-y-1 text-muted-foreground">
-              <li>• id: 唯一識別碼</li>
-              <li>• host_id: 發起人 (FK → User)</li>
-              <li>• type: 類型 (personal/public)</li>
-              <li>• status: 狀態 (active/completed/cancelled)</li>
-              <li>• visibility: 可見性設定</li>
-            </ul>
+          {/* Campaign Table */}
+          <div className="bg-card rounded-lg border overflow-hidden">
+            <div className="bg-primary/10 px-4 py-3 border-b">
+              <h3 className="font-bold text-primary">🎯 Campaign (募資活動)</h3>
+              <p className="text-xs text-muted-foreground">募資活動，包含個人禮物募資與公益募資</p>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="bg-muted/50">
+                  <tr>
+                    <th className="text-left px-4 py-2 font-medium">欄位名稱</th>
+                    <th className="text-left px-4 py-2 font-medium">資料型態</th>
+                    <th className="text-left px-4 py-2 font-medium">約束條件</th>
+                    <th className="text-left px-4 py-2 font-medium">說明</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y">
+                  <tr><td className="px-4 py-2 font-mono text-xs">id</td><td className="px-4 py-2 font-mono text-xs">UUID</td><td className="px-4 py-2"><span className="bg-primary/20 text-primary text-xs px-1.5 py-0.5 rounded">PK</span></td><td className="px-4 py-2 text-muted-foreground">唯一識別碼</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">host_id</td><td className="px-4 py-2 font-mono text-xs">UUID</td><td className="px-4 py-2"><span className="bg-blue-500/20 text-blue-600 text-xs px-1.5 py-0.5 rounded">FK → User</span> <span className="bg-destructive/20 text-destructive text-xs px-1.5 py-0.5 rounded">NOT NULL</span></td><td className="px-4 py-2 text-muted-foreground">發起人 ID</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">title</td><td className="px-4 py-2 font-mono text-xs">VARCHAR(200)</td><td className="px-4 py-2"><span className="bg-destructive/20 text-destructive text-xs px-1.5 py-0.5 rounded">NOT NULL</span></td><td className="px-4 py-2 text-muted-foreground">活動標題</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">description</td><td className="px-4 py-2 font-mono text-xs">TEXT</td><td className="px-4 py-2"><span className="bg-muted text-muted-foreground text-xs px-1.5 py-0.5 rounded">NULLABLE</span></td><td className="px-4 py-2 text-muted-foreground">活動描述</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">type</td><td className="px-4 py-2 font-mono text-xs">ENUM</td><td className="px-4 py-2"><span className="bg-destructive/20 text-destructive text-xs px-1.5 py-0.5 rounded">NOT NULL</span></td><td className="px-4 py-2 text-muted-foreground">'personal' | 'public'</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">status</td><td className="px-4 py-2 font-mono text-xs">ENUM</td><td className="px-4 py-2"><span className="bg-secondary text-secondary-foreground text-xs px-1.5 py-0.5 rounded">DEFAULT 'draft'</span></td><td className="px-4 py-2 text-muted-foreground">'draft' | 'active' | 'completed' | 'cancelled'</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">deadline</td><td className="px-4 py-2 font-mono text-xs">DATE</td><td className="px-4 py-2"><span className="bg-destructive/20 text-destructive text-xs px-1.5 py-0.5 rounded">NOT NULL</span></td><td className="px-4 py-2 text-muted-foreground">截止日期</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">goal_amount</td><td className="px-4 py-2 font-mono text-xs">DECIMAL(12,2)</td><td className="px-4 py-2"><span className="bg-muted text-muted-foreground text-xs px-1.5 py-0.5 rounded">NULLABLE</span></td><td className="px-4 py-2 text-muted-foreground">目標金額（公益用）</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">current_amount</td><td className="px-4 py-2 font-mono text-xs">DECIMAL(12,2)</td><td className="px-4 py-2"><span className="bg-secondary text-secondary-foreground text-xs px-1.5 py-0.5 rounded">DEFAULT 0</span></td><td className="px-4 py-2 text-muted-foreground">目前募得金額</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">visibility</td><td className="px-4 py-2 font-mono text-xs">ENUM</td><td className="px-4 py-2"><span className="bg-secondary text-secondary-foreground text-xs px-1.5 py-0.5 rounded">DEFAULT 'private'</span></td><td className="px-4 py-2 text-muted-foreground">'private' | 'unlisted' | 'public'</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">message_board</td><td className="px-4 py-2 font-mono text-xs">BOOLEAN</td><td className="px-4 py-2"><span className="bg-secondary text-secondary-foreground text-xs px-1.5 py-0.5 rounded">DEFAULT FALSE</span></td><td className="px-4 py-2 text-muted-foreground">是否開啟留言板</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">notify_enabled</td><td className="px-4 py-2 font-mono text-xs">BOOLEAN</td><td className="px-4 py-2"><span className="bg-secondary text-secondary-foreground text-xs px-1.5 py-0.5 rounded">DEFAULT TRUE</span></td><td className="px-4 py-2 text-muted-foreground">是否開啟通知</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">notify_days</td><td className="px-4 py-2 font-mono text-xs">INTEGER</td><td className="px-4 py-2"><span className="bg-secondary text-secondary-foreground text-xs px-1.5 py-0.5 rounded">DEFAULT 3</span></td><td className="px-4 py-2 text-muted-foreground">提前通知天數</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">created_at</td><td className="px-4 py-2 font-mono text-xs">TIMESTAMPTZ</td><td className="px-4 py-2"><span className="bg-secondary text-secondary-foreground text-xs px-1.5 py-0.5 rounded">DEFAULT NOW()</span></td><td className="px-4 py-2 text-muted-foreground">建立時間</td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
 
-          <div className="bg-card rounded-lg border p-4">
-            <h3 className="font-bold text-primary mb-2">🛍️ Product</h3>
-            <p className="text-sm text-muted-foreground mb-2">可贊助的商品項目</p>
-            <ul className="text-xs space-y-1 text-muted-foreground">
-              <li>• id: 唯一識別碼</li>
-              <li>• name: 商品名稱</li>
-              <li>• price: 價格</li>
-              <li>• category: 分類</li>
-              <li>• subcategory: 子分類</li>
-            </ul>
+          {/* Product Table */}
+          <div className="bg-card rounded-lg border overflow-hidden">
+            <div className="bg-primary/10 px-4 py-3 border-b">
+              <h3 className="font-bold text-primary">🛍️ Product (商品)</h3>
+              <p className="text-xs text-muted-foreground">可贊助的商品項目</p>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="bg-muted/50">
+                  <tr>
+                    <th className="text-left px-4 py-2 font-medium">欄位名稱</th>
+                    <th className="text-left px-4 py-2 font-medium">資料型態</th>
+                    <th className="text-left px-4 py-2 font-medium">約束條件</th>
+                    <th className="text-left px-4 py-2 font-medium">說明</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y">
+                  <tr><td className="px-4 py-2 font-mono text-xs">id</td><td className="px-4 py-2 font-mono text-xs">UUID</td><td className="px-4 py-2"><span className="bg-primary/20 text-primary text-xs px-1.5 py-0.5 rounded">PK</span></td><td className="px-4 py-2 text-muted-foreground">唯一識別碼</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">name</td><td className="px-4 py-2 font-mono text-xs">VARCHAR(200)</td><td className="px-4 py-2"><span className="bg-destructive/20 text-destructive text-xs px-1.5 py-0.5 rounded">NOT NULL</span></td><td className="px-4 py-2 text-muted-foreground">商品名稱</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">price</td><td className="px-4 py-2 font-mono text-xs">DECIMAL(10,2)</td><td className="px-4 py-2"><span className="bg-destructive/20 text-destructive text-xs px-1.5 py-0.5 rounded">NOT NULL</span></td><td className="px-4 py-2 text-muted-foreground">商品價格</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">image</td><td className="px-4 py-2 font-mono text-xs">TEXT</td><td className="px-4 py-2"><span className="bg-destructive/20 text-destructive text-xs px-1.5 py-0.5 rounded">NOT NULL</span></td><td className="px-4 py-2 text-muted-foreground">商品圖片 URL</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">category</td><td className="px-4 py-2 font-mono text-xs">VARCHAR(50)</td><td className="px-4 py-2"><span className="bg-destructive/20 text-destructive text-xs px-1.5 py-0.5 rounded">NOT NULL</span></td><td className="px-4 py-2 text-muted-foreground">商品分類</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">subcategory</td><td className="px-4 py-2 font-mono text-xs">VARCHAR(50)</td><td className="px-4 py-2"><span className="bg-muted text-muted-foreground text-xs px-1.5 py-0.5 rounded">NULLABLE</span></td><td className="px-4 py-2 text-muted-foreground">商品子分類</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">description</td><td className="px-4 py-2 font-mono text-xs">TEXT</td><td className="px-4 py-2"><span className="bg-muted text-muted-foreground text-xs px-1.5 py-0.5 rounded">NULLABLE</span></td><td className="px-4 py-2 text-muted-foreground">商品描述</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">is_active</td><td className="px-4 py-2 font-mono text-xs">BOOLEAN</td><td className="px-4 py-2"><span className="bg-secondary text-secondary-foreground text-xs px-1.5 py-0.5 rounded">DEFAULT TRUE</span></td><td className="px-4 py-2 text-muted-foreground">是否上架</td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
 
-          <div className="bg-card rounded-lg border p-4">
-            <h3 className="font-bold text-primary mb-2">💝 Donation</h3>
-            <p className="text-sm text-muted-foreground mb-2">贊助紀錄，記錄每筆贊助詳情</p>
-            <ul className="text-xs space-y-1 text-muted-foreground">
-              <li>• campaign_id: 所屬活動 (FK)</li>
-              <li>• donor_id: 贊助者 (FK → User)</li>
-              <li>• product_id: 贊助商品 (FK)</li>
-              <li>• amount: 金額</li>
-              <li>• payment_method: 付款方式</li>
-            </ul>
+          {/* Donation Table */}
+          <div className="bg-card rounded-lg border overflow-hidden">
+            <div className="bg-primary/10 px-4 py-3 border-b">
+              <h3 className="font-bold text-primary">💝 Donation (贊助紀錄)</h3>
+              <p className="text-xs text-muted-foreground">記錄每筆贊助詳情</p>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="bg-muted/50">
+                  <tr>
+                    <th className="text-left px-4 py-2 font-medium">欄位名稱</th>
+                    <th className="text-left px-4 py-2 font-medium">資料型態</th>
+                    <th className="text-left px-4 py-2 font-medium">約束條件</th>
+                    <th className="text-left px-4 py-2 font-medium">說明</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y">
+                  <tr><td className="px-4 py-2 font-mono text-xs">id</td><td className="px-4 py-2 font-mono text-xs">UUID</td><td className="px-4 py-2"><span className="bg-primary/20 text-primary text-xs px-1.5 py-0.5 rounded">PK</span></td><td className="px-4 py-2 text-muted-foreground">唯一識別碼</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">campaign_id</td><td className="px-4 py-2 font-mono text-xs">UUID</td><td className="px-4 py-2"><span className="bg-blue-500/20 text-blue-600 text-xs px-1.5 py-0.5 rounded">FK → Campaign</span> <span className="bg-destructive/20 text-destructive text-xs px-1.5 py-0.5 rounded">NOT NULL</span></td><td className="px-4 py-2 text-muted-foreground">所屬活動 ID</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">donor_id</td><td className="px-4 py-2 font-mono text-xs">UUID</td><td className="px-4 py-2"><span className="bg-blue-500/20 text-blue-600 text-xs px-1.5 py-0.5 rounded">FK → User</span> <span className="bg-muted text-muted-foreground text-xs px-1.5 py-0.5 rounded">NULLABLE</span></td><td className="px-4 py-2 text-muted-foreground">贊助者 ID（可匿名）</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">product_id</td><td className="px-4 py-2 font-mono text-xs">UUID</td><td className="px-4 py-2"><span className="bg-blue-500/20 text-blue-600 text-xs px-1.5 py-0.5 rounded">FK → Product</span> <span className="bg-muted text-muted-foreground text-xs px-1.5 py-0.5 rounded">NULLABLE</span></td><td className="px-4 py-2 text-muted-foreground">贊助商品 ID</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">amount</td><td className="px-4 py-2 font-mono text-xs">DECIMAL(10,2)</td><td className="px-4 py-2"><span className="bg-destructive/20 text-destructive text-xs px-1.5 py-0.5 rounded">NOT NULL</span></td><td className="px-4 py-2 text-muted-foreground">贊助金額</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">quantity</td><td className="px-4 py-2 font-mono text-xs">INTEGER</td><td className="px-4 py-2"><span className="bg-secondary text-secondary-foreground text-xs px-1.5 py-0.5 rounded">DEFAULT 1</span></td><td className="px-4 py-2 text-muted-foreground">贊助數量</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">message</td><td className="px-4 py-2 font-mono text-xs">TEXT</td><td className="px-4 py-2"><span className="bg-muted text-muted-foreground text-xs px-1.5 py-0.5 rounded">NULLABLE</span></td><td className="px-4 py-2 text-muted-foreground">祝福留言</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">donor_name</td><td className="px-4 py-2 font-mono text-xs">VARCHAR(100)</td><td className="px-4 py-2"><span className="bg-muted text-muted-foreground text-xs px-1.5 py-0.5 rounded">NULLABLE</span></td><td className="px-4 py-2 text-muted-foreground">贊助者顯示名稱</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">is_anonymous</td><td className="px-4 py-2 font-mono text-xs">BOOLEAN</td><td className="px-4 py-2"><span className="bg-secondary text-secondary-foreground text-xs px-1.5 py-0.5 rounded">DEFAULT FALSE</span></td><td className="px-4 py-2 text-muted-foreground">是否匿名贊助</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">payment_method</td><td className="px-4 py-2 font-mono text-xs">ENUM</td><td className="px-4 py-2"><span className="bg-destructive/20 text-destructive text-xs px-1.5 py-0.5 rounded">NOT NULL</span></td><td className="px-4 py-2 text-muted-foreground">'credit_card' | 'line_pay'</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">status</td><td className="px-4 py-2 font-mono text-xs">ENUM</td><td className="px-4 py-2"><span className="bg-secondary text-secondary-foreground text-xs px-1.5 py-0.5 rounded">DEFAULT 'pending'</span></td><td className="px-4 py-2 text-muted-foreground">'pending' | 'completed' | 'failed' | 'refunded'</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">created_at</td><td className="px-4 py-2 font-mono text-xs">TIMESTAMPTZ</td><td className="px-4 py-2"><span className="bg-secondary text-secondary-foreground text-xs px-1.5 py-0.5 rounded">DEFAULT NOW()</span></td><td className="px-4 py-2 text-muted-foreground">建立時間</td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
 
-          <div className="bg-card rounded-lg border p-4">
-            <h3 className="font-bold text-primary mb-2">🔗 CampaignProduct</h3>
-            <p className="text-sm text-muted-foreground mb-2">活動與商品的關聯表</p>
-            <ul className="text-xs space-y-1 text-muted-foreground">
-              <li>• campaign_id: 所屬活動 (FK)</li>
-              <li>• product_id: 商品 (FK)</li>
-              <li>• quantity: 需求數量</li>
-            </ul>
+          {/* CampaignProduct Table */}
+          <div className="bg-card rounded-lg border overflow-hidden">
+            <div className="bg-primary/10 px-4 py-3 border-b">
+              <h3 className="font-bold text-primary">🔗 CampaignProduct (活動商品關聯)</h3>
+              <p className="text-xs text-muted-foreground">活動與商品的多對多關聯表</p>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="bg-muted/50">
+                  <tr>
+                    <th className="text-left px-4 py-2 font-medium">欄位名稱</th>
+                    <th className="text-left px-4 py-2 font-medium">資料型態</th>
+                    <th className="text-left px-4 py-2 font-medium">約束條件</th>
+                    <th className="text-left px-4 py-2 font-medium">說明</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y">
+                  <tr><td className="px-4 py-2 font-mono text-xs">id</td><td className="px-4 py-2 font-mono text-xs">UUID</td><td className="px-4 py-2"><span className="bg-primary/20 text-primary text-xs px-1.5 py-0.5 rounded">PK</span></td><td className="px-4 py-2 text-muted-foreground">唯一識別碼</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">campaign_id</td><td className="px-4 py-2 font-mono text-xs">UUID</td><td className="px-4 py-2"><span className="bg-blue-500/20 text-blue-600 text-xs px-1.5 py-0.5 rounded">FK → Campaign</span> <span className="bg-destructive/20 text-destructive text-xs px-1.5 py-0.5 rounded">NOT NULL</span></td><td className="px-4 py-2 text-muted-foreground">所屬活動 ID</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">product_id</td><td className="px-4 py-2 font-mono text-xs">UUID</td><td className="px-4 py-2"><span className="bg-blue-500/20 text-blue-600 text-xs px-1.5 py-0.5 rounded">FK → Product</span> <span className="bg-destructive/20 text-destructive text-xs px-1.5 py-0.5 rounded">NOT NULL</span></td><td className="px-4 py-2 text-muted-foreground">商品 ID</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">quantity</td><td className="px-4 py-2 font-mono text-xs">INTEGER</td><td className="px-4 py-2"><span className="bg-secondary text-secondary-foreground text-xs px-1.5 py-0.5 rounded">DEFAULT 1</span></td><td className="px-4 py-2 text-muted-foreground">需求數量</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">funded_quantity</td><td className="px-4 py-2 font-mono text-xs">INTEGER</td><td className="px-4 py-2"><span className="bg-secondary text-secondary-foreground text-xs px-1.5 py-0.5 rounded">DEFAULT 0</span></td><td className="px-4 py-2 text-muted-foreground">已募得數量</td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
 
-          <div className="bg-card rounded-lg border p-4">
-            <h3 className="font-bold text-primary mb-2">📷 MediaItem</h3>
-            <p className="text-sm text-muted-foreground mb-2">活動相關媒體檔案</p>
-            <ul className="text-xs space-y-1 text-muted-foreground">
-              <li>• campaign_id: 所屬活動 (FK)</li>
-              <li>• url: 媒體網址</li>
-              <li>• type: 類型 (image/video)</li>
-              <li>• order: 顯示順序</li>
-            </ul>
+          {/* MediaItem Table */}
+          <div className="bg-card rounded-lg border overflow-hidden">
+            <div className="bg-primary/10 px-4 py-3 border-b">
+              <h3 className="font-bold text-primary">📷 MediaItem (媒體檔案)</h3>
+              <p className="text-xs text-muted-foreground">活動相關媒體檔案</p>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="bg-muted/50">
+                  <tr>
+                    <th className="text-left px-4 py-2 font-medium">欄位名稱</th>
+                    <th className="text-left px-4 py-2 font-medium">資料型態</th>
+                    <th className="text-left px-4 py-2 font-medium">約束條件</th>
+                    <th className="text-left px-4 py-2 font-medium">說明</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y">
+                  <tr><td className="px-4 py-2 font-mono text-xs">id</td><td className="px-4 py-2 font-mono text-xs">UUID</td><td className="px-4 py-2"><span className="bg-primary/20 text-primary text-xs px-1.5 py-0.5 rounded">PK</span></td><td className="px-4 py-2 text-muted-foreground">唯一識別碼</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">campaign_id</td><td className="px-4 py-2 font-mono text-xs">UUID</td><td className="px-4 py-2"><span className="bg-blue-500/20 text-blue-600 text-xs px-1.5 py-0.5 rounded">FK → Campaign</span> <span className="bg-destructive/20 text-destructive text-xs px-1.5 py-0.5 rounded">NOT NULL</span></td><td className="px-4 py-2 text-muted-foreground">所屬活動 ID</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">url</td><td className="px-4 py-2 font-mono text-xs">TEXT</td><td className="px-4 py-2"><span className="bg-destructive/20 text-destructive text-xs px-1.5 py-0.5 rounded">NOT NULL</span></td><td className="px-4 py-2 text-muted-foreground">媒體檔案 URL</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">type</td><td className="px-4 py-2 font-mono text-xs">ENUM</td><td className="px-4 py-2"><span className="bg-destructive/20 text-destructive text-xs px-1.5 py-0.5 rounded">NOT NULL</span></td><td className="px-4 py-2 text-muted-foreground">'image' | 'video'</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">order_index</td><td className="px-4 py-2 font-mono text-xs">INTEGER</td><td className="px-4 py-2"><span className="bg-secondary text-secondary-foreground text-xs px-1.5 py-0.5 rounded">DEFAULT 0</span></td><td className="px-4 py-2 text-muted-foreground">顯示順序</td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
 
-          <div className="bg-card rounded-lg border p-4">
-            <h3 className="font-bold text-primary mb-2">✉️ Invitation</h3>
-            <p className="text-sm text-muted-foreground mb-2">邀請記錄</p>
-            <ul className="text-xs space-y-1 text-muted-foreground">
-              <li>• campaign_id: 所屬活動 (FK)</li>
-              <li>• inviter_id: 邀請人 (FK)</li>
-              <li>• invitee_id: 被邀請人 (FK)</li>
-              <li>• sent_via: 發送方式 (LINE/email)</li>
-            </ul>
+          {/* Invitation Table */}
+          <div className="bg-card rounded-lg border overflow-hidden">
+            <div className="bg-primary/10 px-4 py-3 border-b">
+              <h3 className="font-bold text-primary">✉️ Invitation (邀請記錄)</h3>
+              <p className="text-xs text-muted-foreground">活動邀請發送記錄</p>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="bg-muted/50">
+                  <tr>
+                    <th className="text-left px-4 py-2 font-medium">欄位名稱</th>
+                    <th className="text-left px-4 py-2 font-medium">資料型態</th>
+                    <th className="text-left px-4 py-2 font-medium">約束條件</th>
+                    <th className="text-left px-4 py-2 font-medium">說明</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y">
+                  <tr><td className="px-4 py-2 font-mono text-xs">id</td><td className="px-4 py-2 font-mono text-xs">UUID</td><td className="px-4 py-2"><span className="bg-primary/20 text-primary text-xs px-1.5 py-0.5 rounded">PK</span></td><td className="px-4 py-2 text-muted-foreground">唯一識別碼</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">campaign_id</td><td className="px-4 py-2 font-mono text-xs">UUID</td><td className="px-4 py-2"><span className="bg-blue-500/20 text-blue-600 text-xs px-1.5 py-0.5 rounded">FK → Campaign</span> <span className="bg-destructive/20 text-destructive text-xs px-1.5 py-0.5 rounded">NOT NULL</span></td><td className="px-4 py-2 text-muted-foreground">所屬活動 ID</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">inviter_id</td><td className="px-4 py-2 font-mono text-xs">UUID</td><td className="px-4 py-2"><span className="bg-blue-500/20 text-blue-600 text-xs px-1.5 py-0.5 rounded">FK → User</span> <span className="bg-destructive/20 text-destructive text-xs px-1.5 py-0.5 rounded">NOT NULL</span></td><td className="px-4 py-2 text-muted-foreground">邀請人 ID</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">invitee_id</td><td className="px-4 py-2 font-mono text-xs">UUID</td><td className="px-4 py-2"><span className="bg-blue-500/20 text-blue-600 text-xs px-1.5 py-0.5 rounded">FK → User</span> <span className="bg-muted text-muted-foreground text-xs px-1.5 py-0.5 rounded">NULLABLE</span></td><td className="px-4 py-2 text-muted-foreground">被邀請人 ID</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">invitee_contact</td><td className="px-4 py-2 font-mono text-xs">VARCHAR(255)</td><td className="px-4 py-2"><span className="bg-muted text-muted-foreground text-xs px-1.5 py-0.5 rounded">NULLABLE</span></td><td className="px-4 py-2 text-muted-foreground">被邀請人聯絡方式</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">status</td><td className="px-4 py-2 font-mono text-xs">ENUM</td><td className="px-4 py-2"><span className="bg-secondary text-secondary-foreground text-xs px-1.5 py-0.5 rounded">DEFAULT 'pending'</span></td><td className="px-4 py-2 text-muted-foreground">'pending' | 'sent' | 'viewed' | 'donated'</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">sent_via</td><td className="px-4 py-2 font-mono text-xs">ENUM</td><td className="px-4 py-2"><span className="bg-destructive/20 text-destructive text-xs px-1.5 py-0.5 rounded">NOT NULL</span></td><td className="px-4 py-2 text-muted-foreground">'line' | 'email' | 'link'</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">created_at</td><td className="px-4 py-2 font-mono text-xs">TIMESTAMPTZ</td><td className="px-4 py-2"><span className="bg-secondary text-secondary-foreground text-xs px-1.5 py-0.5 rounded">DEFAULT NOW()</span></td><td className="px-4 py-2 text-muted-foreground">建立時間</td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
 
-          <div className="bg-card rounded-lg border p-4">
-            <h3 className="font-bold text-primary mb-2">🔔 Notification</h3>
-            <p className="text-sm text-muted-foreground mb-2">系統通知</p>
-            <ul className="text-xs space-y-1 text-muted-foreground">
-              <li>• user_id: 接收者 (FK)</li>
-              <li>• campaign_id: 相關活動 (FK)</li>
-              <li>• type: 通知類型</li>
-              <li>• is_read: 已讀狀態</li>
-            </ul>
+          {/* Notification Table */}
+          <div className="bg-card rounded-lg border overflow-hidden">
+            <div className="bg-primary/10 px-4 py-3 border-b">
+              <h3 className="font-bold text-primary">🔔 Notification (系統通知)</h3>
+              <p className="text-xs text-muted-foreground">系統推播通知記錄</p>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="bg-muted/50">
+                  <tr>
+                    <th className="text-left px-4 py-2 font-medium">欄位名稱</th>
+                    <th className="text-left px-4 py-2 font-medium">資料型態</th>
+                    <th className="text-left px-4 py-2 font-medium">約束條件</th>
+                    <th className="text-left px-4 py-2 font-medium">說明</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y">
+                  <tr><td className="px-4 py-2 font-mono text-xs">id</td><td className="px-4 py-2 font-mono text-xs">UUID</td><td className="px-4 py-2"><span className="bg-primary/20 text-primary text-xs px-1.5 py-0.5 rounded">PK</span></td><td className="px-4 py-2 text-muted-foreground">唯一識別碼</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">user_id</td><td className="px-4 py-2 font-mono text-xs">UUID</td><td className="px-4 py-2"><span className="bg-blue-500/20 text-blue-600 text-xs px-1.5 py-0.5 rounded">FK → User</span> <span className="bg-destructive/20 text-destructive text-xs px-1.5 py-0.5 rounded">NOT NULL</span></td><td className="px-4 py-2 text-muted-foreground">接收者 ID</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">campaign_id</td><td className="px-4 py-2 font-mono text-xs">UUID</td><td className="px-4 py-2"><span className="bg-blue-500/20 text-blue-600 text-xs px-1.5 py-0.5 rounded">FK → Campaign</span> <span className="bg-muted text-muted-foreground text-xs px-1.5 py-0.5 rounded">NULLABLE</span></td><td className="px-4 py-2 text-muted-foreground">相關活動 ID</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">type</td><td className="px-4 py-2 font-mono text-xs">ENUM</td><td className="px-4 py-2"><span className="bg-destructive/20 text-destructive text-xs px-1.5 py-0.5 rounded">NOT NULL</span></td><td className="px-4 py-2 text-muted-foreground">'donation' | 'deadline' | 'completed' | 'system'</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">title</td><td className="px-4 py-2 font-mono text-xs">VARCHAR(200)</td><td className="px-4 py-2"><span className="bg-destructive/20 text-destructive text-xs px-1.5 py-0.5 rounded">NOT NULL</span></td><td className="px-4 py-2 text-muted-foreground">通知標題</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">message</td><td className="px-4 py-2 font-mono text-xs">TEXT</td><td className="px-4 py-2"><span className="bg-destructive/20 text-destructive text-xs px-1.5 py-0.5 rounded">NOT NULL</span></td><td className="px-4 py-2 text-muted-foreground">通知內容</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">is_read</td><td className="px-4 py-2 font-mono text-xs">BOOLEAN</td><td className="px-4 py-2"><span className="bg-secondary text-secondary-foreground text-xs px-1.5 py-0.5 rounded">DEFAULT FALSE</span></td><td className="px-4 py-2 text-muted-foreground">是否已讀</td></tr>
+                  <tr><td className="px-4 py-2 font-mono text-xs">created_at</td><td className="px-4 py-2 font-mono text-xs">TIMESTAMPTZ</td><td className="px-4 py-2"><span className="bg-secondary text-secondary-foreground text-xs px-1.5 py-0.5 rounded">DEFAULT NOW()</span></td><td className="px-4 py-2 text-muted-foreground">建立時間</td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </section>
 
