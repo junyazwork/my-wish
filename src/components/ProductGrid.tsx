@@ -20,7 +20,7 @@ const ProductGrid = ({ products, onProductClick, onAddToWishlist }: ProductGridP
     <div className="grid grid-cols-2 gap-3 p-4">
       {products.map((product) => (
         <ProductCard
-          key={product.id}
+          key={product.product_id}
           product={product}
           onClick={() => onProductClick(product)}
           onAddToWishlist={onAddToWishlist}

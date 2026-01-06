@@ -37,33 +37,33 @@ const AllCampaigns = ({
   }];
   const getFilteredCampaigns = () => {
     // Only show public campaigns in the list
-    const publicCampaigns = campaigns.filter(c => c.isPublic);
+    const publicCampaigns = campaigns.filter(c => c.campaign_is_public);
     
     switch (activeFilter) {
       case "ending":
         // Active campaigns with less than 5 days remaining
-        return publicCampaigns.filter(c => c.status === "active").sort((a, b) => {
+        return publicCampaigns.filter(c => c.campaign_status === "active").sort((a, b) => {
           // Sort by remaining time (shorter first)
           const getMinutes = (time: string) => {
             const days = parseInt(time.match(/(\d+)天/)?.[1] || "0");
             const hours = parseInt(time.match(/(\d+)時/)?.[1] || "0");
             return days * 24 * 60 + hours * 60;
           };
-          return getMinutes(a.remainingTime) - getMinutes(b.remainingTime);
+          return getMinutes(a.campaign_remaining_time) - getMinutes(b.campaign_remaining_time);
         });
       case "newest":
         // Sort by creation date (newest first)
-        return publicCampaigns.filter(c => c.status === "active").sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+        return publicCampaigns.filter(c => c.campaign_status === "active").sort((a, b) => b.campaign_created_at.getTime() - a.campaign_created_at.getTime());
       case "ended":
         // Only ended campaigns
-        return publicCampaigns.filter(c => c.status === "ended");
+        return publicCampaigns.filter(c => c.campaign_status === "ended");
       case "all":
       default:
         // All campaigns, active first
         return [...publicCampaigns].sort((a, b) => {
-          if (a.status === "active" && b.status === "ended") return -1;
-          if (a.status === "ended" && b.status === "active") return 1;
-          return b.createdAt.getTime() - a.createdAt.getTime();
+          if (a.campaign_status === "active" && b.campaign_status === "ended") return -1;
+          if (a.campaign_status === "ended" && b.campaign_status === "active") return 1;
+          return b.campaign_created_at.getTime() - a.campaign_created_at.getTime();
         });
     }
   };
@@ -105,19 +105,19 @@ const AllCampaigns = ({
         {filteredCampaigns.length === 0 ? <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
             <p>目前沒有符合條件的募資活動</p>
           </div> : filteredCampaigns.map(campaign => {
-            const goalReached = isGoalReached(campaign.currentAmount, campaign.goalAmount);
-            const isDisabled = campaign.status === "ended" || goalReached;
+            const goalReached = isGoalReached(campaign.campaign_current_amount, campaign.campaign_goal_amount);
+            const isDisabled = campaign.campaign_status === "ended" || goalReached;
             
             return (
-              <div key={campaign.id} className="bg-card rounded-2xl overflow-hidden shadow-sm border border-border">
+              <div key={campaign.campaign_id} className="bg-card rounded-2xl overflow-hidden shadow-sm border border-border">
                 {/* Campaign Image - Use mediaItems first, fallback to image */}
                 <div className="aspect-[4/3] overflow-hidden relative">
                   <img 
-                    src={campaign.mediaItems?.[0]?.url || campaign.image} 
-                    alt={campaign.title} 
+                    src={campaign.mediaItems?.[0]?.media_url || campaign.campaign_image} 
+                    alt={campaign.campaign_title} 
                     className="w-full h-full object-cover" 
                   />
-                  {(campaign.status === "ended" || goalReached) && <div className="absolute inset-0 bg-foreground/50 flex items-center justify-center">
+                  {(campaign.campaign_status === "ended" || goalReached) && <div className="absolute inset-0 bg-foreground/50 flex items-center justify-center">
                       <div className="bg-background/90 rounded-full px-4 py-2 flex items-center gap-2">
                         <CheckCircle size={18} className="text-success" />
                         <span className="font-medium text-foreground">已達成目標</span>
@@ -128,22 +128,22 @@ const AllCampaigns = ({
                 {/* Campaign Info */}
                 <div className="p-4 space-y-3">
                   <h3 className="text-lg font-semibold text-foreground">
-                    {campaign.title}
+                    {campaign.campaign_title}
                   </h3>
                   <p className="text-sm text-muted-foreground line-clamp-2">
-                    {campaign.description}
+                    {campaign.campaign_description}
                   </p>
 
                   {/* Organizer and Time */}
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-muted-foreground">
-                      發起人 <span className="text-foreground">{campaign.organizer}</span>
+                      發起人 <span className="text-foreground">{campaign.campaign_organizer}</span>
                     </span>
                     <div className="flex items-center gap-1 text-muted-foreground">
                       <Hourglass size={14} />
                       <span>募資倒數</span>
-                      <span className={campaign.status === "ended" ? "text-muted-foreground" : "text-primary"}>
-                        {campaign.remainingTime}
+                      <span className={campaign.campaign_status === "ended" ? "text-muted-foreground" : "text-primary"}>
+                        {campaign.campaign_remaining_time}
                       </span>
                     </div>
                   </div>
@@ -153,20 +153,20 @@ const AllCampaigns = ({
                     <div>
                       <p className="text-xs text-muted-foreground">已募得</p>
                       <p className={`text-xl font-bold ${goalReached ? "text-success" : "text-primary"}`}>
-                        ${campaign.currentAmount.toLocaleString()}
+                        ${campaign.campaign_current_amount.toLocaleString()}
                       </p>
                     </div>
                     <div className="text-right">
                       <p className="text-xs text-muted-foreground">目標金額</p>
                       <p className="text-xl font-semibold text-foreground">
-                        $ {campaign.goalAmount.toLocaleString()}
+                        $ {campaign.campaign_goal_amount.toLocaleString()}
                       </p>
                     </div>
                   </div>
 
                   {/* Progress Bar */}
                   <Progress 
-                    value={getProgressPercentage(campaign.currentAmount, campaign.goalAmount)} 
+                    value={getProgressPercentage(campaign.campaign_current_amount, campaign.campaign_goal_amount)} 
                     className="h-2" 
                     indicatorClassName={goalReached ? "bg-success" : undefined}
                   />
@@ -174,7 +174,7 @@ const AllCampaigns = ({
                   {/* Participants */}
                   <p className="text-sm text-muted-foreground">
                     <span className="text-lg font-semibold text-foreground">
-                      {campaign.participants}
+                      {campaign.campaign_participants}
                     </span>{" "}
                     人已參與
                   </p>
@@ -185,7 +185,7 @@ const AllCampaigns = ({
                     disabled={isDisabled} 
                     className={`w-full rounded-full py-6 ${isDisabled ? "bg-muted text-muted-foreground cursor-not-allowed" : "bg-primary hover:bg-primary/90 text-primary-foreground"}`}
                   >
-                    {campaign.status === "ended" ? "募資已結束" : goalReached ? "已達標" : "贊助"}
+                    {campaign.campaign_status === "ended" ? "募資已結束" : goalReached ? "已達標" : "贊助"}
                   </Button>
                 </div>
               </div>

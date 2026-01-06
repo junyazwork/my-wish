@@ -15,7 +15,7 @@ const FeaturedCampaigns = ({ onSelectCampaign, onViewAll }: FeaturedCampaignsPro
   // Get 3 random active campaigns that are ending soon (public only)
   const featuredCampaigns = useMemo(() => {
     const activeCampaigns = campaigns.filter(
-      (c) => c.status === "active" && c.isPublic
+      (c) => c.campaign_status === "active" && c.campaign_is_public
     );
     // Sort by remaining time (ending soon first) and pick random 3
     const shuffled = [...activeCampaigns].sort(() => Math.random() - 0.5);
@@ -41,28 +41,28 @@ const FeaturedCampaigns = ({ onSelectCampaign, onViewAll }: FeaturedCampaignsPro
       <div className="space-y-3">
         {featuredCampaigns.map((campaign) => {
           const progress = Math.min(
-            (campaign.currentAmount / campaign.goalAmount) * 100,
+            (campaign.campaign_current_amount / campaign.campaign_goal_amount) * 100,
             100
           );
-          const isGoalReached = campaign.currentAmount >= campaign.goalAmount && campaign.goalAmount > 0;
+          const isGoalReached = campaign.campaign_current_amount >= campaign.campaign_goal_amount && campaign.campaign_goal_amount > 0;
 
           return (
             <div
-              key={campaign.id}
+              key={campaign.campaign_id}
               className="flex gap-3 p-3 bg-card rounded-xl shadow-card border border-border cursor-pointer"
               onClick={() => onSelectCampaign(campaign)}
             >
               <img
-                src={campaign.mediaItems?.[0]?.url || campaign.image}
-                alt={campaign.title}
+                src={campaign.mediaItems?.[0]?.media_url || campaign.campaign_image}
+                alt={campaign.campaign_title}
                 className="w-20 h-20 object-cover rounded-md flex-shrink-0"
               />
               <div className="flex-1 min-w-0">
                 <h3 className="font-medium text-sm text-foreground line-clamp-1">
-                  {campaign.title}
+                  {campaign.campaign_title}
                 </h3>
                 <p className="text-xs text-muted-foreground mt-1 line-clamp-1">
-                  {campaign.organizer}
+                  {campaign.campaign_organizer}
                 </p>
                 <div className="mt-2">
                   <Progress 
@@ -72,10 +72,10 @@ const FeaturedCampaigns = ({ onSelectCampaign, onViewAll }: FeaturedCampaignsPro
                   />
                   <div className="flex justify-between items-center mt-1">
                     <span className={`text-xs font-medium ${isGoalReached ? "text-success" : "text-primary"}`}>
-                      ${campaign.currentAmount.toLocaleString()}
+                      ${campaign.campaign_current_amount.toLocaleString()}
                     </span>
                     <span className="text-xs text-muted-foreground">
-                      {isGoalReached ? "已達標" : `剩餘 ${campaign.remainingTime}`}
+                      {isGoalReached ? "已達標" : `剩餘 ${campaign.campaign_remaining_time}`}
                     </span>
                   </div>
                 </div>

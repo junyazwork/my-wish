@@ -41,8 +41,8 @@ const ProductDrawer = ({ product, isOpen, onClose, onAddToCart }: ProductDrawerP
         {/* Product Image */}
         <div className="aspect-[4/3] bg-secondary/30 overflow-hidden">
           <img
-            src={product.image}
-            alt={product.name}
+            src={product.product_image}
+            alt={product.product_name}
             className="w-full h-full object-contain"
           />
         </div>
@@ -50,10 +50,10 @@ const ProductDrawer = ({ product, isOpen, onClose, onAddToCart }: ProductDrawerP
         {/* Product Info */}
         <div className="p-5 pb-8">
           <p className="text-xl font-bold text-primary mb-2">
-            ${product.price.toLocaleString()}
+            ${product.product_price.toLocaleString()}
           </p>
           <h2 className="text-base font-semibold text-foreground mb-6 leading-relaxed">
-            {product.name}
+            {product.product_name}
           </h2>
 
           {/* Quantity Selector */}
