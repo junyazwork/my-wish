@@ -20,7 +20,7 @@ const CartDrawer = ({
   onContinueShopping,
   onConfirm,
 }: CartDrawerProps) => {
-  const totalAmount = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const totalAmount = cartItems.reduce((sum, item) => sum + item.product_price * item.quantity, 0);
 
   if (!isOpen) return null;
 
@@ -57,29 +57,29 @@ const CartDrawer = ({
         ) : (
           <div className="divide-y divide-border">
             {cartItems.map((item) => (
-              <div key={item.id} className="p-4">
-                <h3 className="text-foreground font-medium leading-relaxed mb-2">{item.name}</h3>
+              <div key={item.product_id} className="p-4">
+                <h3 className="text-foreground font-medium leading-relaxed mb-2">{item.product_name}</h3>
                 <div className="flex items-center justify-between">
                   <span className="text-muted-foreground">
-                    {item.price.toLocaleString()} x {item.quantity}
+                    {item.product_price.toLocaleString()} x {item.quantity}
                   </span>
                   <div className="flex items-center gap-2">
                     <button
-                      onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
+                      onClick={() => onUpdateQuantity(item.product_id, item.quantity + 1)}
                       className="w-9 h-9 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-foreground transition-colors"
                     >
                       <Plus size={18} />
                     </button>
                     <button
                       onClick={() =>
-                        item.quantity > 1 ? onUpdateQuantity(item.id, item.quantity - 1) : onRemoveItem(item.id)
+                        item.quantity > 1 ? onUpdateQuantity(item.product_id, item.quantity - 1) : onRemoveItem(item.product_id)
                       }
                       className="w-9 h-9 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-foreground transition-colors"
                     >
                       <Minus size={18} />
                     </button>
                     <button
-                      onClick={() => onRemoveItem(item.id)}
+                      onClick={() => onRemoveItem(item.product_id)}
                       className="w-9 h-9 rounded-full bg-destructive/10 flex items-center justify-center text-destructive hover:bg-destructive/20 transition-colors"
                     >
                       <Trash2 size={18} />

@@ -5,15 +5,15 @@ import { Progress } from "./ui/progress";
 import { useCampaigns, Campaign } from "@/contexts/CampaignsContext";
 
 interface DonationRecord {
-  id: string;
-  date: string;
-  amount: number;
+  donation_id: string;
+  donation_date: string;
+  donation_amount: number;
   status: "success" | "failed";
 }
 
 interface FundraisingActivity {
-  id: string;
-  name: string;
+  activity_id: string;
+  activity_name: string;
   currentAmount: number;
   goalAmount: number;
   donations: DonationRecord[];
@@ -33,14 +33,14 @@ const DonationsLog = ({ onBack, onMenuClick, onCartClick, cartCount, onSelectCam
 
   // Transform campaigns to activities format
   const activities: FundraisingActivity[] = campaigns.map(campaign => ({
-    id: campaign.id,
-    name: campaign.title,
-    currentAmount: campaign.currentAmount,
-    goalAmount: campaign.goalAmount,
+    activity_id: campaign.campaign_id,
+    activity_name: campaign.campaign_title,
+    currentAmount: campaign.campaign_current_amount,
+    goalAmount: campaign.campaign_goal_amount,
     donations: campaign.donations?.map(d => ({
-      id: d.id,
-      date: d.date.split(' ')[0],
-      amount: d.amount,
+      donation_id: d.donation_id,
+      donation_date: d.donation_date.split(' ')[0],
+      donation_amount: d.donation_amount,
       status: "success" as const,
     })) || []
   }));
@@ -71,7 +71,7 @@ const DonationsLog = ({ onBack, onMenuClick, onCartClick, cartCount, onSelectCam
 
   const handleTitleClick = (e: React.MouseEvent, activityId: string) => {
     e.stopPropagation();
-    const campaign = campaigns.find(c => c.id === activityId);
+    const campaign = campaigns.find(c => c.campaign_id === activityId);
     if (campaign) {
       onSelectCampaign(campaign);
     }
@@ -92,21 +92,21 @@ const DonationsLog = ({ onBack, onMenuClick, onCartClick, cartCount, onSelectCam
       <div className="flex-1 overflow-auto">
         {activities.map((activity) => {
           const percentage = getProgressPercentage(activity.currentAmount, activity.goalAmount);
-          const isExpanded = expandedId === activity.id;
+          const isExpanded = expandedId === activity.activity_id;
           
           return (
-            <div key={activity.id} className="border-b border-border">
+            <div key={activity.activity_id} className="border-b border-border">
               {/* Activity Header - Clickable */}
               <div 
                 className="px-4 py-4 cursor-pointer hover:bg-muted/30 transition-colors"
-                onClick={() => toggleExpand(activity.id)}
+                onClick={() => toggleExpand(activity.activity_id)}
               >
                 <div className="flex justify-between items-center mb-3">
                   <button
-                    onClick={(e) => handleTitleClick(e, activity.id)}
+                    onClick={(e) => handleTitleClick(e, activity.activity_id)}
                     className="flex items-center gap-1.5 text-lg font-medium text-foreground hover:text-primary transition-colors text-left"
                   >
-                    {activity.name}
+                    {activity.activity_name}
                     <ExternalLink className="w-4 h-4" />
                   </button>
                   {isExpanded ? (
@@ -137,15 +137,15 @@ const DonationsLog = ({ onBack, onMenuClick, onCartClick, cartCount, onSelectCam
                 <div className="bg-muted/20 px-4 py-2">
                   {activity.donations.map((donation) => (
                     <div 
-                      key={donation.id} 
+                      key={donation.donation_id} 
                       className="flex justify-between items-center py-3 border-b border-border/50 last:border-b-0"
                     >
                       <div className="flex items-center gap-3">
-                        <span className="text-muted-foreground text-sm">{donation.date}</span>
+                        <span className="text-muted-foreground text-sm">{donation.donation_date}</span>
                         {getStatusBadge(donation.status)}
                       </div>
                       <span className="font-medium text-foreground">
-                        ${donation.amount.toLocaleString()}
+                        ${donation.donation_amount.toLocaleString()}
                       </span>
                     </div>
                   ))}

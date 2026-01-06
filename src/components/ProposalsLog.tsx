@@ -8,8 +8,8 @@ import { useCampaigns, DonationRecord } from "@/contexts/CampaignsContext";
 import { CartItem } from "@/types";
 
 interface ProposalItem {
-  id: string;
-  name: string;
+  proposal_id: string;
+  proposal_name: string;
   proposalDate: string;
   deadline: string;
   status: "building" | "active";
@@ -38,17 +38,17 @@ const ProposalsLog = ({ onBack, onMenuClick, onCartClick, cartCount, onViewAtten
 
   // Convert campaigns to ProposalItem format
   const proposals: ProposalItem[] = campaigns.map(campaign => ({
-    id: campaign.id,
-    name: campaign.title,
-    proposalDate: campaign.proposalDate || campaign.createdAt.toISOString().split('T')[0],
-    deadline: campaign.deadline || campaign.remainingTime,
-    status: campaign.status === "ended" ? "active" : (campaign.currentAmount > 0 ? "active" : "building"),
-    currentAmount: campaign.currentAmount,
-    goalAmount: campaign.goalAmount,
-    isPublic: campaign.isPublic,
-    messageBoard: campaign.messageBoard ?? true,
-    notifyBeforeDeadline: campaign.notifyBeforeDeadline ?? true,
-    notifyDays: campaign.notifyDays ?? 14,
+    proposal_id: campaign.campaign_id,
+    proposal_name: campaign.campaign_title,
+    proposalDate: campaign.campaign_proposal_date || campaign.campaign_created_at.toISOString().split('T')[0],
+    deadline: campaign.campaign_deadline || campaign.campaign_remaining_time,
+    status: campaign.campaign_status === "ended" ? "active" : (campaign.campaign_current_amount > 0 ? "active" : "building"),
+    currentAmount: campaign.campaign_current_amount,
+    goalAmount: campaign.campaign_goal_amount,
+    isPublic: campaign.campaign_is_public,
+    messageBoard: campaign.campaign_message_board ?? true,
+    notifyBeforeDeadline: campaign.campaign_notify_before_deadline ?? true,
+    notifyDays: campaign.campaign_notify_days ?? 14,
     donations: campaign.donations || [],
     products: campaign.products || []
   }));
@@ -66,7 +66,7 @@ const ProposalsLog = ({ onBack, onMenuClick, onCartClick, cartCount, onViewAtten
   if (showThankYouEditor && selectedProposal) {
     return (
       <ThankYouLetterEditor
-        campaignName={selectedProposal.name}
+        campaignName={selectedProposal.proposal_name}
         donations={selectedProposal.donations}
         onBack={() => setShowThankYouEditor(false)}
         onMenuClick={onMenuClick}
@@ -78,13 +78,13 @@ const ProposalsLog = ({ onBack, onMenuClick, onCartClick, cartCount, onViewAtten
   if (selectedProposal) {
     const handleShare = () => {
       // Copy link to clipboard or trigger share dialog
-      navigator.clipboard.writeText(`https://example.com/fundraising/${selectedProposal.id}`);
+      navigator.clipboard.writeText(`https://example.com/fundraising/${selectedProposal.proposal_id}`);
       alert("已複製募資活動連結！");
     };
 
     const handleViewMessageBoard = () => {
       if (onViewAttendFundraising) {
-        onViewAttendFundraising(selectedProposal.id, selectedProposal.isPublic);
+        onViewAttendFundraising(selectedProposal.proposal_id, selectedProposal.isPublic);
       }
     };
 
@@ -122,14 +122,14 @@ const ProposalsLog = ({ onBack, onMenuClick, onCartClick, cartCount, onViewAtten
           const goalReached = isGoalReached(proposal.currentAmount, proposal.goalAmount);
           
           return (
-            <div key={proposal.id} className="border-b border-border">
+            <div key={proposal.proposal_id} className="border-b border-border">
               {/* Proposal Header - Clickable */}
               <div 
                 className="px-4 py-4 cursor-pointer hover:bg-muted/30 transition-colors"
                 onClick={() => setSelectedProposal(proposal)}
               >
                 <div className="flex justify-between items-center mb-3">
-                  <span className="text-lg font-medium text-foreground">{proposal.name}</span>
+                  <span className="text-lg font-medium text-foreground">{proposal.proposal_name}</span>
                   <ChevronRight className="w-5 h-5 text-muted-foreground" />
                 </div>
                 
