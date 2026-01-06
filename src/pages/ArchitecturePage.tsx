@@ -114,6 +114,20 @@ const ArchitecturePage = () => {
           </Link>
         </section>
 
+        {/* Link to ER Diagram */}
+        <section className="bg-gradient-to-br from-secondary/50 to-secondary/30 rounded-lg p-4 border border-border">
+          <Link 
+            to="/er-diagram" 
+            className="flex items-center justify-between group"
+          >
+            <div>
+              <h2 className="text-lg font-bold text-foreground mb-1">🗂️ Entity-Relationship Diagram</h2>
+              <p className="text-sm text-muted-foreground">查看資料庫實體關係圖與資料模型說明</p>
+            </div>
+            <ExternalLink className="text-muted-foreground group-hover:translate-x-1 transition-transform" size={20} />
+          </Link>
+        </section>
+
         {/* Overview */}
         <section className="bg-card rounded-lg p-4 border border-border">
           <h2 className="text-base font-semibold text-foreground mb-2">系統概覽</h2>
