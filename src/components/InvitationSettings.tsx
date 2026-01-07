@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Calendar, X, ChevronLeft, Heart } from "lucide-react";
 import { InvitationData, CartItem } from "@/types";
 import InlineMediaEditor, { MediaItem, AspectRatio } from "./InlineMediaEditor";
-import WishlistItem from "./WishlistItem";
 import FundraisingSettings from "./FundraisingSettings";
 import Footer from "./Footer";
 
@@ -120,16 +119,6 @@ const InvitationSettings = ({ cartItems, cartCount, onBack, onConfirm }: Invitat
               <X size={18} />
             </button>
           )}
-        </div>
-
-        {/* Wishlist Section */}
-        <div className="pt-2">
-          <h3 className="text-base font-medium text-foreground mb-3">我的願望清單</h3>
-          <div className="space-y-3">
-            {cartItems.map((item) => (
-              <WishlistItem key={item.id} item={item} />
-            ))}
-          </div>
         </div>
 
         {/* Settings Section */}
