@@ -10,8 +10,8 @@ import WishlistItem from "./WishlistItem";
 import { CartItem } from "@/types";
 
 interface ProposalDetailData {
-  proposal_id: string;
-  proposal_name: string;
+  id: string;
+  name: string;
   proposalDate: string;
   deadline: string;
   status: "building" | "active";
@@ -50,8 +50,8 @@ const ProposalDetail = ({
 
   // Update shared context when isPublic changes
   useEffect(() => {
-    updateCampaignVisibility(proposal.proposal_id, isPublic);
-  }, [isPublic, proposal.proposal_id, updateCampaignVisibility]);
+    updateCampaignVisibility(proposal.id, isPublic);
+  }, [isPublic, proposal.id, updateCampaignVisibility]);
 
   const getProgressPercentage = (current: number, goal: number) => {
     if (goal === 0) return 0;
@@ -75,7 +75,7 @@ const ProposalDetail = ({
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Header
-        title={proposal.proposal_name}
+        title={proposal.name}
         showBack
         onBack={onBack}
         onMenuClick={onMenuClick}
@@ -135,7 +135,7 @@ const ProposalDetail = ({
             <h3 className="text-lg font-medium text-foreground mb-4">我的願望清單</h3>
             <div className="space-y-3">
               {proposal.products.map((product) => (
-                <WishlistItem key={product.product_id} item={product} />
+                <WishlistItem key={product.id} item={product} />
               ))}
             </div>
           </div>
@@ -179,13 +179,13 @@ const ProposalDetail = ({
             </TableHeader>
             <TableBody>
               {proposal.donations.map((donation) => (
-                <TableRow key={donation.donation_id}>
-                  <TableCell className="text-foreground">{donation.donation_line_name}</TableCell>
-                  <TableCell className="text-foreground">${donation.donation_amount}</TableCell>
-                  <TableCell className="text-foreground">{donation.donation_date}</TableCell>
+                <TableRow key={donation.id}>
+                  <TableCell className="text-foreground">{donation.lineName}</TableCell>
+                  <TableCell className="text-foreground">${donation.amount}</TableCell>
+                  <TableCell className="text-foreground">{donation.date}</TableCell>
                   <TableCell className="text-center">
-                    {donation.donation_email ? (
-                      <a href={`mailto:${donation.donation_email}`}>
+                    {donation.email ? (
+                      <a href={`mailto:${donation.email}`}>
                         <Mail className="w-5 h-5 text-primary mx-auto cursor-pointer hover:text-primary/80 transition-colors" />
                       </a>
                     ) : (

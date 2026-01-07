@@ -37,7 +37,7 @@ const SearchResults = ({
         <div className="grid grid-cols-2 gap-3">
           {results.map((product) => (
             <ProductCard
-              key={product.product_id}
+              key={product.id}
               product={product}
               onClick={() => onProductClick(product)}
               onAddToWishlist={() => onAddToWishlist(product)}

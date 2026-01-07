@@ -22,7 +22,7 @@ const CategoryTabs = ({
   onCategoryChange,
   onSubcategoryChange,
 }: CategoryTabsProps) => {
-  const currentCategory = categories.find((c) => c.category_id === activeCategory);
+  const currentCategory = categories.find((c) => c.id === activeCategory);
 
   return (
     <div className="bg-background p-3 flex gap-3">
@@ -40,15 +40,15 @@ const CategoryTabs = ({
         <SelectContent className="bg-card">
           <SelectItem value="all">全部</SelectItem>
           {categories.map((category) => (
-            <SelectItem key={category.category_id} value={category.category_id}>
-              {category.category_name}
+            <SelectItem key={category.id} value={category.id}>
+              {category.name}
             </SelectItem>
           ))}
         </SelectContent>
       </Select>
 
       {/* Subcategory Dropdown - hidden when "all" is selected */}
-      {activeCategory !== "all" && currentCategory?.category_subcategories && currentCategory.category_subcategories.length > 0 && (
+      {activeCategory !== "all" && currentCategory?.subcategories && currentCategory.subcategories.length > 0 && (
         <Select
           value={activeSubcategory || "all"}
           onValueChange={(value) => onSubcategoryChange(value === "all" ? null : value)}
@@ -58,7 +58,7 @@ const CategoryTabs = ({
           </SelectTrigger>
           <SelectContent className="bg-card">
             <SelectItem value="all">全部</SelectItem>
-            {currentCategory.category_subcategories.map((sub) => (
+            {currentCategory.subcategories.map((sub) => (
               <SelectItem key={sub} value={sub}>
                 {sub}
               </SelectItem>

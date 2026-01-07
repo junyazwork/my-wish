@@ -30,7 +30,7 @@ const ThankYouLetterEditor = ({
   const [isSending, setIsSending] = useState(false);
 
   // Filter donations with valid email
-  const donationsWithEmail = donations.filter(d => d.donation_email);
+  const donationsWithEmail = donations.filter(d => d.email);
   const recipientCount = donationsWithEmail.length;
 
   const handleSend = async () => {

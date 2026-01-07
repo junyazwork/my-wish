@@ -18,11 +18,11 @@ const ProductCard = ({
   return <div className="bg-card rounded-xl shadow-card overflow-hidden text-left transition-all duration-200 hover:shadow-elevated border border-border">
       <button onClick={onClick} className="w-full text-left active:scale-[0.98] transition-transform">
         <div className="aspect-square bg-secondary/30 overflow-hidden">
-          <img src={product.product_image} alt={product.product_name} className="w-full h-full object-cover" />
+          <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
         </div>
         <div className="p-3 pb-2">
           <h3 className="text-sm text-foreground line-clamp-2 leading-snug">
-            {product.product_name}
+            {product.name}
           </h3>
         </div>
       </button>
