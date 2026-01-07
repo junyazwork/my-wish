@@ -1,11 +1,10 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { Mail, Send, ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
 import Header from "./Header";
 import { Progress } from "./ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
 import { Button } from "./ui/button";
-import { useCampaigns, DonationRecord } from "@/contexts/CampaignsContext";
-import FundraisingSettings from "./FundraisingSettings";
+import { DonationRecord } from "@/contexts/CampaignsContext";
 import WishlistItem from "./WishlistItem";
 import { CartItem } from "@/types";
 
@@ -42,11 +41,6 @@ const ProposalDetail = ({
   onViewMessageBoard,
   onSendThankYouLetter,
 }: ProposalDetailProps) => {
-  const { updateCampaignVisibility } = useCampaigns();
-  const [isPublic, setIsPublic] = useState(proposal.isPublic);
-  const [messageBoard, setMessageBoard] = useState(proposal.messageBoard);
-  const [notifyEnabled, setNotifyEnabled] = useState(proposal.notifyBeforeDeadline);
-  const [notifyDays, setNotifyDays] = useState(proposal.notifyDays);
   const [amountSortOrder, setAmountSortOrder] = useState<"none" | "asc" | "desc">("none");
   const [timeSortOrder, setTimeSortOrder] = useState<"none" | "asc" | "desc">("none");
 
@@ -97,11 +91,6 @@ const ProposalDetail = ({
     if (timeSortOrder === "desc") return <ArrowDown className="w-4 h-4" />;
     return <ArrowUpDown className="w-4 h-4" />;
   };
-
-  // Update shared context when isPublic changes
-  useEffect(() => {
-    updateCampaignVisibility(proposal.id, isPublic);
-  }, [isPublic, proposal.id, updateCampaignVisibility]);
 
   const getProgressPercentage = (current: number, goal: number) => {
     if (goal === 0) return 0;
@@ -190,26 +179,6 @@ const ProposalDetail = ({
             </div>
           </div>
         )}
-
-        {/* Divider */}
-        <div className="h-px bg-border" />
-
-        {/* Settings Section */}
-        <div className="px-4 py-6">
-          <h3 className="text-lg font-medium text-foreground mb-4">活動設定</h3>
-          <FundraisingSettings
-            isPublic={isPublic}
-            onIsPublicChange={setIsPublic}
-            messageBoard={messageBoard}
-            onMessageBoardChange={setMessageBoard}
-            notifyEnabled={notifyEnabled}
-            onNotifyEnabledChange={setNotifyEnabled}
-            notifyDays={notifyDays}
-            onNotifyDaysChange={setNotifyDays}
-            onViewMessageBoard={onViewMessageBoard}
-            showViewMessageBoardButton={true}
-          />
-        </div>
 
         {/* Divider */}
         <div className="h-px bg-border" />
