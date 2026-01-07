@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Calendar, X, ChevronLeft, Heart } from "lucide-react";
 import { InvitationData, CartItem } from "@/types";
 import InlineMediaEditor, { MediaItem, AspectRatio } from "./InlineMediaEditor";
-import FundraisingSettings from "./FundraisingSettings";
 import Footer from "./Footer";
 
 interface InvitationSettingsProps {
@@ -18,10 +17,6 @@ const InvitationSettings = ({ cartItems, cartCount, onBack, onConfirm }: Invitat
   const [deadline, setDeadline] = useState("");
   const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
   const [aspectRatio, setAspectRatio] = useState<AspectRatio>("3:4");
-  const [isPublic, setIsPublic] = useState(false);
-  const [messageBoard, setMessageBoard] = useState(false);
-  const [notifyEnabled, setNotifyEnabled] = useState(false);
-  const [notifyDays, setNotifyDays] = useState(3);
   const maxChars = 100;
 
   const handleConfirm = () => {
@@ -37,10 +32,6 @@ const InvitationSettings = ({ cartItems, cartCount, onBack, onConfirm }: Invitat
           type: item.type,
         })),
         aspectRatio,
-        isPublic,
-        messageBoard,
-        notifyEnabled,
-        notifyDays,
       });
     }
   };
@@ -119,21 +110,6 @@ const InvitationSettings = ({ cartItems, cartCount, onBack, onConfirm }: Invitat
               <X size={18} />
             </button>
           )}
-        </div>
-
-        {/* Settings Section */}
-        <div className="pt-2">
-          <h3 className="text-lg font-medium text-foreground mb-4">活動設定</h3>
-          <FundraisingSettings
-            isPublic={isPublic}
-            onIsPublicChange={setIsPublic}
-            messageBoard={messageBoard}
-            onMessageBoardChange={setMessageBoard}
-            notifyEnabled={notifyEnabled}
-            onNotifyEnabledChange={setNotifyEnabled}
-            notifyDays={notifyDays}
-            onNotifyDaysChange={setNotifyDays}
-          />
         </div>
       </main>
 
