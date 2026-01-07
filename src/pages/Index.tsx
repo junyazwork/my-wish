@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import Header from "@/components/Header";
 import SlideMenu from "@/components/SlideMenu";
 import BannerSlider from "@/components/BannerSlider";
-import FeaturedCampaigns from "@/components/FeaturedCampaigns";
+import ProductRecommendations from "@/components/ProductRecommendations";
 import CategoryTabs from "@/components/CategoryTabs";
 import ProductGrid from "@/components/ProductGrid";
 import ProductDrawer from "@/components/ProductDrawer";
@@ -757,7 +757,7 @@ const Index = () => {
           <>
             <BannerSlider />
             
-            <FeaturedCampaigns onSelectCampaign={handleSelectCampaign} onViewAll={() => setCurrentView("all-campaigns")} />
+            <ProductRecommendations onProductClick={handleProductClick} />
             
             <div className="px-4 pt-4">
               <h2 className="text-lg font-semibold text-foreground mb-3">想要實現你的願望？</h2>
