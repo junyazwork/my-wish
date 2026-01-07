@@ -21,9 +21,12 @@ const ProductCard = ({
           <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
         </div>
         <div className="p-3 pb-2">
-          <h3 className="text-sm text-foreground line-clamp-2 leading-snug">
+          <h3 className="text-sm text-foreground line-clamp-2 leading-snug min-h-[2.5rem]">
             {product.name}
           </h3>
+          <p className="text-primary font-semibold text-sm mt-1">
+            ${product.price.toLocaleString()}
+          </p>
         </div>
       </button>
       <div className="px-3 pb-3">
