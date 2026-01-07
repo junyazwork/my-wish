@@ -48,15 +48,28 @@ const ProposalDetail = ({
   const [notifyEnabled, setNotifyEnabled] = useState(proposal.notifyBeforeDeadline);
   const [notifyDays, setNotifyDays] = useState(proposal.notifyDays);
   const [amountSortOrder, setAmountSortOrder] = useState<"none" | "asc" | "desc">("none");
+  const [timeSortOrder, setTimeSortOrder] = useState<"none" | "asc" | "desc">("none");
 
   const sortedDonations = useMemo(() => {
-    if (amountSortOrder === "none") return proposal.donations;
-    return [...proposal.donations].sort((a, b) => {
-      return amountSortOrder === "asc" ? a.amount - b.amount : b.amount - a.amount;
-    });
-  }, [proposal.donations, amountSortOrder]);
+    let result = [...proposal.donations];
+    
+    if (amountSortOrder !== "none") {
+      result.sort((a, b) => amountSortOrder === "asc" ? a.amount - b.amount : b.amount - a.amount);
+    } else if (timeSortOrder !== "none") {
+      result.sort((a, b) => {
+        const timeA = new Date(a.date).getTime();
+        const timeB = new Date(b.date).getTime();
+        return timeSortOrder === "asc" ? timeA - timeB : timeB - timeA;
+      });
+    } else {
+      return proposal.donations;
+    }
+    
+    return result;
+  }, [proposal.donations, amountSortOrder, timeSortOrder]);
 
   const toggleAmountSort = () => {
+    setTimeSortOrder("none");
     setAmountSortOrder((prev) => {
       if (prev === "none") return "desc";
       if (prev === "desc") return "asc";
@@ -64,9 +77,24 @@ const ProposalDetail = ({
     });
   };
 
-  const getSortIcon = () => {
+  const toggleTimeSort = () => {
+    setAmountSortOrder("none");
+    setTimeSortOrder((prev) => {
+      if (prev === "none") return "desc";
+      if (prev === "desc") return "asc";
+      return "none";
+    });
+  };
+
+  const getAmountSortIcon = () => {
     if (amountSortOrder === "asc") return <ArrowUp className="w-4 h-4" />;
     if (amountSortOrder === "desc") return <ArrowDown className="w-4 h-4" />;
+    return <ArrowUpDown className="w-4 h-4" />;
+  };
+
+  const getTimeSortIcon = () => {
+    if (timeSortOrder === "asc") return <ArrowUp className="w-4 h-4" />;
+    if (timeSortOrder === "desc") return <ArrowDown className="w-4 h-4" />;
     return <ArrowUpDown className="w-4 h-4" />;
   };
 
@@ -200,10 +228,18 @@ const ProposalDetail = ({
                     className="flex items-center gap-1 hover:text-foreground transition-colors"
                   >
                     金額
-                    {getSortIcon()}
+                    {getAmountSortIcon()}
                   </button>
                 </TableHead>
-                <TableHead className="text-muted-foreground">時間</TableHead>
+                <TableHead className="text-muted-foreground">
+                  <button
+                    onClick={toggleTimeSort}
+                    className="flex items-center gap-1 hover:text-foreground transition-colors"
+                  >
+                    時間
+                    {getTimeSortIcon()}
+                  </button>
+                </TableHead>
                 <TableHead className="text-muted-foreground text-center">寄信</TableHead>
               </TableRow>
             </TableHeader>
