@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { Mail, Send } from "lucide-react";
+import { useState, useEffect, useMemo } from "react";
+import { Mail, Send, ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
 import Header from "./Header";
 import { Progress } from "./ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
@@ -47,6 +47,28 @@ const ProposalDetail = ({
   const [messageBoard, setMessageBoard] = useState(proposal.messageBoard);
   const [notifyEnabled, setNotifyEnabled] = useState(proposal.notifyBeforeDeadline);
   const [notifyDays, setNotifyDays] = useState(proposal.notifyDays);
+  const [amountSortOrder, setAmountSortOrder] = useState<"none" | "asc" | "desc">("none");
+
+  const sortedDonations = useMemo(() => {
+    if (amountSortOrder === "none") return proposal.donations;
+    return [...proposal.donations].sort((a, b) => {
+      return amountSortOrder === "asc" ? a.amount - b.amount : b.amount - a.amount;
+    });
+  }, [proposal.donations, amountSortOrder]);
+
+  const toggleAmountSort = () => {
+    setAmountSortOrder((prev) => {
+      if (prev === "none") return "desc";
+      if (prev === "desc") return "asc";
+      return "none";
+    });
+  };
+
+  const getSortIcon = () => {
+    if (amountSortOrder === "asc") return <ArrowUp className="w-4 h-4" />;
+    if (amountSortOrder === "desc") return <ArrowDown className="w-4 h-4" />;
+    return <ArrowUpDown className="w-4 h-4" />;
+  };
 
   // Update shared context when isPublic changes
   useEffect(() => {
@@ -172,13 +194,21 @@ const ProposalDetail = ({
             <TableHeader>
               <TableRow>
                 <TableHead className="text-muted-foreground">LINE 名稱</TableHead>
-                <TableHead className="text-muted-foreground">金額</TableHead>
+                <TableHead className="text-muted-foreground">
+                  <button
+                    onClick={toggleAmountSort}
+                    className="flex items-center gap-1 hover:text-foreground transition-colors"
+                  >
+                    金額
+                    {getSortIcon()}
+                  </button>
+                </TableHead>
                 <TableHead className="text-muted-foreground">時間</TableHead>
                 <TableHead className="text-muted-foreground text-center">寄信</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {proposal.donations.map((donation) => (
+              {sortedDonations.map((donation) => (
                 <TableRow key={donation.id}>
                   <TableCell className="text-foreground">{donation.lineName}</TableCell>
                   <TableCell className="text-foreground">${donation.amount}</TableCell>
