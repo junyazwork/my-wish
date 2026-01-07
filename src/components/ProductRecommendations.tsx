@@ -1,9 +1,10 @@
 import { useState, useMemo } from "react";
 import { products } from "@/data/products";
 import { Product } from "@/types";
-import { ChevronRight } from "lucide-react";
+import ProductCard from "./ProductCard";
 interface ProductRecommendationsProps {
   onProductClick: (product: Product) => void;
+  onAddToWishlist: (product: Product) => void;
 }
 const tabs = [{
   id: "popular",
@@ -19,7 +20,8 @@ const tabs = [{
   name: "生日首選"
 }];
 const ProductRecommendations = ({
-  onProductClick
+  onProductClick,
+  onAddToWishlist
 }: ProductRecommendationsProps) => {
   const [activeTab, setActiveTab] = useState("popular");
 
@@ -38,20 +40,16 @@ const ProductRecommendations = ({
 
       {/* Products Grid */}
       <div className="grid grid-cols-2 gap-3 px-[16px] py-0">
-        {recommendedProducts.map(product => <div key={product.id} className="bg-card rounded-xl shadow-card border border-border cursor-pointer overflow-hidden" onClick={() => onProductClick(product)}>
-            <div className="aspect-square overflow-hidden">
-              <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
-            </div>
-            <div className="p-3">
-              <h3 className="font-medium text-sm text-foreground line-clamp-2 min-h-[2.5rem]">
-                {product.name}
-              </h3>
-              <p className="text-primary font-semibold text-sm mt-1">
-                ${product.price.toLocaleString()}
-              </p>
-            </div>
-          </div>)}
+        {recommendedProducts.map(product => (
+          <ProductCard
+            key={product.id}
+            product={product}
+            onClick={() => onProductClick(product)}
+            onAddToWishlist={() => onAddToWishlist(product)}
+          />
+        ))}
       </div>
     </div>;
 };
+
 export default ProductRecommendations;
