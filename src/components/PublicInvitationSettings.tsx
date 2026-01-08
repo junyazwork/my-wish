@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChevronLeft, Calendar } from "lucide-react";
+import { ChevronLeft, Calendar, ImagePlus } from "lucide-react";
 import { PublicHostData, PublicInvitationData } from "@/types";
 import InlineMediaEditor, { MediaItem, AspectRatio } from "./InlineMediaEditor";
 import Footer from "./Footer";
@@ -22,6 +22,7 @@ const PublicInvitationSettings = ({
   const [deadline, setDeadline] = useState("");
   const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
   const [aspectRatio, setAspectRatio] = useState<AspectRatio>("3:4");
+  const [showMediaEditor, setShowMediaEditor] = useState(false);
   const maxMessageLength = 100;
 
   const handleConfirm = () => {
@@ -42,6 +43,46 @@ const PublicInvitationSettings = ({
   };
 
   const isValid = message.trim() && name.trim() && deadline;
+
+  // Media Editor Page View
+  if (showMediaEditor) {
+    return (
+      <div className="min-h-screen bg-background flex flex-col">
+        {/* Header */}
+        <header className="sticky top-0 z-40 bg-background/95 backdrop-blur-sm border-b border-border">
+          <div className="flex items-center justify-between px-4 py-3">
+            <button onClick={() => setShowMediaEditor(false)} className="p-2 -ml-2 text-muted-foreground hover:text-foreground transition-colors">
+              <ChevronLeft size={24} />
+            </button>
+
+            <h1 className="text-lg font-semibold text-foreground">上傳圖片/影片</h1>
+
+            <div className="w-10" />
+          </div>
+        </header>
+
+        {/* Media Editor Content */}
+        <main className="flex-1 p-5">
+          <InlineMediaEditor
+            mediaItems={mediaItems}
+            setMediaItems={setMediaItems}
+            aspectRatio={aspectRatio}
+            setAspectRatio={setAspectRatio}
+          />
+        </main>
+
+        {/* Bottom Button */}
+        <div className="sticky bottom-0 bg-background border-t border-border p-4">
+          <button
+            onClick={() => setShowMediaEditor(false)}
+            className="w-full py-3.5 bg-primary text-primary-foreground rounded-xl font-medium transition-all hover:opacity-90"
+          >
+            完成
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -81,14 +122,6 @@ const PublicInvitationSettings = ({
 
       {/* Content */}
       <main className="flex-1 p-5 space-y-4">
-        {/* Inline Media Editor */}
-        <InlineMediaEditor
-          mediaItems={mediaItems}
-          setMediaItems={setMediaItems}
-          aspectRatio={aspectRatio}
-          setAspectRatio={setAspectRatio}
-        />
-
         {/* Message Input */}
         <div className="relative">
           <textarea
@@ -121,6 +154,20 @@ const PublicInvitationSettings = ({
             className="w-full pl-10 pr-4 py-3 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
           />
         </div>
+
+        {/* Upload Media Button */}
+        <button
+          onClick={() => setShowMediaEditor(true)}
+          className="w-full py-3.5 border border-border rounded-xl bg-card text-foreground font-medium flex items-center justify-center gap-2 hover:bg-muted/50 transition-colors"
+        >
+          <ImagePlus size={20} />
+          上傳圖片/影片
+          {mediaItems.length > 0 && (
+            <span className="ml-1 px-2 py-0.5 bg-primary/20 text-primary text-sm rounded-full">
+              {mediaItems.length}
+            </span>
+          )}
+        </button>
       </main>
 
       {/* Bottom Button */}
