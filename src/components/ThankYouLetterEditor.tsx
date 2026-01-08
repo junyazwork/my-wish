@@ -130,11 +130,19 @@ const ThankYouLetterEditor = ({
 
       <div className="flex-1 overflow-auto pb-24">
         {/* Recipient Info Row */}
-        <div className="px-4 py-3 flex items-center border-b border-border">
-          <span className="text-sm font-medium text-foreground w-16 shrink-0">收件者</span>
-          <span className="text-sm text-muted-foreground">
-            {recipientCount > 1 ? `${recipientEmail} 等 ${recipientCount} 人` : recipientEmail}
-          </span>
+        <div className="px-4 py-3 flex items-start border-b border-border">
+          <span className="text-sm font-medium text-foreground w-16 shrink-0 pt-0.5">收件者</span>
+          <div className="flex-1 text-sm text-muted-foreground">
+            {donationsWithEmail.length > 0 
+              ? donationsWithEmail.map((d, idx) => (
+                  <span key={d.id || idx}>
+                    {d.email}
+                    {idx < donationsWithEmail.length - 1 && '、'}
+                  </span>
+                ))
+              : "無收件人"
+            }
+          </div>
         </div>
 
         {/* Title Input Row */}
