@@ -196,8 +196,9 @@ const initialCampaigns: Campaign[] = [
     notifyBeforeDeadline: true,
     notifyDays: 14,
     donations: [
-      { id: "5-1", lineName: "張三", amount: 1000, date: "2024-11-15 09:00" },
-      { id: "5-2", lineName: "李四", amount: 2000, date: "2024-11-20 11:30" },
+      { id: "5-1", lineName: "張三", amount: 1000, date: "2024-11-15 09:00", email: "zhang@example.com" },
+      { id: "5-2", lineName: "李四", amount: 2000, date: "2024-11-20 11:30", email: "li@example.com" },
+      { id: "5-3", lineName: "王五", amount: 1500, date: "2024-11-25 14:00", email: "wang5@example.com" },
     ],
     products: [
       { id: "p6", name: "兒童繪本經典套書", price: 890, image: product5, category: "書籍", quantity: 4 },
@@ -226,7 +227,10 @@ const initialCampaigns: Campaign[] = [
     messageBoard: true,
     notifyBeforeDeadline: false,
     notifyDays: 14,
-    donations: [],
+    donations: [
+      { id: "6-1", lineName: "陳小華", amount: 2500, date: "2024-10-20 10:30", email: "chen@example.com" },
+      { id: "6-2", lineName: "林美玲", amount: 2500, date: "2024-10-25 16:00", email: "lin@example.com" },
+    ],
     products: [
       { id: "p7", name: "寵物飼料大包裝", price: 650, image: product6, category: "寵物", quantity: 8 },
       { id: "p8", name: "寵物醫療用品", price: 420, image: product6, category: "寵物", quantity: 3 },
