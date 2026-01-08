@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Send, Pencil } from "lucide-react";
+import { Pencil } from "lucide-react";
 import Header from "./Header";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
+import { ScrollArea, ScrollBar } from "./ui/scroll-area";
 import { useToast } from "@/hooks/use-toast";
 import { DonationRecord } from "@/contexts/CampaignsContext";
 
@@ -181,25 +182,28 @@ const ThankYouLetterEditor = ({
 
         {/* Background Thumbnails */}
         <div className="px-4 pb-4">
-          <div className="flex gap-2 overflow-x-auto pb-2">
-            {CARD_BACKGROUNDS.map((bg) => (
-              <button
-                key={bg.id}
-                onClick={() => setSelectedBgId(bg.id)}
-                className={`shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-all ${
-                  selectedBgId === bg.id 
-                    ? 'border-primary ring-2 ring-primary/20' 
-                    : 'border-transparent'
-                }`}
-              >
-                <img 
-                  src={bg.src} 
-                  alt={`背景 ${bg.id}`}
-                  className="w-full h-full object-cover"
-                />
-              </button>
-            ))}
-          </div>
+          <ScrollArea className="w-full whitespace-nowrap">
+            <div className="flex gap-2 pb-3">
+              {CARD_BACKGROUNDS.map((bg) => (
+                <button
+                  key={bg.id}
+                  onClick={() => setSelectedBgId(bg.id)}
+                  className={`shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-all ${
+                    selectedBgId === bg.id 
+                      ? 'border-primary ring-2 ring-primary/20' 
+                      : 'border-transparent'
+                  }`}
+                >
+                  <img 
+                    src={bg.src} 
+                    alt={`背景 ${bg.id}`}
+                    className="w-full h-full object-cover"
+                  />
+                </button>
+              ))}
+            </div>
+            <ScrollBar orientation="horizontal" />
+          </ScrollArea>
         </div>
       </div>
 
