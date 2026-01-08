@@ -51,7 +51,7 @@ export interface PublicInvitationData {
   message: string;
   name: string;
   deadline: string;
-  products: CartItem[];
+  products?: CartItem[];
   mediaItems?: MediaItemData[];
   aspectRatio?: AspectRatioType;
   isPublic?: boolean;

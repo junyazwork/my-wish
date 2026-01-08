@@ -1,14 +1,11 @@
 import { useState } from "react";
 import { ChevronLeft, Calendar } from "lucide-react";
-import { CartItem, PublicHostData, PublicInvitationData } from "@/types";
+import { PublicHostData, PublicInvitationData } from "@/types";
 import InlineMediaEditor, { MediaItem, AspectRatio } from "./InlineMediaEditor";
-import WishlistItem from "./WishlistItem";
-import FundraisingSettings from "./FundraisingSettings";
 import Footer from "./Footer";
 
 interface PublicInvitationSettingsProps {
   hostData: PublicHostData;
-  cartItems: CartItem[];
   cartCount: number;
   onBack: () => void;
   onConfirm: (data: PublicInvitationData) => void;
@@ -16,7 +13,6 @@ interface PublicInvitationSettingsProps {
 
 const PublicInvitationSettings = ({
   hostData,
-  cartItems,
   cartCount,
   onBack,
   onConfirm,
@@ -26,10 +22,6 @@ const PublicInvitationSettings = ({
   const [deadline, setDeadline] = useState("");
   const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
   const [aspectRatio, setAspectRatio] = useState<AspectRatio>("3:4");
-  const [isPublic, setIsPublic] = useState(false);
-  const [messageBoard, setMessageBoard] = useState(false);
-  const [notifyEnabled, setNotifyEnabled] = useState(false);
-  const [notifyDays, setNotifyDays] = useState(3);
   const maxMessageLength = 100;
 
   const handleConfirm = () => {
@@ -40,17 +32,12 @@ const PublicInvitationSettings = ({
       message: message.trim(),
       name: name.trim(),
       deadline,
-      products: cartItems,
       mediaItems: mediaItems.map(item => ({
         id: item.id,
         url: item.url,
         type: item.type,
       })),
       aspectRatio,
-      isPublic,
-      messageBoard,
-      notifyEnabled,
-      notifyDays,
     });
   };
 
@@ -132,31 +119,6 @@ const PublicInvitationSettings = ({
             value={deadline}
             onChange={(e) => setDeadline(e.target.value)}
             className="w-full pl-10 pr-4 py-3 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
-          />
-        </div>
-
-        {/* Wishlist Section */}
-        <div className="pt-2">
-          <h3 className="text-base font-medium text-foreground mb-3">我的願望清單</h3>
-          <div className="space-y-3">
-            {cartItems.map((item) => (
-              <WishlistItem key={item.id} item={item} />
-            ))}
-          </div>
-        </div>
-
-        {/* Settings Section */}
-        <div className="pt-2">
-          <h3 className="text-lg font-medium text-foreground mb-4">活動設定</h3>
-          <FundraisingSettings
-            isPublic={isPublic}
-            onIsPublicChange={setIsPublic}
-            messageBoard={messageBoard}
-            onMessageBoardChange={setMessageBoard}
-            notifyEnabled={notifyEnabled}
-            onNotifyEnabledChange={setNotifyEnabled}
-            notifyDays={notifyDays}
-            onNotifyDaysChange={setNotifyDays}
           />
         </div>
       </main>
