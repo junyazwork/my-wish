@@ -631,7 +631,6 @@ const Index = () => {
     return (
       <PublicInvitationSettings
         hostData={publicHostData}
-        cartItems={cart}
         cartCount={cartCount}
         onBack={() => setCurrentView("public-host-settings")}
         onConfirm={handlePublicInvitationConfirm}
