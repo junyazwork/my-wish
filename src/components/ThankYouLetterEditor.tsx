@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Pencil } from "lucide-react";
 import Header from "./Header";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -41,7 +40,6 @@ const ThankYouLetterEditor = ({
   const [title, setTitle] = useState(`感謝您支持「${campaignName}」`);
   const [content, setContent] = useState("");
   const [selectedBgId, setSelectedBgId] = useState(1);
-  const [isEditingContent, setIsEditingContent] = useState(false);
   const [isSending, setIsSending] = useState(false);
 
   // Filter donations with valid email
@@ -87,37 +85,6 @@ const ThankYouLetterEditor = ({
   };
 
   const isFormValid = title.trim() && content.trim() && recipientCount > 0;
-
-  // Content editing modal view
-  if (isEditingContent) {
-    return (
-      <div className="min-h-screen bg-background flex flex-col">
-        <Header 
-          title="編輯內容"
-          showBack
-          onBack={() => setIsEditingContent(false)}
-          onMenuClick={onMenuClick}
-        />
-        <div className="flex-1 p-4">
-          <Textarea
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            placeholder="請輸入感謝信內容..."
-            className="bg-background min-h-[300px] resize-none text-base"
-            autoFocus
-          />
-        </div>
-        <div className="p-4 border-t border-border">
-          <Button 
-            onClick={() => setIsEditingContent(false)}
-            className="w-full h-12 text-base font-medium"
-          >
-            完成
-          </Button>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -173,24 +140,14 @@ const ThankYouLetterEditor = ({
               backgroundPosition: 'center',
             }}
           >
-            {/* Content Overlay */}
-            <div className="absolute inset-0 flex flex-col items-center justify-center p-8">
-              <p className="text-foreground text-lg font-medium text-center leading-relaxed whitespace-pre-wrap">
-                {content || "在此輸入感謝內容..."}
-              </p>
-            </div>
-
-            {/* Edit Content Button */}
-            <div className="absolute inset-0 flex items-center justify-center" style={{ top: '55%' }}>
-              <Button
-                variant="secondary"
-                size="sm"
-                onClick={() => setIsEditingContent(true)}
-                className="bg-background/60 backdrop-blur-sm hover:bg-background/80 text-foreground"
-              >
-                <Pencil className="w-4 h-4 mr-2" />
-                編輯內容
-              </Button>
+            {/* Content Textarea Overlay */}
+            <div className="absolute inset-0 flex items-center justify-center p-8">
+              <Textarea
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                placeholder="在此輸入感謝內容..."
+                className="w-full h-40 bg-transparent border-0 text-foreground text-lg font-medium text-center leading-relaxed resize-none focus-visible:ring-0 placeholder:text-foreground/50"
+              />
             </div>
           </div>
         </div>
