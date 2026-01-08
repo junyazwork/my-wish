@@ -1,13 +1,18 @@
 import { useState } from "react";
-import { Send } from "lucide-react";
+import { Send, Pencil } from "lucide-react";
 import Header from "./Header";
-import Footer from "./Footer";
-import InlineMediaEditor, { MediaItem, AspectRatio } from "./InlineMediaEditor";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { DonationRecord } from "@/contexts/CampaignsContext";
+
+import cardBg01 from "@/assets/card-bg-01.jpg";
+import cardBg02 from "@/assets/card-bg-02.jpg";
+import cardBg03 from "@/assets/card-bg-03.jpg";
+import cardBg04 from "@/assets/card-bg-04.jpg";
+import cardBg05 from "@/assets/card-bg-05.jpg";
+import cardBg06 from "@/assets/card-bg-06.jpg";
 
 interface ThankYouLetterEditorProps {
   campaignName: string;
@@ -15,6 +20,15 @@ interface ThankYouLetterEditorProps {
   onBack: () => void;
   onMenuClick: () => void;
 }
+
+const CARD_BACKGROUNDS = [
+  { id: 1, src: cardBg01 },
+  { id: 2, src: cardBg02 },
+  { id: 3, src: cardBg03 },
+  { id: 4, src: cardBg04 },
+  { id: 5, src: cardBg05 },
+  { id: 6, src: cardBg06 },
+];
 
 const ThankYouLetterEditor = ({ 
   campaignName, 
@@ -25,19 +39,24 @@ const ThankYouLetterEditor = ({
   const { toast } = useToast();
   const [title, setTitle] = useState(`感謝您支持「${campaignName}」`);
   const [content, setContent] = useState("");
-  const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
-  const [aspectRatio, setAspectRatio] = useState<AspectRatio>("3:4");
+  const [selectedBgId, setSelectedBgId] = useState(1);
+  const [isEditingContent, setIsEditingContent] = useState(false);
   const [isSending, setIsSending] = useState(false);
 
   // Filter donations with valid email
   const donationsWithEmail = donations.filter(d => d.email);
   const recipientCount = donationsWithEmail.length;
+  const recipientEmail = donationsWithEmail.length > 0 
+    ? donationsWithEmail[0].email 
+    : "user@gmail.com";
+
+  const selectedBg = CARD_BACKGROUNDS.find(bg => bg.id === selectedBgId)?.src || cardBg01;
 
   const handleSend = async () => {
-    if (!title.trim() || !content.trim()) {
+    if (!title.trim()) {
       toast({
         title: "請填寫完整",
-        description: "標題和內文都是必填欄位",
+        description: "信件標題是必填欄位",
         variant: "destructive",
       });
       return;
@@ -66,67 +85,122 @@ const ThankYouLetterEditor = ({
     onBack();
   };
 
-  const isFormValid = title.trim() && content.trim() && recipientCount > 0;
+  const isFormValid = title.trim() && recipientCount > 0;
+
+  // Content editing modal view
+  if (isEditingContent) {
+    return (
+      <div className="min-h-screen bg-background flex flex-col">
+        <Header 
+          title="編輯內容"
+          showBack
+          onBack={() => setIsEditingContent(false)}
+          onMenuClick={onMenuClick}
+        />
+        <div className="flex-1 p-4">
+          <Textarea
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            placeholder="請輸入感謝信內容..."
+            className="bg-background min-h-[300px] resize-none text-base"
+            autoFocus
+          />
+        </div>
+        <div className="p-4 border-t border-border">
+          <Button 
+            onClick={() => setIsEditingContent(false)}
+            className="w-full h-12 text-base font-medium"
+          >
+            完成
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Header 
-        title="發送感謝信"
+        title="感謝函"
         showBack
         onBack={onBack}
         onMenuClick={onMenuClick}
       />
 
       <div className="flex-1 overflow-auto pb-24">
-        {/* Recipient Info */}
-        <div className="px-4 pt-4 pb-2">
-          <div className="bg-muted/50 rounded-lg p-3">
-            <p className="text-sm text-muted-foreground">
-              將寄送給 <span className="text-foreground font-medium">{recipientCount}</span> 位留有 Email 的贊助人
-            </p>
-          </div>
+        {/* Recipient Info Row */}
+        <div className="px-4 py-3 flex items-center border-b border-border">
+          <span className="text-sm font-medium text-foreground w-16 shrink-0">收件者</span>
+          <span className="text-sm text-muted-foreground">
+            {recipientCount > 1 ? `${recipientEmail} 等 ${recipientCount} 人` : recipientEmail}
+          </span>
         </div>
 
-        {/* Media Editor */}
-        <div className="px-4 py-4">
-          <label className="block text-sm font-medium text-foreground mb-2">
-            上傳媒體 (選填)
-          </label>
-          <InlineMediaEditor
-            mediaItems={mediaItems}
-            setMediaItems={setMediaItems}
-            aspectRatio={aspectRatio}
-            setAspectRatio={setAspectRatio}
-          />
-        </div>
-
-        {/* Title */}
-        <div className="px-4 py-2">
-          <label className="block text-sm font-medium text-foreground mb-2">
-            信件標題 <span className="text-destructive">*</span>
-          </label>
+        {/* Title Input Row */}
+        <div className="px-4 py-3 border-b border-border">
+          <span className="text-sm font-medium text-foreground">信件標題</span>
           <Input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="請輸入信件標題"
-            className="bg-background"
+            className="mt-2 bg-background border-0 p-0 h-auto text-sm focus-visible:ring-0 placeholder:text-muted-foreground"
           />
         </div>
 
-        {/* Content */}
-        <div className="px-4 py-2">
-          <label className="block text-sm font-medium text-foreground mb-2">
-            信件內文 <span className="text-destructive">*</span>
-          </label>
-          <Textarea
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            placeholder="請輸入感謝信內容..."
-            className="bg-background min-h-[200px] resize-none"
-          />
+        {/* Card Preview */}
+        <div className="px-4 py-4">
+          <div 
+            className="relative w-full aspect-square rounded-lg overflow-hidden"
+            style={{
+              backgroundImage: `url(${selectedBg})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
+          >
+            {/* Content Overlay */}
+            <div className="absolute inset-0 flex flex-col items-center justify-center p-8">
+              <p className="text-foreground text-lg font-medium text-center leading-relaxed whitespace-pre-wrap">
+                {content || "在此輸入感謝內容..."}
+              </p>
+            </div>
+
+            {/* Edit Content Button */}
+            <div className="absolute inset-0 flex items-center justify-center" style={{ top: '55%' }}>
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => setIsEditingContent(true)}
+                className="bg-background/60 backdrop-blur-sm hover:bg-background/80 text-foreground"
+              >
+                <Pencil className="w-4 h-4 mr-2" />
+                編輯內容
+              </Button>
+            </div>
+          </div>
         </div>
 
-        <Footer />
+        {/* Background Thumbnails */}
+        <div className="px-4 pb-4">
+          <div className="flex gap-2 overflow-x-auto pb-2">
+            {CARD_BACKGROUNDS.map((bg) => (
+              <button
+                key={bg.id}
+                onClick={() => setSelectedBgId(bg.id)}
+                className={`shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-all ${
+                  selectedBgId === bg.id 
+                    ? 'border-primary ring-2 ring-primary/20' 
+                    : 'border-transparent'
+                }`}
+              >
+                <img 
+                  src={bg.src} 
+                  alt={`背景 ${bg.id}`}
+                  className="w-full h-full object-cover"
+                />
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* Sticky Send Button */}
@@ -136,8 +210,7 @@ const ThankYouLetterEditor = ({
           disabled={!isFormValid || isSending}
           className="w-full h-12 text-base font-medium"
         >
-          <Send className="w-5 h-5 mr-2" />
-          {isSending ? "寄送中..." : `寄出感謝信 (${recipientCount} 人)`}
+          {isSending ? "寄送中..." : "寄出感謝函"}
         </Button>
       </div>
     </div>
