@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Calendar, X, ChevronLeft, Heart, ImagePlus } from "lucide-react";
+import { ChevronLeft, Heart } from "lucide-react";
 import { InvitationData, CartItem } from "@/types";
 import InlineMediaEditor, { MediaItem, AspectRatio } from "./InlineMediaEditor";
 import Footer from "./Footer";
@@ -36,8 +36,6 @@ const InvitationSettings = ({ cartItems, cartCount, onBack, onConfirm }: Invitat
       });
     }
   };
-
-  const clearDeadline = () => setDeadline("");
 
   // Media Editor Page View
   if (showMediaEditor) {
@@ -102,66 +100,63 @@ const InvitationSettings = ({ cartItems, cartCount, onBack, onConfirm }: Invitat
       </header>
 
       {/* Content */}
-      <main className="flex-1 p-5 space-y-4">
-        {/* Message Input */}
-        <div className="relative">
-          <textarea
-            value={message}
-            onChange={(e) => setMessage(e.target.value.slice(0, maxChars))}
-            placeholder="大家好，這是我的贊助活動，謝謝大家的支持"
-            className="w-full p-4 pb-8 border border-border rounded-xl bg-card text-foreground placeholder:text-muted-foreground resize-none focus:outline-none focus:ring-2 focus:ring-primary/50"
-            rows={3}
+      <main className="flex-1">
+        {/* Name Field */}
+        <div className="flex items-center px-5 py-4 border-b border-border">
+          <label className="text-foreground font-medium w-24 shrink-0">提案人</label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Chris Yeh"
+            className="flex-1 text-muted-foreground bg-transparent focus:outline-none focus:text-foreground"
           />
-          <span className="absolute bottom-3 right-3 text-xs text-muted-foreground">
-            {message.length} / {maxChars}
-          </span>
         </div>
 
-        {/* Name Input */}
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Zimmer"
-          className="w-full p-4 border border-border rounded-xl bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
-        />
-
-        {/* Date Input */}
-        <div className="relative">
-          <Calendar size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
+        {/* Date Field */}
+        <div className="flex items-center px-5 py-4 border-b border-border">
+          <label className="text-foreground font-medium w-24 shrink-0">提案截止日期</label>
           <input
             type="date"
             value={deadline}
             onChange={(e) => setDeadline(e.target.value)}
-            className="w-full p-4 pl-11 pr-10 border border-border rounded-xl bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+            placeholder="YYYY/MM/DD"
+            className="flex-1 text-muted-foreground bg-transparent focus:outline-none focus:text-foreground"
           />
-          {deadline && (
-            <button
-              onClick={clearDeadline}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-            >
-              <X size={18} />
-            </button>
-          )}
         </div>
 
-        {/* Upload Media Button */}
+        {/* Message Field */}
+        <div className="px-5 py-4 border-b border-border">
+          <label className="text-foreground font-medium block mb-2">內容</label>
+          <textarea
+            value={message}
+            onChange={(e) => setMessage(e.target.value.slice(0, maxChars))}
+            placeholder="請寫下你募資原因"
+            className="w-full text-muted-foreground bg-transparent resize-none focus:outline-none focus:text-foreground min-h-[120px]"
+            rows={5}
+          />
+        </div>
+      </main>
+
+      {/* Bottom Section */}
+      <div className="sticky bottom-0 bg-background p-4 space-y-3">
+        {/* Upload Media Link */}
         <button
           onClick={() => setShowMediaEditor(true)}
-          className="w-full py-3.5 border border-border rounded-xl bg-card text-foreground font-medium flex items-center justify-center gap-2 hover:bg-muted/50 transition-colors"
+          className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors ml-auto"
         >
-          <ImagePlus size={20} />
-          上傳圖片/影片
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" />
+          </svg>
+          <span>上傳照片/影片</span>
           {mediaItems.length > 0 && (
-            <span className="ml-1 px-2 py-0.5 bg-primary/20 text-primary text-sm rounded-full">
+            <span className="px-2 py-0.5 bg-primary/20 text-primary text-sm rounded-full">
               {mediaItems.length}
             </span>
           )}
         </button>
-      </main>
 
-      {/* Bottom Button */}
-      <div className="sticky bottom-0 bg-background border-t border-border p-4">
+        {/* Submit Button */}
         <button
           onClick={handleConfirm}
           disabled={!message || !name || !deadline}
