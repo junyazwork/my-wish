@@ -86,7 +86,7 @@ const ThankYouLetterEditor = ({
     onBack();
   };
 
-  const isFormValid = title.trim() && recipientCount > 0;
+  const isFormValid = title.trim() && content.trim() && recipientCount > 0;
 
   // Content editing modal view
   if (isEditingContent) {
