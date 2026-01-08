@@ -35,6 +35,7 @@ const ProposalsLog = ({ onBack, onMenuClick, onCartClick, cartCount, onViewAtten
   const { campaigns } = useCampaigns();
   const [selectedProposal, setSelectedProposal] = useState<ProposalItem | null>(null);
   const [showThankYouEditor, setShowThankYouEditor] = useState(false);
+  const [singleDonationForLetter, setSingleDonationForLetter] = useState<DonationRecord | null>(null);
 
   // Convert campaigns to ProposalItem format
   const proposals: ProposalItem[] = campaigns.map(campaign => ({
@@ -64,11 +65,19 @@ const ProposalsLog = ({ onBack, onMenuClick, onCartClick, cartCount, onViewAtten
 
   // Show thank you letter editor
   if (showThankYouEditor && selectedProposal) {
+    // If singleDonationForLetter is set, only show that donation
+    const donationsToShow = singleDonationForLetter 
+      ? [singleDonationForLetter] 
+      : selectedProposal.donations;
+    
     return (
       <ThankYouLetterEditor
         campaignName={selectedProposal.name}
-        donations={selectedProposal.donations}
-        onBack={() => setShowThankYouEditor(false)}
+        donations={donationsToShow}
+        onBack={() => {
+          setShowThankYouEditor(false);
+          setSingleDonationForLetter(null);
+        }}
         onMenuClick={onMenuClick}
       />
     );
@@ -89,6 +98,12 @@ const ProposalsLog = ({ onBack, onMenuClick, onCartClick, cartCount, onViewAtten
     };
 
     const handleSendThankYouLetter = () => {
+      setSingleDonationForLetter(null);
+      setShowThankYouEditor(true);
+    };
+
+    const handleSendSingleThankYouLetter = (donation: DonationRecord) => {
+      setSingleDonationForLetter(donation);
       setShowThankYouEditor(true);
     };
 
@@ -100,6 +115,7 @@ const ProposalsLog = ({ onBack, onMenuClick, onCartClick, cartCount, onViewAtten
         onShareClick={handleShare}
         onViewMessageBoard={handleViewMessageBoard}
         onSendThankYouLetter={handleSendThankYouLetter}
+        onSendSingleThankYouLetter={handleSendSingleThankYouLetter}
       />
     );
   }

@@ -31,6 +31,7 @@ interface ProposalDetailProps {
   onShareClick: () => void;
   onViewMessageBoard?: () => void;
   onSendThankYouLetter?: () => void;
+  onSendSingleThankYouLetter?: (donation: DonationRecord) => void;
 }
 
 const ProposalDetail = ({
@@ -40,6 +41,7 @@ const ProposalDetail = ({
   onShareClick,
   onViewMessageBoard,
   onSendThankYouLetter,
+  onSendSingleThankYouLetter,
 }: ProposalDetailProps) => {
   const [amountSortOrder, setAmountSortOrder] = useState<"none" | "asc" | "desc">("none");
   const [timeSortOrder, setTimeSortOrder] = useState<"none" | "asc" | "desc">("none");
@@ -220,9 +222,12 @@ const ProposalDetail = ({
                   <TableCell className="text-foreground">{donation.date}</TableCell>
                   <TableCell className="text-center">
                     {donation.email ? (
-                      <a href={`mailto:${donation.email}`}>
+                      <button 
+                        onClick={() => onSendSingleThankYouLetter?.(donation)}
+                        className="inline-flex"
+                      >
                         <Mail className="w-5 h-5 text-primary mx-auto cursor-pointer hover:text-primary/80 transition-colors" />
-                      </a>
+                      </button>
                     ) : (
                       <Mail className="w-5 h-5 text-muted-foreground/50 mx-auto" />
                     )}
