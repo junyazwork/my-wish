@@ -221,16 +221,12 @@ const ProposalDetail = ({
                   <TableCell className="text-foreground">${donation.amount}</TableCell>
                   <TableCell className="text-foreground">{donation.date}</TableCell>
                   <TableCell className="text-center">
-                    {donation.email ? (
-                      <button 
-                        onClick={() => onSendSingleThankYouLetter?.(donation)}
-                        className="inline-flex"
-                      >
-                        <Mail className="w-5 h-5 text-primary mx-auto cursor-pointer hover:text-primary/80 transition-colors" />
-                      </button>
-                    ) : (
-                      <Mail className="w-5 h-5 text-muted-foreground/50 mx-auto" />
-                    )}
+                    <button 
+                      onClick={() => onSendSingleThankYouLetter?.(donation)}
+                      className="inline-flex"
+                    >
+                      <Mail className="w-5 h-5 text-primary mx-auto cursor-pointer hover:text-primary/80 transition-colors" />
+                    </button>
                   </TableCell>
                 </TableRow>
               ))}
