@@ -42,12 +42,8 @@ const ThankYouLetterEditor = ({
   const [selectedBgId, setSelectedBgId] = useState(1);
   const [isSending, setIsSending] = useState(false);
 
-  // Filter donations with valid email
-  const donationsWithEmail = donations.filter(d => d.email);
-  const recipientCount = donationsWithEmail.length;
-  const recipientEmail = donationsWithEmail.length > 0 
-    ? donationsWithEmail[0].email 
-    : "user@gmail.com";
+  // Use all donations with LINE names as recipients
+  const recipientCount = donations.length;
 
   const selectedBg = CARD_BACKGROUNDS.find(bg => bg.id === selectedBgId)?.src || cardBg01;
 
@@ -64,7 +60,7 @@ const ThankYouLetterEditor = ({
     if (recipientCount === 0) {
       toast({
         title: "沒有收件人",
-        description: "沒有贊助人留下 Email 地址",
+        description: "沒有贊助人可發送感謝函",
         variant: "destructive",
       });
       return;
@@ -101,19 +97,19 @@ const ThankYouLetterEditor = ({
           <span className="text-sm font-medium text-foreground w-16 shrink-0 pt-0.5">收件者</span>
           <div className="flex-1">
             <div className="text-sm text-muted-foreground">
-              {donationsWithEmail.length > 0 
-                ? donationsWithEmail.map((d, idx) => (
+              {donations.length > 0 
+                ? donations.map((d, idx) => (
                     <span key={d.id || idx}>
-                      {d.email}
-                      {idx < donationsWithEmail.length - 1 && '、'}
+                      {d.lineName}
+                      {idx < donations.length - 1 && '、'}
                     </span>
                   ))
                 : "無收件人"
               }
             </div>
-            {donationsWithEmail.length > 0 && (
+            {donations.length > 0 && (
               <div className="text-xs text-muted-foreground/70 mt-1">
-                共 {donationsWithEmail.length} 位收件人
+                共 {donations.length} 位收件人
               </div>
             )}
           </div>
