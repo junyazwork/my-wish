@@ -57,7 +57,7 @@ const DonationsLog = ({ onBack, onMenuClick, onCartClick, cartCount, onSelectCam
   const getStatusBadge = (status: "success" | "failed") => {
     if (status === "success") {
       return (
-        <span className="px-2 py-0.5 text-xs rounded bg-green-500 text-white">
+        <span className="px-2 py-0.5 text-xs rounded bg-[#00AAA3] text-white">
           成功
         </span>
       );
