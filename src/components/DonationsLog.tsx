@@ -50,6 +50,10 @@ const DonationsLog = ({ onBack, onMenuClick, onCartClick, cartCount, onSelectCam
     return Math.min((current / goal) * 100, 100);
   };
 
+  const isGoalReached = (current: number, goal: number) => {
+    return current >= goal && goal > 0;
+  };
+
   const getStatusBadge = (status: "success" | "failed") => {
     if (status === "success") {
       return (
@@ -118,13 +122,19 @@ const DonationsLog = ({ onBack, onMenuClick, onCartClick, cartCount, onSelectCam
                 
                 {/* Progress Bar */}
                 <div className="mb-2">
-                  <Progress value={percentage} className="h-3 bg-muted" />
+                  <Progress 
+                    value={percentage} 
+                    className={`h-3 bg-muted ${isGoalReached(activity.currentAmount, activity.goalAmount) ? "[&>div]:bg-[#00AAA3]" : ""}`} 
+                  />
                 </div>
                 
                 {/* Amount Info */}
                 <div className="flex justify-between items-center">
-                  <span className="text-primary font-medium">
+                  <span className={`font-medium ${isGoalReached(activity.currentAmount, activity.goalAmount) ? "text-[#00AAA3]" : "text-primary"}`}>
                     ${activity.currentAmount.toLocaleString()}
+                    {isGoalReached(activity.currentAmount, activity.goalAmount) && (
+                      <span className="ml-2 text-xs">已達標</span>
+                    )}
                   </span>
                   <span className="text-muted-foreground text-sm">
                     目標 ${activity.goalAmount.toLocaleString()} ({percentage.toFixed(0)}%)
