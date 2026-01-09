@@ -56,7 +56,7 @@ const ThankYouLetterEditor = ({ campaignName, donations, onBack, onMenuClick }: 
 
     if (recipientCount === 0) {
       toast({
-        title: "沒有收件者",
+        title: "沒有收件人",
         description: "沒有贊助人留下 Email 地址",
         variant: "destructive",
       });
@@ -86,7 +86,7 @@ const ThankYouLetterEditor = ({ campaignName, donations, onBack, onMenuClick }: 
       <div className="flex-1 overflow-auto pb-24">
         {/* Recipient Info Row */}
         <div className="px-4 py-3 flex items-start border-b border-border">
-          <span className="text-sm font-medium text-foreground w-16 shrink-0 pt-0.5">收件者</span>
+          <span className="text-sm font-medium text-foreground w-16 shrink-0 pt-0.5">發送給</span>
           <div className="flex-1">
             <div className="text-sm text-muted-foreground">
               {donationsWithEmail.length > 0
@@ -96,10 +96,10 @@ const ThankYouLetterEditor = ({ campaignName, donations, onBack, onMenuClick }: 
                       {idx < donationsWithEmail.length - 1 && "、"}
                     </span>
                   ))
-                : "無收件者"}
+                : "沒有人"}
             </div>
             {donationsWithEmail.length > 0 && (
-              <div className="text-xs text-muted-foreground/70 mt-1">共 {donationsWithEmail.length} 位收件者</div>
+              <div className="text-xs text-muted-foreground/70 mt-1">共 {donationsWithEmail.length} 位</div>
             )}
           </div>
         </div>
