@@ -48,7 +48,7 @@ const ThankYouLetterEditor = ({ campaignName, donations, onBack, onMenuClick }: 
     if (!title.trim()) {
       toast({
         title: "請填寫完整",
-        description: "信件標題是必填欄位",
+        description: "標題是必填欄位",
         variant: "destructive",
       });
       return;
@@ -56,7 +56,7 @@ const ThankYouLetterEditor = ({ campaignName, donations, onBack, onMenuClick }: 
 
     if (recipientCount === 0) {
       toast({
-        title: "沒有人",
+        title: "沒有收件人",
         description: "沒有贊助人留下 Email 地址",
         variant: "destructive",
       });
@@ -86,7 +86,7 @@ const ThankYouLetterEditor = ({ campaignName, donations, onBack, onMenuClick }: 
       <div className="flex-1 overflow-auto pb-24">
         {/* Recipient Info Row */}
         <div className="px-4 py-3 flex items-start border-b border-border">
-          <span className="text-sm font-medium text-foreground w-16 shrink-0 pt-0.5">發送給</span>
+          <span className="text-sm font-medium text-foreground w-16 shrink-0 pt-0.5">收件者</span>
           <div className="flex-1">
             <div className="text-sm text-muted-foreground">
               {donationsWithEmail.length > 0
@@ -96,21 +96,21 @@ const ThankYouLetterEditor = ({ campaignName, donations, onBack, onMenuClick }: 
                       {idx < donationsWithEmail.length - 1 && "、"}
                     </span>
                   ))
-                : "沒有人"}
+                : "無收件人"}
             </div>
             {donationsWithEmail.length > 0 && (
-              <div className="text-xs text-muted-foreground/70 mt-1">共 {donationsWithEmail.length} 位</div>
+              <div className="text-xs text-muted-foreground/70 mt-1">共 {donationsWithEmail.length} 位收件人</div>
             )}
           </div>
         </div>
 
         {/* Title Input Row */}
         <div className="px-4 py-3 border-b border-border">
-          <span className="text-sm font-medium text-foreground">信件標題</span>
+          <span className="text-sm font-medium text-foreground">標題</span>
           <Input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder="請輸入信件標題"
+            placeholder="請輸入標題"
             className="mt-2 bg-background border-0 p-0 h-auto text-sm focus-visible:ring-0 placeholder:text-muted-foreground"
           />
         </div>
