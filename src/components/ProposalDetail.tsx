@@ -1,6 +1,5 @@
 import { useState, useMemo } from "react";
-import { Send, ArrowUpDown, ArrowUp, ArrowDown, MessageSquare } from "lucide-react";
-import LineIcon from "./icons/LineIcon";
+import { Mail, Send, ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
 import Header from "./Header";
 import { Progress } from "./ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
@@ -166,7 +165,7 @@ const ProposalDetail = ({
               className="w-full h-12 text-base font-medium bg-success hover:bg-success/90"
             >
               <Send className="w-5 h-5 mr-2" />
-              發送感謝信
+              發送感謝函
             </Button>
           </div>
         )}
@@ -182,22 +181,6 @@ const ProposalDetail = ({
             </div>
           </div>
         )}
-
-        {/* Divider */}
-        <div className="h-px bg-border" />
-
-        {/* Message Board Section */}
-        <div className="px-4 py-6">
-          <h3 className="text-lg font-medium text-foreground mb-4">留言板功能</h3>
-          <Button
-            onClick={onViewMessageBoard}
-            variant="outline"
-            className="w-full h-12 text-base font-medium"
-          >
-            <MessageSquare className="w-5 h-5 mr-2" />
-            查看留言板
-          </Button>
-        </div>
 
         {/* Divider */}
         <div className="h-px bg-border" />
@@ -228,7 +211,7 @@ const ProposalDetail = ({
                     {getTimeSortIcon()}
                   </button>
                 </TableHead>
-                <TableHead className="text-muted-foreground text-center">回覆感謝</TableHead>
+                <TableHead className="text-muted-foreground text-center">寄信</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -240,10 +223,10 @@ const ProposalDetail = ({
                   <TableCell className="text-center">
                     {donation.email ? (
                       <button onClick={() => onSendSingleThankYouLetter?.(donation)} className="inline-flex">
-                        <LineIcon className="w-5 h-5 text-primary mx-auto cursor-pointer hover:text-primary/80 transition-colors" />
+                        <Mail className="w-5 h-5 text-primary mx-auto cursor-pointer hover:text-primary/80 transition-colors" />
                       </button>
                     ) : (
-                      <LineIcon className="w-5 h-5 text-muted-foreground/50 mx-auto" />
+                      <Mail className="w-5 h-5 text-muted-foreground/50 mx-auto" />
                     )}
                   </TableCell>
                 </TableRow>
