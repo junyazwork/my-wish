@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
-import { Mail, Send, ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
+import { Send, ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
+import LineIcon from "./icons/LineIcon";
 import Header from "./Header";
 import { Progress } from "./ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
@@ -223,10 +224,10 @@ const ProposalDetail = ({
                   <TableCell className="text-center">
                     {donation.email ? (
                       <button onClick={() => onSendSingleThankYouLetter?.(donation)} className="inline-flex">
-                        <Mail className="w-5 h-5 text-primary mx-auto cursor-pointer hover:text-primary/80 transition-colors" />
+                        <LineIcon className="w-5 h-5 text-primary mx-auto cursor-pointer hover:text-primary/80 transition-colors" />
                       </button>
                     ) : (
-                      <Mail className="w-5 h-5 text-muted-foreground/50 mx-auto" />
+                      <LineIcon className="w-5 h-5 text-muted-foreground/50 mx-auto" />
                     )}
                   </TableCell>
                 </TableRow>
