@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChevronLeft, Heart } from "lucide-react";
+import { ChevronLeft, ChevronRight, Heart } from "lucide-react";
 import { PublicHostData, PublicInvitationData } from "@/types";
 import InlineMediaEditor, { MediaItem, AspectRatio } from "./InlineMediaEditor";
 import Footer from "./Footer";
@@ -143,6 +143,40 @@ const PublicInvitationSettings = ({
             rows={5}
           />
         </div>
+
+        {/* Media Preview */}
+        {mediaItems.length > 0 && (
+          <div className="px-5 py-4 border-b border-border">
+            <div className="relative rounded-xl overflow-hidden bg-muted">
+              <div className="aspect-[3/4] w-full">
+                {mediaItems[0].type === "video" ? (
+                  <video
+                    src={mediaItems[0].url}
+                    className="w-full h-full object-cover"
+                    controls
+                  />
+                ) : (
+                  <img
+                    src={mediaItems[0].url}
+                    alt="已上傳媒體"
+                    className="w-full h-full object-cover"
+                  />
+                )}
+              </div>
+              {mediaItems.length > 1 && (
+                <div className="absolute bottom-3 right-3 px-2 py-1 bg-background/80 backdrop-blur-sm rounded-full text-xs text-foreground font-medium">
+                  +{mediaItems.length - 1}
+                </div>
+              )}
+              <button
+                onClick={() => setShowMediaEditor(true)}
+                className="absolute inset-0 bg-foreground/0 hover:bg-foreground/10 transition-colors flex items-center justify-center"
+              >
+                <span className="sr-only">編輯媒體</span>
+              </button>
+            </div>
+          </div>
+        )}
       </main>
 
       {/* Bottom Section */}
