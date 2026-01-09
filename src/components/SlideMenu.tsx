@@ -16,10 +16,6 @@ const SlideMenu = ({
     label: "首頁",
     icon: Home
   }, {
-    id: "all-campaigns",
-    label: "所有募資活動",
-    icon: Globe
-  }, {
     id: "proposals",
     label: "提案紀錄",
     icon: FileText
