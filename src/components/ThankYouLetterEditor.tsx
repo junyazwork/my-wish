@@ -57,7 +57,7 @@ const ThankYouLetterEditor = ({ campaignName, donations, onBack, onMenuClick }: 
     if (recipientCount === 0) {
       toast({
         title: "沒有收件人",
-        description: "沒有贊助人留下 Email 地址",
+        description: "沒有贊助人可接收訊息",
         variant: "destructive",
       });
       return;
@@ -65,12 +65,12 @@ const ThankYouLetterEditor = ({ campaignName, donations, onBack, onMenuClick }: 
 
     setIsSending(true);
 
-    // Simulate sending emails
+    // Simulate sending LINE messages
     await new Promise((resolve) => setTimeout(resolve, 1500));
 
     toast({
-      title: "感謝信已寄出",
-      description: `已成功寄送給 ${recipientCount} 位贊助人`,
+      title: "感謝函已發送",
+      description: `已成功透過 LINE 發送給 ${recipientCount} 位贊助人`,
     });
 
     setIsSending(false);
@@ -86,7 +86,7 @@ const ThankYouLetterEditor = ({ campaignName, donations, onBack, onMenuClick }: 
       <div className="flex-1 overflow-auto pb-24">
         {/* Recipient Info Row */}
         <div className="px-4 py-3 flex items-start border-b border-border">
-          <span className="text-sm font-medium text-foreground w-16 shrink-0 pt-0.5">收件者</span>
+          <span className="text-sm font-medium text-foreground w-16 shrink-0 pt-0.5">發送對象</span>
           <div className="flex-1">
             <div className="text-sm text-muted-foreground">
               {donationsWithEmail.length > 0
@@ -161,7 +161,7 @@ const ThankYouLetterEditor = ({ campaignName, donations, onBack, onMenuClick }: 
       {/* Sticky Send Button */}
       <div className="fixed bottom-0 left-0 right-0 p-4 bg-background border-t border-border">
         <Button onClick={handleSend} disabled={!isFormValid || isSending} className="w-full h-12 text-base font-medium">
-          {isSending ? "寄送中..." : "寄出感謝函"}
+          {isSending ? "發送中..." : "透過 LINE 發送"}
         </Button>
       </div>
     </div>
