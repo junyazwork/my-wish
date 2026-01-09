@@ -48,9 +48,9 @@ const ProposalDetail = ({
 
   const sortedDonations = useMemo(() => {
     let result = [...proposal.donations];
-    
+
     if (amountSortOrder !== "none") {
-      result.sort((a, b) => amountSortOrder === "asc" ? a.amount - b.amount : b.amount - a.amount);
+      result.sort((a, b) => (amountSortOrder === "asc" ? a.amount - b.amount : b.amount - a.amount));
     } else if (timeSortOrder !== "none") {
       result.sort((a, b) => {
         const timeA = new Date(a.date).getTime();
@@ -60,7 +60,7 @@ const ProposalDetail = ({
     } else {
       return proposal.donations;
     }
-    
+
     return result;
   }, [proposal.donations, amountSortOrder, timeSortOrder]);
 
@@ -211,7 +211,7 @@ const ProposalDetail = ({
                     {getTimeSortIcon()}
                   </button>
                 </TableHead>
-                <TableHead className="text-muted-foreground text-center">寄信</TableHead>
+                <TableHead className="text-muted-foreground text-center">回覆感謝函</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -221,12 +221,13 @@ const ProposalDetail = ({
                   <TableCell className="text-foreground">${donation.amount}</TableCell>
                   <TableCell className="text-foreground">{donation.date}</TableCell>
                   <TableCell className="text-center">
-                    <button 
-                      onClick={() => onSendSingleThankYouLetter?.(donation)}
-                      className="inline-flex"
-                    >
-                      <Mail className="w-5 h-5 text-primary mx-auto cursor-pointer hover:text-primary/80 transition-colors" />
-                    </button>
+                    {donation.email ? (
+                      <button onClick={() => onSendSingleThankYouLetter?.(donation)} className="inline-flex">
+                        <Mail className="w-5 h-5 text-primary mx-auto cursor-pointer hover:text-primary/80 transition-colors" />
+                      </button>
+                    ) : (
+                      <Mail className="w-5 h-5 text-muted-foreground/50 mx-auto" />
+                    )}
                   </TableCell>
                 </TableRow>
               ))}
