@@ -30,22 +30,19 @@ const CARD_BACKGROUNDS = [
   { id: 6, src: cardBg06 },
 ];
 
-const ThankYouLetterEditor = ({ 
-  campaignName, 
-  donations, 
-  onBack, 
-  onMenuClick 
-}: ThankYouLetterEditorProps) => {
+const ThankYouLetterEditor = ({ campaignName, donations, onBack, onMenuClick }: ThankYouLetterEditorProps) => {
   const { toast } = useToast();
   const [title, setTitle] = useState(`感謝您支持「${campaignName}」`);
   const [content, setContent] = useState("");
   const [selectedBgId, setSelectedBgId] = useState(1);
   const [isSending, setIsSending] = useState(false);
 
-  // Use all donations with LINE names as recipients
-  const recipientCount = donations.length;
+  // Filter donations with valid email
+  const donationsWithEmail = donations.filter((d) => d.email);
+  const recipientCount = donationsWithEmail.length;
+  const recipientEmail = donationsWithEmail.length > 0 ? donationsWithEmail[0].email : "user@gmail.com";
 
-  const selectedBg = CARD_BACKGROUNDS.find(bg => bg.id === selectedBgId)?.src || cardBg01;
+  const selectedBg = CARD_BACKGROUNDS.find((bg) => bg.id === selectedBgId)?.src || cardBg01;
 
   const handleSend = async () => {
     if (!title.trim()) {
@@ -59,8 +56,8 @@ const ThankYouLetterEditor = ({
 
     if (recipientCount === 0) {
       toast({
-        title: "沒有收件人",
-        description: "沒有贊助人可發送感謝函",
+        title: "沒有收件者",
+        description: "沒有贊助人留下 Email 地址",
         variant: "destructive",
       });
       return;
@@ -69,7 +66,7 @@ const ThankYouLetterEditor = ({
     setIsSending(true);
 
     // Simulate sending emails
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    await new Promise((resolve) => setTimeout(resolve, 1500));
 
     toast({
       title: "感謝信已寄出",
@@ -84,12 +81,7 @@ const ThankYouLetterEditor = ({
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <Header 
-        title="感謝函"
-        showBack
-        onBack={onBack}
-        onMenuClick={onMenuClick}
-      />
+      <Header title="感謝函" showBack onBack={onBack} onMenuClick={onMenuClick} />
 
       <div className="flex-1 overflow-auto pb-24">
         {/* Recipient Info Row */}
@@ -97,20 +89,17 @@ const ThankYouLetterEditor = ({
           <span className="text-sm font-medium text-foreground w-16 shrink-0 pt-0.5">收件者</span>
           <div className="flex-1">
             <div className="text-sm text-muted-foreground">
-              {donations.length > 0 
-                ? donations.map((d, idx) => (
+              {donationsWithEmail.length > 0
+                ? donationsWithEmail.map((d, idx) => (
                     <span key={d.id || idx}>
-                      {d.lineName}
-                      {idx < donations.length - 1 && '、'}
+                      {d.email}
+                      {idx < donationsWithEmail.length - 1 && "、"}
                     </span>
                   ))
-                : "無收件人"
-              }
+                : "無收件者"}
             </div>
-            {donations.length > 0 && (
-              <div className="text-xs text-muted-foreground/70 mt-1">
-                共 {donations.length} 位收件人
-              </div>
+            {donationsWithEmail.length > 0 && (
+              <div className="text-xs text-muted-foreground/70 mt-1">共 {donationsWithEmail.length} 位收件者</div>
             )}
           </div>
         </div>
@@ -128,12 +117,12 @@ const ThankYouLetterEditor = ({
 
         {/* Card Preview */}
         <div className="px-4 py-4">
-          <div 
+          <div
             className="relative w-full aspect-square rounded-lg overflow-hidden"
             style={{
               backgroundImage: `url(${selectedBg})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
+              backgroundSize: "cover",
+              backgroundPosition: "center",
             }}
           >
             {/* Content Textarea Overlay */}
@@ -157,16 +146,10 @@ const ThankYouLetterEditor = ({
                   key={bg.id}
                   onClick={() => setSelectedBgId(bg.id)}
                   className={`shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-all ${
-                    selectedBgId === bg.id 
-                      ? 'border-primary ring-2 ring-primary/20' 
-                      : 'border-transparent'
+                    selectedBgId === bg.id ? "border-primary ring-2 ring-primary/20" : "border-transparent"
                   }`}
                 >
-                  <img 
-                    src={bg.src} 
-                    alt={`背景 ${bg.id}`}
-                    className="w-full h-full object-cover"
-                  />
+                  <img src={bg.src} alt={`背景 ${bg.id}`} className="w-full h-full object-cover" />
                 </button>
               ))}
             </div>
@@ -177,11 +160,7 @@ const ThankYouLetterEditor = ({
 
       {/* Sticky Send Button */}
       <div className="fixed bottom-0 left-0 right-0 p-4 bg-background border-t border-border">
-        <Button
-          onClick={handleSend}
-          disabled={!isFormValid || isSending}
-          className="w-full h-12 text-base font-medium"
-        >
+        <Button onClick={handleSend} disabled={!isFormValid || isSending} className="w-full h-12 text-base font-medium">
           {isSending ? "寄送中..." : "寄出感謝函"}
         </Button>
       </div>

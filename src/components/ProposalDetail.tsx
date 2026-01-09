@@ -211,7 +211,7 @@ const ProposalDetail = ({
                     {getTimeSortIcon()}
                   </button>
                 </TableHead>
-                <TableHead className="text-muted-foreground text-center">回覆感謝函</TableHead>
+                <TableHead className="text-muted-foreground text-center">回覆感謝</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
