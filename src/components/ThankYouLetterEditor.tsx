@@ -104,6 +104,17 @@ const ThankYouLetterEditor = ({ campaignName, donations, onBack, onMenuClick }: 
           </div>
         </div>
 
+        {/* Title Input Row */}
+        <div className="px-4 py-3 border-b border-border">
+          <span className="text-sm font-medium text-foreground">標題</span>
+          <Input
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="請輸入信件標題"
+            className="mt-2 bg-background border-0 p-0 h-auto text-sm focus-visible:ring-0 placeholder:text-muted-foreground"
+          />
+        </div>
+
         {/* Card Preview */}
         <div className="px-4 py-4">
           <div
