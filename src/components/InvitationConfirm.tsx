@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Check, ChevronLeft, ChevronRight, Heart } from "lucide-react";
 import { InvitationData } from "@/types";
+import WishlistItem from "./WishlistItem";
 import Footer from "./Footer";
 
 interface InvitationConfirmProps {
@@ -148,6 +149,18 @@ const InvitationConfirm = ({
             </button>
           </div>
         </div>
+
+        {/* Wishlist Section */}
+        {invitation.products && invitation.products.length > 0 && (
+          <div className="mt-5">
+            <h3 className="text-base font-medium text-foreground mb-3">我的願望清單</h3>
+            <div className="space-y-3">
+              {invitation.products.map((item) => (
+                <WishlistItem key={item.id} item={item} />
+              ))}
+            </div>
+          </div>
+        )}
       </main>
 
       {/* Bottom Buttons */}
