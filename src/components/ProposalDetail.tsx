@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Send, ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
+import { Send, ArrowUpDown, ArrowUp, ArrowDown, MessageSquare } from "lucide-react";
 import LineIcon from "./icons/LineIcon";
 import Header from "./Header";
 import { Progress } from "./ui/progress";
@@ -182,6 +182,22 @@ const ProposalDetail = ({
             </div>
           </div>
         )}
+
+        {/* Divider */}
+        <div className="h-px bg-border" />
+
+        {/* Message Board Section */}
+        <div className="px-4 py-6">
+          <h3 className="text-lg font-medium text-foreground mb-4">留言板功能</h3>
+          <Button
+            onClick={onViewMessageBoard}
+            variant="outline"
+            className="w-full h-12 text-base font-medium"
+          >
+            <MessageSquare className="w-5 h-5 mr-2" />
+            查看留言板
+          </Button>
+        </div>
 
         {/* Divider */}
         <div className="h-px bg-border" />
