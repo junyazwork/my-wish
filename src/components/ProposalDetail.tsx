@@ -165,7 +165,7 @@ const ProposalDetail = ({
               className="w-full h-12 text-base font-medium bg-success hover:bg-success/90"
             >
               <Send className="w-5 h-5 mr-2" />
-              發送感謝函
+              發送感謝信
             </Button>
           </div>
         )}
@@ -211,7 +211,7 @@ const ProposalDetail = ({
                     {getTimeSortIcon()}
                   </button>
                 </TableHead>
-                <TableHead className="text-muted-foreground text-center">寄信</TableHead>
+                <TableHead className="text-muted-foreground text-center">回覆感謝</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
