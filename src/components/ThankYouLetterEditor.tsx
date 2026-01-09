@@ -48,7 +48,7 @@ const ThankYouLetterEditor = ({ campaignName, donations, onBack, onMenuClick }: 
     if (!title.trim()) {
       toast({
         title: "請填寫完整",
-        description: "訊息標題是必填欄位",
+        description: "信件標題是必填欄位",
         variant: "destructive",
       });
       return;
@@ -86,7 +86,7 @@ const ThankYouLetterEditor = ({ campaignName, donations, onBack, onMenuClick }: 
       <div className="flex-1 overflow-auto pb-24">
         {/* Recipient Info Row */}
         <div className="px-4 py-3 flex items-start border-b border-border">
-          <span className="text-sm font-medium text-foreground w-16 shrink-0 pt-0.5">收件者</span>
+          <span className="text-sm font-medium text-foreground w-16 shrink-0 pt-0.5">發送給</span>
           <div className="flex-1">
             <div className="text-sm text-muted-foreground">
               {donationsWithEmail.length > 0
@@ -96,17 +96,17 @@ const ThankYouLetterEditor = ({ campaignName, donations, onBack, onMenuClick }: 
                       {idx < donationsWithEmail.length - 1 && "、"}
                     </span>
                   ))
-                : "無收件人"}
+                : "沒有人"}
             </div>
             {donationsWithEmail.length > 0 && (
-              <div className="text-xs text-muted-foreground/70 mt-1">共 {donationsWithEmail.length} 位收件人</div>
+              <div className="text-xs text-muted-foreground/70 mt-1">共 {donationsWithEmail.length} 位</div>
             )}
           </div>
         </div>
 
         {/* Title Input Row */}
         <div className="px-4 py-3 border-b border-border">
-          <span className="text-sm font-medium text-foreground">標題</span>
+          <span className="text-sm font-medium text-foreground">信件標題</span>
           <Input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
