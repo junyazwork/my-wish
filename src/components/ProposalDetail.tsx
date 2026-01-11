@@ -165,7 +165,7 @@ const ProposalDetail = ({
               className="w-full h-12 text-base font-medium bg-success hover:bg-success/90"
             >
               <Send className="w-5 h-5 mr-2" />
-              發送感謝信
+              發送感謝信給大家
             </Button>
           </div>
         )}
