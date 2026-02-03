@@ -23,6 +23,8 @@ export const products: Product[] = [
     image: product2,
     category: "shirts",
     subcategory: "中性",
+    provider: "Yahoo",
+    externalUrl: "https://tw.buy.yahoo.com/",
   },
   {
     id: "2",
@@ -31,6 +33,7 @@ export const products: Product[] = [
     image: product3,
     category: "shirts",
     subcategory: "中性",
+    provider: "My Wish",
   },
   {
     id: "3",
@@ -39,6 +42,8 @@ export const products: Product[] = [
     image: product4,
     category: "shirts",
     subcategory: "男裝",
+    provider: "Yahoo",
+    externalUrl: "https://tw.buy.yahoo.com/",
   },
   {
     id: "4",
@@ -47,6 +52,7 @@ export const products: Product[] = [
     image: product5,
     category: "shirts",
     subcategory: "中性",
+    provider: "My Wish",
   },
   {
     id: "6",
@@ -55,6 +61,8 @@ export const products: Product[] = [
     image: product6,
     category: "shirts",
     subcategory: "中性",
+    provider: "Yahoo",
+    externalUrl: "https://tw.buy.yahoo.com/",
   },
   {
     id: "7",
@@ -63,6 +71,7 @@ export const products: Product[] = [
     image: product2,
     category: "shirts",
     subcategory: "女裝",
+    provider: "My Wish",
   },
   {
     id: "8",
@@ -71,6 +80,8 @@ export const products: Product[] = [
     image: product3,
     category: "shirts",
     subcategory: "女裝",
+    provider: "Yahoo",
+    externalUrl: "https://tw.buy.yahoo.com/",
   },
   // 戶外鞋
   {
@@ -80,6 +91,7 @@ export const products: Product[] = [
     image: product1,
     category: "shoes",
     subcategory: "運動鞋",
+    provider: "My Wish",
   },
   {
     id: "9",
@@ -88,6 +100,8 @@ export const products: Product[] = [
     image: product1,
     category: "shoes",
     subcategory: "休閒鞋",
+    provider: "Yahoo",
+    externalUrl: "https://tw.buy.yahoo.com/",
   },
   {
     id: "10",
@@ -96,6 +110,7 @@ export const products: Product[] = [
     image: product1,
     category: "shoes",
     subcategory: "登山鞋",
+    provider: "My Wish",
   },
   {
     id: "11",
@@ -104,6 +119,8 @@ export const products: Product[] = [
     image: product1,
     category: "shoes",
     subcategory: "登山鞋",
+    provider: "Yahoo",
+    externalUrl: "https://tw.buy.yahoo.com/",
   },
   // 餐盤
   {
@@ -113,6 +130,7 @@ export const products: Product[] = [
     image: product4,
     category: "dinnerware",
     subcategory: "陶瓷",
+    provider: "My Wish",
   },
   {
     id: "13",
@@ -121,6 +139,8 @@ export const products: Product[] = [
     image: product5,
     category: "dinnerware",
     subcategory: "陶瓷",
+    provider: "Yahoo",
+    externalUrl: "https://tw.buy.yahoo.com/",
   },
   {
     id: "14",
@@ -129,6 +149,7 @@ export const products: Product[] = [
     image: product6,
     category: "dinnerware",
     subcategory: "不鏽鋼",
+    provider: "My Wish",
   },
   {
     id: "15",
@@ -137,6 +158,8 @@ export const products: Product[] = [
     image: product2,
     category: "dinnerware",
     subcategory: "木質",
+    provider: "Yahoo",
+    externalUrl: "https://tw.buy.yahoo.com/",
   },
   {
     id: "16",
@@ -145,5 +168,6 @@ export const products: Product[] = [
     image: product3,
     category: "dinnerware",
     subcategory: "木質",
+    provider: "My Wish",
   },
 ];
