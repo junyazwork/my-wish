@@ -1,3 +1,5 @@
+export type ProductProvider = "My Wish" | "Yahoo";
+
 export interface Product {
   id: string;
   name: string;
@@ -5,6 +7,8 @@ export interface Product {
   image: string;
   category: string;
   subcategory?: string;
+  provider: ProductProvider;
+  externalUrl?: string;
 }
 
 export interface CartItem extends Product {

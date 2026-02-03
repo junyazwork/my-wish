@@ -82,8 +82,8 @@ const initialCampaigns: Campaign[] = [
       { id: "1-1", lineName: "王大明", amount: 500, date: "2024-12-20 10:00", email: "wang@example.com" },
     ],
     products: [
-      { id: "p1", name: "精選咖啡禮盒", price: 580, image: product1, category: "食品", quantity: 2 },
-      { id: "p2", name: "手工餅乾組合", price: 320, image: product2, category: "食品", quantity: 1 },
+      { id: "p1", name: "精選咖啡禮盒", price: 580, image: product1, category: "食品", quantity: 2, provider: "My Wish" },
+      { id: "p2", name: "手工餅乾組合", price: 320, image: product2, category: "食品", quantity: 1, provider: "Yahoo", externalUrl: "https://tw.buy.yahoo.com/" },
     ],
     mediaItems: [
       { id: "m1", type: "image", url: product1, aspectRatio: "3:4" }
@@ -111,7 +111,7 @@ const initialCampaigns: Campaign[] = [
     notifyDays: 14,
     donations: [],
     products: [
-      { id: "p3", name: "教育圖書套組", price: 1200, image: product2, category: "教育", quantity: 3 },
+      { id: "p3", name: "教育圖書套組", price: 1200, image: product2, category: "教育", quantity: 3, provider: "My Wish" },
     ],
     mediaItems: [
       { id: "m2", type: "image", url: product2, aspectRatio: "3:4" }
@@ -140,7 +140,7 @@ const initialCampaigns: Campaign[] = [
     notifyDays: 14,
     donations: [],
     products: [
-      { id: "p4", name: "環保淨灘工具組", price: 450, image: product3, category: "環保", quantity: 5 },
+      { id: "p4", name: "環保淨灘工具組", price: 450, image: product3, category: "環保", quantity: 5, provider: "Yahoo", externalUrl: "https://tw.buy.yahoo.com/" },
     ],
     mediaItems: [
       { id: "m3", type: "image", url: product3, aspectRatio: "1:1" }
@@ -168,7 +168,7 @@ const initialCampaigns: Campaign[] = [
     notifyDays: 7,
     donations: [],
     products: [
-      { id: "p5", name: "營養餐點食材", price: 280, image: product4, category: "食品", quantity: 10 },
+      { id: "p5", name: "營養餐點食材", price: 280, image: product4, category: "食品", quantity: 10, provider: "My Wish" },
     ],
     mediaItems: [
       { id: "m4", type: "image", url: product4, aspectRatio: "3:4" }
@@ -201,7 +201,7 @@ const initialCampaigns: Campaign[] = [
       { id: "5-3", lineName: "王五", amount: 1500, date: "2024-11-25 14:00", email: "wang5@example.com" },
     ],
     products: [
-      { id: "p6", name: "兒童繪本經典套書", price: 890, image: product5, category: "書籍", quantity: 4 },
+      { id: "p6", name: "兒童繪本經典套書", price: 890, image: product5, category: "書籍", quantity: 4, provider: "My Wish" },
     ],
     mediaItems: [
       { id: "m5", type: "image", url: product5, aspectRatio: "3:4" }
@@ -232,8 +232,8 @@ const initialCampaigns: Campaign[] = [
       { id: "6-2", lineName: "林美玲", amount: 2500, date: "2024-10-25 16:00", email: "lin@example.com" },
     ],
     products: [
-      { id: "p7", name: "寵物飼料大包裝", price: 650, image: product6, category: "寵物", quantity: 8 },
-      { id: "p8", name: "寵物醫療用品", price: 420, image: product6, category: "寵物", quantity: 3 },
+      { id: "p7", name: "寵物飼料大包裝", price: 650, image: product6, category: "寵物", quantity: 8, provider: "Yahoo", externalUrl: "https://tw.buy.yahoo.com/" },
+      { id: "p8", name: "寵物醫療用品", price: 420, image: product6, category: "寵物", quantity: 3, provider: "My Wish" },
     ],
     mediaItems: [
       { id: "m6", type: "image", url: product6, aspectRatio: "1:1" }
