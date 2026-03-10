@@ -30,6 +30,7 @@ import DonationsLog from "@/components/DonationsLog";
 import AllCampaigns from "@/components/AllCampaigns";
 import LineAuthPage from "@/components/LineAuthPage";
 import SearchResults from "@/components/SearchResults";
+import ShippingTrackingPage from "@/components/ShippingTrackingPage";
 import Footer from "@/components/Footer";
 import { products, categories } from "@/data/products";
 import { Product, CartItem, FundingType, InvitationData, PublicHostData, PublicInvitationData, AppView, LineFriend, MediaItemData, AspectRatioType } from "@/types";
@@ -93,6 +94,7 @@ const Index = () => {
     if (currentView === "all-campaigns" || currentView === "campaign-attend") return "all-campaigns";
     if (currentView === "proposals") return "proposals";
     if (currentView === "donations") return "donations";
+    if (currentView === "shipping") return "shipping";
     return "home";
   };
 
@@ -162,6 +164,8 @@ const Index = () => {
       setCurrentView("donations");
     } else if (page === "all-campaigns") {
       setCurrentView("all-campaigns");
+    } else if (page === "shipping") {
+      setCurrentView("shipping");
     } else if (page === "logout") {
       handleLogout();
     }
@@ -470,6 +474,16 @@ const Index = () => {
           currentPage="donations"
         />
       </>
+    );
+  }
+
+  // Render shipping tracking page
+  if (currentView === "shipping") {
+    return (
+      <ShippingTrackingPage
+        onBack={() => setCurrentView("home")}
+        onNavigate={handleNavigate}
+      />
     );
   }
 
