@@ -36,6 +36,9 @@ const Footer = () => {
               <li>
                 <Link to="/faq" className="hover:underline">常見問題</Link>
               </li>
+              <li>
+                <Link to="/return-policy" className="hover:underline">退換貨流程</Link>
+              </li>
             </ul>
           </div>
           
