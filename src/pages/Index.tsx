@@ -94,6 +94,7 @@ const Index = () => {
     if (currentView === "all-campaigns" || currentView === "campaign-attend") return "all-campaigns";
     if (currentView === "proposals") return "proposals";
     if (currentView === "donations") return "donations";
+    if (currentView === "shipping") return "shipping";
     return "home";
   };
 
