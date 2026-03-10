@@ -16,6 +16,7 @@ import ContactPage from "./pages/ContactPage";
 import ArchitecturePage from "./pages/ArchitecturePage";
 import BusinessAnalysisPage from "./pages/BusinessAnalysisPage";
 import ERDiagramPage from "./pages/ERDiagramPage";
+import ReturnPolicyPage from "./pages/ReturnPolicyPage";
 
 const queryClient = new QueryClient();
 
