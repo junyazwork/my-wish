@@ -123,7 +123,7 @@ const mockOrders: ShippingOrder[] = [
     productName: "有機棉枕頭套組",
     productStyle: "淺灰色 / 雙人組",
     productCode: "PL-012",
-    productNumber: "SKU-20260210-C",
+    productNumber: "C210003",
     quantity: 1,
     unitPrice: 1680,
     total: 1680,
