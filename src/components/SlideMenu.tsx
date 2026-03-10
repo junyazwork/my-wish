@@ -1,4 +1,4 @@
-import { X, Home, Globe, FileText, Heart, LogOut } from "lucide-react";
+import { X, Home, Globe, FileText, Heart, Truck, LogOut } from "lucide-react";
 interface SlideMenuProps {
   isOpen: boolean;
   onClose: () => void;
@@ -23,6 +23,10 @@ const SlideMenu = ({
     id: "donations",
     label: "贊助紀錄",
     icon: Heart
+  }, {
+    id: "shipping",
+    label: "配送/退貨查詢",
+    icon: Truck
   }, {
     id: "logout",
     label: "登出",

@@ -74,6 +74,7 @@ export type AppView =
   | "funding" 
   | "proposals" 
   | "donations"
+  | "shipping"
   | "all-campaigns"
   | "campaign-attend"
   | "line-auth"

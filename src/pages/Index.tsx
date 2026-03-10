@@ -162,6 +162,8 @@ const Index = () => {
       setCurrentView("donations");
     } else if (page === "all-campaigns") {
       setCurrentView("all-campaigns");
+    } else if (page === "shipping") {
+      setCurrentView("shipping");
     } else if (page === "logout") {
       handleLogout();
     }
