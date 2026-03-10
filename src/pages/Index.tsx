@@ -30,6 +30,7 @@ import DonationsLog from "@/components/DonationsLog";
 import AllCampaigns from "@/components/AllCampaigns";
 import LineAuthPage from "@/components/LineAuthPage";
 import SearchResults from "@/components/SearchResults";
+import ShippingTrackingPage from "@/components/ShippingTrackingPage";
 import Footer from "@/components/Footer";
 import { products, categories } from "@/data/products";
 import { Product, CartItem, FundingType, InvitationData, PublicHostData, PublicInvitationData, AppView, LineFriend, MediaItemData, AspectRatioType } from "@/types";
