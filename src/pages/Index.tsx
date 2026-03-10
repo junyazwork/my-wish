@@ -475,6 +475,16 @@ const Index = () => {
     );
   }
 
+  // Render shipping tracking page
+  if (currentView === "shipping") {
+    return (
+      <ShippingTrackingPage
+        onBack={() => setCurrentView("home")}
+        onNavigate={handleNavigate}
+      />
+    );
+  }
+
   // Render all campaigns page
   if (currentView === "all-campaigns") {
     return (
