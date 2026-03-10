@@ -70,7 +70,7 @@ const mockOrders: ShippingOrder[] = [
     productName: "北歐風簡約檯燈",
     productStyle: "白色 / 標準款",
     productCode: "LP-001",
-    productNumber: "SKU-20260301-A",
+    productNumber: "A260301",
     quantity: 1,
     unitPrice: 1280,
     total: 1280,
