@@ -87,7 +87,7 @@ const mockOrders: ShippingOrder[] = [
     productName: "手工皮革錢包",
     productStyle: "深棕色 / 長夾",
     productCode: "WL-05",
-    productNumber: "SKU-20260225-B",
+    productNumber: "B225001",
     quantity: 2,
     unitPrice: 2450,
     total: 4900,
