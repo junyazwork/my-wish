@@ -48,12 +48,17 @@ const ProposalDetail = ({
   onSendThankYouLetter,
   onSendSingleThankYouLetter
 }: ProposalDetailProps) => {
-  const { addReturnOrder } = useReturnOrders();
+  const { addReturnOrder, getReturnOrderByOriginalOrderNumber } = useReturnOrders();
   const [amountSortOrder, setAmountSortOrder] = useState<"none" | "asc" | "desc">("none");
   const [timeSortOrder, setTimeSortOrder] = useState<"none" | "asc" | "desc">("none");
   const [showRecipientForm, setShowRecipientForm] = useState(false);
   const [showReturnForm, setShowReturnForm] = useState(false);
   const [recipientData, setRecipientData] = useState<RecipientData | null>(null);
+
+  // Check if this proposal has a pending return order
+  const orderNumber = generateOrderNumber();
+  const pendingReturn = getReturnOrderByOriginalOrderNumber(orderNumber);
+  const hasPendingReturn = pendingReturn !== undefined;
 
   const sortedDonations = useMemo(() => {
     let result = [...proposal.donations];
