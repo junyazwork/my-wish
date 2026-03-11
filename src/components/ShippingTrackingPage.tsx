@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import Header from "@/components/Header";
+import SlideMenu from "@/components/SlideMenu";
 import ShippingOrderDetail from "@/components/ShippingOrderDetail";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -12,9 +13,7 @@ import { cn } from "@/lib/utils";
 
 interface ShippingTrackingPageProps {
   onBack: () => void;
-  onMenuClick: () => void;
-  onCartClick: () => void;
-  cartCount: number;
+  onNavigate: (page: string) => void;
 }
 
 type OrderStatus = "shipping" | "delivered" | "returning" | "returned";
@@ -150,7 +149,8 @@ const mockOrders: ShippingOrder[] = [
   },
 ];
 
-const ShippingTrackingPage = ({ onBack, onMenuClick, onCartClick, cartCount }: ShippingTrackingPageProps) => {
+const ShippingTrackingPage = ({ onBack, onNavigate }: ShippingTrackingPageProps) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<ShippingOrder | null>(null);
   const [startDate, setStartDate] = useState<Date | undefined>(undefined);
   const [endDate, setEndDate] = useState<Date | undefined>(undefined);
@@ -179,7 +179,7 @@ const ShippingTrackingPage = ({ onBack, onMenuClick, onCartClick, cartCount }: S
       <ShippingOrderDetail
         order={selectedOrder}
         onBack={() => setSelectedOrder(null)}
-        onMenuClick={onMenuClick}
+        onMenuClick={() => setIsMenuOpen(true)}
       />
     );
   }
@@ -190,7 +190,13 @@ const ShippingTrackingPage = ({ onBack, onMenuClick, onCartClick, cartCount }: S
         title="配送/退貨查詢"
         showBack
         onBack={onBack}
-        onMenuClick={onMenuClick}
+        onMenuClick={() => setIsMenuOpen(true)}
+      />
+      <SlideMenu
+        isOpen={isMenuOpen}
+        onClose={() => setIsMenuOpen(false)}
+        onNavigate={onNavigate}
+        currentPage="shipping"
       />
 
       <div className="px-4 py-4 space-y-4">

@@ -480,20 +480,10 @@ const Index = () => {
   // Render shipping tracking page
   if (currentView === "shipping") {
     return (
-      <>
-        <ShippingTrackingPage
-          onBack={() => setCurrentView("home")}
-          onMenuClick={() => setIsMenuOpen(true)}
-          onCartClick={handleCartClick}
-          cartCount={cartCount}
-        />
-        <SlideMenu
-          isOpen={isMenuOpen}
-          onClose={() => setIsMenuOpen(false)}
-          onNavigate={handleNavigate}
-          currentPage="shipping"
-        />
-      </>
+      <ShippingTrackingPage
+        onBack={() => setCurrentView("home")}
+        onNavigate={handleNavigate}
+      />
     );
   }
 
