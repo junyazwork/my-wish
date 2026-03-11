@@ -35,6 +35,7 @@ interface ProposalShippingInfoProps {
   products: OrderProduct[];
   total: number;
   recipient: RecipientData;
+  deliveredDate?: string;
   onRequestReturn?: () => void;
 }
 
