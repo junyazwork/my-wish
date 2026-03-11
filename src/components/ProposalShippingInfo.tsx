@@ -37,6 +37,7 @@ interface ProposalShippingInfoProps {
   recipient: RecipientData;
   deliveredDate?: string;
   onRequestReturn?: () => void;
+  hasPendingReturn?: boolean;
 }
 
 const DetailRow = ({ label, value }: { label: string; value?: string | number }) => {
