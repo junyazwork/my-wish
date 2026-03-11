@@ -188,16 +188,40 @@ const ShippingTrackingPage = ({ onBack, onNavigate }: ShippingTrackingPageProps)
     );
   };
 
+  const renderProductTable = (products: OrderProduct[]) => (
+    <div className="border border-border rounded-lg overflow-hidden">
+      <div className="grid grid-cols-[1fr_auto_auto_auto_auto] gap-0 text-xs">
+        {/* Header */}
+        <div className="bg-muted/60 px-3 py-2 font-medium text-muted-foreground">商品名稱</div>
+        <div className="bg-muted/60 px-3 py-2 font-medium text-muted-foreground text-center">品號</div>
+        <div className="bg-muted/60 px-3 py-2 font-medium text-muted-foreground text-center">商品編號</div>
+        <div className="bg-muted/60 px-3 py-2 font-medium text-muted-foreground text-center">數量</div>
+        <div className="bg-muted/60 px-3 py-2 font-medium text-muted-foreground text-right">售價</div>
+        {/* Rows */}
+        {products.map((p, i) => (
+          <React.Fragment key={i}>
+            <div className={cn("px-3 py-2 border-t border-border", i % 2 === 1 && "bg-muted/20")}>
+              <p className="font-medium text-foreground">{p.productName}</p>
+              {p.productStyle && <p className="text-muted-foreground mt-0.5">{p.productStyle}</p>}
+            </div>
+            <div className={cn("px-3 py-2 border-t border-border text-center text-foreground", i % 2 === 1 && "bg-muted/20")}>{p.productCode || "-"}</div>
+            <div className={cn("px-3 py-2 border-t border-border text-center text-foreground", i % 2 === 1 && "bg-muted/20")}>{p.productNumber || "-"}</div>
+            <div className={cn("px-3 py-2 border-t border-border text-center text-foreground", i % 2 === 1 && "bg-muted/20")}>{p.quantity}</div>
+            <div className={cn("px-3 py-2 border-t border-border text-right text-foreground", i % 2 === 1 && "bg-muted/20")}>NT$ {p.unitPrice.toLocaleString()}</div>
+          </React.Fragment>
+        ))}
+      </div>
+    </div>
+  );
+
   const renderShippingDetails = (order: ShippingOrder) => (
-    <div className="px-4 pb-4 space-y-1 bg-muted/30 rounded-b-lg">
+    <div className="px-4 pb-4 space-y-3 bg-muted/30 rounded-b-lg">
       <DetailRow label="發單日" value={order.orderDate} />
       <DetailRow label="訂單號碼" value={order.orderNumber} />
-      <DetailRow label="商品名稱" value={order.productName} />
-      <DetailRow label="商品款式" value={order.productStyle} />
-      <DetailRow label="品號" value={order.productCode} />
-      <DetailRow label="商品編號" value={order.productNumber} />
-      <DetailRow label="訂購數量" value={order.quantity} />
-      <DetailRow label="售價" value={`NT$ ${order.unitPrice?.toLocaleString()}`} />
+      <div className="pt-1">
+        <p className="text-xs font-medium text-muted-foreground mb-2">商品明細</p>
+        {renderProductTable(order.products)}
+      </div>
       <DetailRow label="總計" value={`NT$ ${order.total?.toLocaleString()}`} />
       <DetailRow label="收件人" value={order.recipient} />
       <DetailRow label="聯絡電話" value={order.phone} />
@@ -206,11 +230,14 @@ const ShippingTrackingPage = ({ onBack, onNavigate }: ShippingTrackingPageProps)
   );
 
   const renderReturnDetails = (order: ShippingOrder) => (
-    <div className="px-4 pb-4 space-y-1 bg-muted/30 rounded-b-lg">
+    <div className="px-4 pb-4 space-y-3 bg-muted/30 rounded-b-lg">
       <DetailRow label="申請退貨日期" value={order.returnDate} />
       <DetailRow label="原訂單號碼" value={order.originalOrderNumber} />
       <DetailRow label="退貨單號" value={order.returnOrderNumber} />
-      <DetailRow label="商品名稱" value={order.productName} />
+      <div className="pt-1">
+        <p className="text-xs font-medium text-muted-foreground mb-2">退貨商品</p>
+        {renderProductTable(order.products)}
+      </div>
       <DetailRow label="退貨數量" value={order.returnQuantity} />
       <DetailRow label="退款金額" value={`NT$ ${order.refundAmount?.toLocaleString()}`} />
       <DetailRow label="退貨原因" value={order.returnReason} />
