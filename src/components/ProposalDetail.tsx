@@ -119,7 +119,7 @@ const ProposalDetail = ({
   const isGoalReached = proposal.currentAmount >= proposal.goalAmount && proposal.goalAmount > 0;
 
   // Generate mock order data from products
-  const generateOrderNumber = () => "202501150001";
+  const generateOrderNumber = () => orderNumber;
   const generateProductCode = (index: number) => `AB-${String(index + 1).padStart(3, "0")}`;
   const generateProductNumber = (index: number) => `A${String(100001 + index)}`;
 
