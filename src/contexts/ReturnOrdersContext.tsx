@@ -29,11 +29,13 @@ export interface ReturnOrder {
 interface ReturnOrdersContextType {
   returnOrders: ReturnOrder[];
   addReturnOrder: (order: ReturnOrder) => void;
+  getReturnOrderByOriginalOrderNumber: (orderNumber: string) => ReturnOrder | undefined;
 }
 
 const ReturnOrdersContext = createContext<ReturnOrdersContextType>({
   returnOrders: [],
   addReturnOrder: () => {},
+  getReturnOrderByOriginalOrderNumber: () => undefined,
 });
 
 export const useReturnOrders = () => useContext(ReturnOrdersContext);
