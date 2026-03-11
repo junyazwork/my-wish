@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import Header from "@/components/Header";
 import SlideMenu from "@/components/SlideMenu";
 import { Badge } from "@/components/ui/badge";
