@@ -253,6 +253,7 @@ const ProposalDetail = ({
               orderNumber={generateOrderNumber()}
               orderDate={proposal.proposalDate || ""}
               status={mockShippingStatus}
+              deliveredDate={mockDeliveredDate}
               products={proposal.products.map((p, i) => ({
                 productName: p.name,
                 productCode: generateProductCode(i),
@@ -262,11 +263,7 @@ const ProposalDetail = ({
               }))}
               total={proposal.products.reduce((sum, p) => sum + p.price * p.quantity, 0)}
               recipient={recipientData}
-              onRequestReturn={() => {
-                // TODO: implement return request flow
-                import("sonner").then(({ toast }) => toast.info("退換貨申請功能開發中"));
-              }} />
-            
+              onRequestReturn={() => setShowReturnForm(true)} />
               </div>
           }
           </div>
