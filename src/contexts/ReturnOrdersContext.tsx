@@ -47,8 +47,12 @@ export const ReturnOrdersProvider = ({ children }: { children: ReactNode }) => {
     setReturnOrders((prev) => [order, ...prev]);
   };
 
+  const getReturnOrderByOriginalOrderNumber = (orderNumber: string) => {
+    return returnOrders.find((order) => order.originalOrderNumber === orderNumber);
+  };
+
   return (
-    <ReturnOrdersContext.Provider value={{ returnOrders, addReturnOrder }}>
+    <ReturnOrdersContext.Provider value={{ returnOrders, addReturnOrder, getReturnOrderByOriginalOrderNumber }}>
       {children}
     </ReturnOrdersContext.Provider>
   );

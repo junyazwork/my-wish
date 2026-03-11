@@ -128,7 +128,7 @@ const ProposalShippingInfo = ({
         <DetailRow label="配送地址" value={recipient.address} />
       </div>
 
-      {/* Return Button - Only for delivered within 7 days */}
+      {/* Return Button - Only for delivered within 7 days, no pending return */}
       {canRequestReturn && (
         <Button
           onClick={onRequestReturn}
@@ -138,6 +138,14 @@ const ProposalShippingInfo = ({
           <RotateCcw className="w-4 h-4 mr-2" />
           申請退換貨
         </Button>
+      )}
+
+      {/* Pending Return Status - Show when return is being processed */}
+      {hasPendingReturn && (
+        <div className="flex items-center justify-center gap-2 px-4 py-3 bg-muted/50 rounded-lg border border-border">
+          <Clock className="w-4 h-4 text-muted-foreground" />
+          <span className="text-sm text-muted-foreground">退貨處理中</span>
+        </div>
       )}
     </div>
   );
