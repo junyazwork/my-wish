@@ -70,6 +70,7 @@ const RecipientForm = ({ onBack, onMenuClick, onSubmit, viewOnlyData }: Recipien
             onChange={(e) => setPhone(e.target.value)}
             placeholder="請輸入聯絡電話"
             type="tel"
+            disabled={!!viewOnlyData}
           />
         </div>
 
