@@ -288,7 +288,7 @@ const ProposalDetail = ({
             {recipientData && isGoalReached &&
           <div className="mt-6">
                 <ProposalShippingInfo
-              orderNumber={generateOrderNumber()}
+              orderNumber={orderNumber}
               orderDate={proposal.proposalDate || ""}
               status={mockShippingStatus}
               deliveredDate={mockDeliveredDate}
@@ -301,7 +301,8 @@ const ProposalDetail = ({
               }))}
               total={proposal.products.reduce((sum, p) => sum + p.price * p.quantity, 0)}
               recipient={recipientData}
-              onRequestReturn={() => setShowReturnForm(true)} />
+              onRequestReturn={() => setShowReturnForm(true)}
+              hasPendingReturn={hasPendingReturn} />
               </div>
           }
           </div>
