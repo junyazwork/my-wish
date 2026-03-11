@@ -15,6 +15,7 @@ interface RecipientFormProps {
   onBack: () => void;
   onMenuClick: () => void;
   onSubmit: (data: RecipientData) => void;
+  viewOnlyData?: RecipientData;
 }
 
 const RecipientForm = ({ onBack, onMenuClick, onSubmit }: RecipientFormProps) => {
