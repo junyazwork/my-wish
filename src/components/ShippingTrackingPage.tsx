@@ -17,6 +17,15 @@ interface ShippingTrackingPageProps {
 
 type OrderStatus = "shipping" | "delivered" | "returning" | "returned";
 
+interface OrderProduct {
+  productName: string;
+  productStyle?: string;
+  productCode?: string;
+  productNumber?: string;
+  quantity: number;
+  unitPrice: number;
+}
+
 interface ShippingOrder {
   id: string;
   orderNumber: string;
@@ -24,12 +33,7 @@ interface ShippingOrder {
   status: OrderStatus;
   // Shipping fields
   orderDate?: string;
-  productName: string;
-  productStyle?: string;
-  productCode?: string;
-  productNumber?: string;
-  quantity: number;
-  unitPrice: number;
+  products: OrderProduct[];
   total: number;
   recipient?: string;
   phone?: string;
