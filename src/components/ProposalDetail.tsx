@@ -267,11 +267,10 @@ const ProposalDetail = ({
         <div className="px-4 py-[24px] pb-[24px] pt-[8px]">
             <Button
             onClick={() => setShowRecipientForm(true)}
-            variant={recipientData ? "outline" : "default"}
             className="w-full h-12 text-base font-medium">
             
               <ClipboardList className="w-5 h-5 mr-2" />
-              {recipientData ? "修改收件人資料" : "填寫收件人資料"}
+              {recipientData ? "查看收件人資料" : "填寫收件人資料"}
             </Button>
           </div>
         }
