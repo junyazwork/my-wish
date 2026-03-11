@@ -10,6 +10,7 @@ import WishlistItem from "./WishlistItem";
 import { CartItem } from "@/types";
 import RecipientForm, { RecipientData } from "./RecipientForm";
 import ProposalShippingInfo from "./ProposalShippingInfo";
+import ReturnRequestForm from "./ReturnRequestForm";
 
 interface ProposalDetailData {
   id: string;
