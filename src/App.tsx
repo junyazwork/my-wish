@@ -24,28 +24,30 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <CampaignsProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/sponsor-policy" element={<SponsorPolicyPage />} />
-            <Route path="/service-guide" element={<ServiceGuidePage />} />
-            <Route path="/terms" element={<TermsPage />} />
-            <Route path="/privacy" element={<PrivacyPage />} />
-            <Route path="/faq" element={<FAQPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/architecture" element={<ArchitecturePage />} />
-            <Route path="/business-analysis" element={<BusinessAnalysisPage />} />
-            <Route path="/er-diagram" element={<ERDiagramPage />} />
-            <Route path="/return-policy" element={<ReturnPolicyPage />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
+      <ReturnOrdersProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/sponsor-policy" element={<SponsorPolicyPage />} />
+              <Route path="/service-guide" element={<ServiceGuidePage />} />
+              <Route path="/terms" element={<TermsPage />} />
+              <Route path="/privacy" element={<PrivacyPage />} />
+              <Route path="/faq" element={<FAQPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/architecture" element={<ArchitecturePage />} />
+              <Route path="/business-analysis" element={<BusinessAnalysisPage />} />
+              <Route path="/er-diagram" element={<ERDiagramPage />} />
+              <Route path="/return-policy" element={<ReturnPolicyPage />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </ReturnOrdersProvider>
     </CampaignsProvider>
   </QueryClientProvider>
 );
