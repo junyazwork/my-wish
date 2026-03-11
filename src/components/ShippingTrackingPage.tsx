@@ -179,7 +179,7 @@ const ShippingTrackingPage = ({ onBack, onMenuClick, onCartClick, cartCount }: S
       <ShippingOrderDetail
         order={selectedOrder}
         onBack={() => setSelectedOrder(null)}
-        onMenuClick={() => setIsMenuOpen(true)}
+        onMenuClick={onMenuClick}
       />
     );
   }
