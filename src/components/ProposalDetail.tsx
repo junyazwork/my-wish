@@ -191,7 +191,9 @@ const ProposalDetail = ({
       <RecipientForm
         onBack={() => setShowRecipientForm(false)}
         onMenuClick={onMenuClick}
-        onSubmit={handleRecipientSubmit} />);
+        onSubmit={handleRecipientSubmit}
+        viewOnlyData={recipientData || undefined} />
+    );
   }
 
   const getStatusBadge = (status: "building" | "active") => {
