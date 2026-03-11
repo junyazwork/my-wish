@@ -83,6 +83,7 @@ const RecipientForm = ({ onBack, onMenuClick, onSubmit, viewOnlyData }: Recipien
             value={address}
             onChange={(e) => setAddress(e.target.value)}
             placeholder="請輸入配送地址"
+            disabled={!!viewOnlyData}
           />
         </div>
       </div>
