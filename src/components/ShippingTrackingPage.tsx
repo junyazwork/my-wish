@@ -233,7 +233,7 @@ const ShippingTrackingPage = ({ onBack, onNavigate }: ShippingTrackingPageProps)
         </div>
 
         {/* Order List */}
-        <div className="space-y-3">
+        <div>
           {filteredOrders.length === 0 ? (
             <div className="text-center py-12 text-muted-foreground">
               <Package className="mx-auto mb-3 h-10 w-10 opacity-50" />
@@ -245,10 +245,10 @@ const ShippingTrackingPage = ({ onBack, onNavigate }: ShippingTrackingPageProps)
               return (
                 <div
                   key={order.id}
-                  className="border border-border rounded-lg overflow-hidden cursor-pointer hover:bg-muted/30 transition-colors"
+                  className="border-b border-border cursor-pointer hover:bg-muted/30 transition-colors"
                   onClick={() => setSelectedOrder(order)}
                 >
-                  <div className="flex items-center justify-between px-4 py-3 bg-card">
+                  <div className="flex items-center justify-between px-4 py-4">
                     <div className="flex items-center gap-3 min-w-0">
                       <div className="shrink-0">
                         {isReturn ? (
