@@ -18,12 +18,17 @@ interface RecipientFormProps {
   viewOnlyData?: RecipientData;
 }
 
-const RecipientForm = ({ onBack, onMenuClick, onSubmit }: RecipientFormProps) => {
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [address, setAddress] = useState("");
+const RecipientForm = ({ onBack, onMenuClick, onSubmit, viewOnlyData }: RecipientFormProps) => {
+  const [name, setName] = useState(viewOnlyData?.name || "");
+  const [phone, setPhone] = useState(viewOnlyData?.phone || "");
+  const [address, setAddress] = useState(viewOnlyData?.address || "");
 
   const handleSubmit = () => {
+    if (viewOnlyData) {
+      // View-only mode, just go back
+      onBack();
+      return;
+    }
     if (!name.trim() || !phone.trim() || !address.trim()) {
       toast.error("請填寫所有欄位");
       return;
