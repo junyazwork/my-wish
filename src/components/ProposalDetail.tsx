@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Mail, Send, ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
+import { Mail, Send, ArrowUpDown, ArrowUp, ArrowDown, ClipboardList } from "lucide-react";
 import Header from "./Header";
 import { Progress } from "./ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
@@ -7,6 +7,8 @@ import { Button } from "./ui/button";
 import { DonationRecord } from "@/contexts/CampaignsContext";
 import WishlistItem from "./WishlistItem";
 import { CartItem } from "@/types";
+import RecipientForm, { RecipientData } from "./RecipientForm";
+import ProposalShippingInfo from "./ProposalShippingInfo";
 
 interface ProposalDetailData {
   id: string;
@@ -45,6 +47,8 @@ const ProposalDetail = ({
 }: ProposalDetailProps) => {
   const [amountSortOrder, setAmountSortOrder] = useState<"none" | "asc" | "desc">("none");
   const [timeSortOrder, setTimeSortOrder] = useState<"none" | "asc" | "desc">("none");
+  const [showRecipientForm, setShowRecipientForm] = useState(false);
+  const [recipientData, setRecipientData] = useState<RecipientData | null>(null);
 
   const sortedDonations = useMemo(() => {
     let result = [...proposal.donations];
@@ -101,6 +105,30 @@ const ProposalDetail = ({
 
   const percentage = getProgressPercentage(proposal.currentAmount, proposal.goalAmount);
   const isGoalReached = proposal.currentAmount >= proposal.goalAmount && proposal.goalAmount > 0;
+
+  // Generate mock order data from products
+  const generateOrderNumber = () => "202501150001";
+  const generateProductCode = (index: number) => `AB-${String(index + 1).padStart(3, "0")}`;
+  const generateProductNumber = (index: number) => `A${String(100001 + index)}`;
+
+  // Mock shipping status - delivered for ended campaigns, shipping for active
+  const mockShippingStatus = proposal.status === "building" ? "processing" as const : 
+    (proposal.currentAmount >= proposal.goalAmount ? "delivered" as const : "shipping" as const);
+
+  const handleRecipientSubmit = (data: RecipientData) => {
+    setRecipientData(data);
+    setShowRecipientForm(false);
+  };
+
+  if (showRecipientForm) {
+    return (
+      <RecipientForm
+        onBack={() => setShowRecipientForm(false)}
+        onMenuClick={onMenuClick}
+        onSubmit={handleRecipientSubmit}
+      />
+    );
+  }
 
   const getStatusBadge = (status: "building" | "active") => {
     if (status === "building") {
@@ -170,6 +198,20 @@ const ProposalDetail = ({
           </div>
         )}
 
+        {/* Fill Recipient Info Button - Only show when goal is reached */}
+        {isGoalReached && (
+          <div className="px-4 pb-2">
+            <Button
+              onClick={() => setShowRecipientForm(true)}
+              variant={recipientData ? "outline" : "default"}
+              className="w-full h-12 text-base font-medium"
+            >
+              <ClipboardList className="w-5 h-5 mr-2" />
+              {recipientData ? "修改收件人資料" : "填寫收件人資料"}
+            </Button>
+          </div>
+        )}
+
         {/* Wishlist Section */}
         {proposal.products.length > 0 && (
           <div className="px-4 py-6">
@@ -179,6 +221,30 @@ const ProposalDetail = ({
                 <WishlistItem key={product.id} item={product} />
               ))}
             </div>
+
+            {/* Shipping Info - Show after recipient data submitted */}
+            {recipientData && isGoalReached && (
+              <div className="mt-6">
+                <ProposalShippingInfo
+                  orderNumber={generateOrderNumber()}
+                  orderDate={proposal.proposalDate || ""}
+                  status={mockShippingStatus}
+                  products={proposal.products.map((p, i) => ({
+                    productName: p.name,
+                    productCode: generateProductCode(i),
+                    productNumber: generateProductNumber(i),
+                    quantity: p.quantity,
+                    unitPrice: p.price,
+                  }))}
+                  total={proposal.products.reduce((sum, p) => sum + p.price * p.quantity, 0)}
+                  recipient={recipientData}
+                  onRequestReturn={() => {
+                    // TODO: implement return request flow
+                    import("sonner").then(({ toast }) => toast.info("退換貨申請功能開發中"));
+                  }}
+                />
+              </div>
+            )}
           </div>
         )}
 
