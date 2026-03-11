@@ -128,14 +128,30 @@ const ProposalDetail = ({
     setShowRecipientForm(false);
   };
 
+  if (showReturnForm) {
+    return (
+      <ReturnRequestForm
+        products={proposal.products.map((p, i) => ({
+          productName: p.name,
+          productCode: generateProductCode(i),
+          quantity: p.quantity,
+        }))}
+        onBack={() => setShowReturnForm(false)}
+        onMenuClick={onMenuClick}
+        onSubmit={(data) => {
+          setShowReturnForm(false);
+          toast.success("退換貨申請已送出");
+        }}
+      />
+    );
+  }
+
   if (showRecipientForm) {
     return (
       <RecipientForm
         onBack={() => setShowRecipientForm(false)}
         onMenuClick={onMenuClick}
         onSubmit={handleRecipientSubmit} />);
-
-
   }
 
   const getStatusBadge = (status: "building" | "active") => {
