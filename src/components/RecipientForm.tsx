@@ -91,9 +91,10 @@ const RecipientForm = ({ onBack, onMenuClick, onSubmit, viewOnlyData }: Recipien
       <div className="px-4 py-4 border-t border-border">
         <Button
           onClick={handleSubmit}
+          variant={viewOnlyData ? "outline" : "default"}
           className="w-full h-12 text-base font-medium"
         >
-          送出
+          {viewOnlyData ? "返回" : "送出"}
         </Button>
       </div>
     </div>
