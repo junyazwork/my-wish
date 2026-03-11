@@ -152,7 +152,6 @@ const mockOrders: ShippingOrder[] = [
 
 const ShippingTrackingPage = ({ onBack, onMenuClick, onCartClick, cartCount }: ShippingTrackingPageProps) => {
   const [selectedOrder, setSelectedOrder] = useState<ShippingOrder | null>(null);
-  const [selectedOrder, setSelectedOrder] = useState<ShippingOrder | null>(null);
   const [startDate, setStartDate] = useState<Date | undefined>(undefined);
   const [endDate, setEndDate] = useState<Date | undefined>(undefined);
 
