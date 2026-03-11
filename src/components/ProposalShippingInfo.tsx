@@ -35,6 +35,7 @@ interface ProposalShippingInfoProps {
   products: OrderProduct[];
   total: number;
   recipient: RecipientData;
+  deliveredDate?: string;
   onRequestReturn?: () => void;
 }
 
@@ -78,10 +79,20 @@ const ProposalShippingInfo = ({
   products,
   total,
   recipient,
+  deliveredDate,
   onRequestReturn,
 }: ProposalShippingInfoProps) => {
   const progress = statusProgress[status];
   const isDelivered = status === "delivered";
+
+  // Show return button only within 7 days of delivery
+  const canRequestReturn = (() => {
+    if (!isDelivered || !onRequestReturn || !deliveredDate) return false;
+    const delivered = new Date(deliveredDate);
+    const now = new Date();
+    const diffDays = (now.getTime() - delivered.getTime()) / (1000 * 60 * 60 * 24);
+    return diffDays <= 7;
+  })();
 
   return (
     <div className="space-y-4">
@@ -115,8 +126,8 @@ const ProposalShippingInfo = ({
         <DetailRow label="配送地址" value={recipient.address} />
       </div>
 
-      {/* Return Button - Only for delivered */}
-      {isDelivered && onRequestReturn && (
+      {/* Return Button - Only for delivered within 7 days */}
+      {canRequestReturn && (
         <Button
           onClick={onRequestReturn}
           variant="outline"

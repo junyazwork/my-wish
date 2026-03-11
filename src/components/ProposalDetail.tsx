@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { Mail, Send, ArrowUpDown, ArrowUp, ArrowDown, ClipboardList } from "lucide-react";
+import { toast } from "sonner";
 import Header from "./Header";
 import { Progress } from "./ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
@@ -9,6 +10,7 @@ import WishlistItem from "./WishlistItem";
 import { CartItem } from "@/types";
 import RecipientForm, { RecipientData } from "./RecipientForm";
 import ProposalShippingInfo from "./ProposalShippingInfo";
+import ReturnRequestForm from "./ReturnRequestForm";
 
 interface ProposalDetailData {
   id: string;
@@ -48,6 +50,7 @@ const ProposalDetail = ({
   const [amountSortOrder, setAmountSortOrder] = useState<"none" | "asc" | "desc">("none");
   const [timeSortOrder, setTimeSortOrder] = useState<"none" | "asc" | "desc">("none");
   const [showRecipientForm, setShowRecipientForm] = useState(false);
+  const [showReturnForm, setShowReturnForm] = useState(false);
   const [recipientData, setRecipientData] = useState<RecipientData | null>(null);
 
   const sortedDonations = useMemo(() => {
@@ -113,12 +116,35 @@ const ProposalDetail = ({
 
   // Mock shipping status - delivered for ended campaigns, shipping for active
   const mockShippingStatus = proposal.status === "building" ? "processing" as const :
-  proposal.currentAmount >= proposal.goalAmount ? "delivered" as const : "shipping" as const;
+    proposal.currentAmount >= proposal.goalAmount ? "delivered" as const : "shipping" as const;
+
+  // Mock delivered date - 3 days ago for delivered status (within 7-day return window)
+  const mockDeliveredDate = mockShippingStatus === "delivered"
+    ? new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString().split("T")[0]
+    : undefined;
 
   const handleRecipientSubmit = (data: RecipientData) => {
     setRecipientData(data);
     setShowRecipientForm(false);
   };
+
+  if (showReturnForm) {
+    return (
+      <ReturnRequestForm
+        products={proposal.products.map((p, i) => ({
+          productName: p.name,
+          productCode: generateProductCode(i),
+          quantity: p.quantity,
+        }))}
+        onBack={() => setShowReturnForm(false)}
+        onMenuClick={onMenuClick}
+        onSubmit={(data) => {
+          setShowReturnForm(false);
+          toast.success("退換貨申請已送出");
+        }}
+      />
+    );
+  }
 
   if (showRecipientForm) {
     return (
@@ -126,8 +152,6 @@ const ProposalDetail = ({
         onBack={() => setShowRecipientForm(false)}
         onMenuClick={onMenuClick}
         onSubmit={handleRecipientSubmit} />);
-
-
   }
 
   const getStatusBadge = (status: "building" | "active") => {
@@ -229,6 +253,7 @@ const ProposalDetail = ({
               orderNumber={generateOrderNumber()}
               orderDate={proposal.proposalDate || ""}
               status={mockShippingStatus}
+              deliveredDate={mockDeliveredDate}
               products={proposal.products.map((p, i) => ({
                 productName: p.name,
                 productCode: generateProductCode(i),
@@ -238,11 +263,7 @@ const ProposalDetail = ({
               }))}
               total={proposal.products.reduce((sum, p) => sum + p.price * p.quantity, 0)}
               recipient={recipientData}
-              onRequestReturn={() => {
-                // TODO: implement return request flow
-                import("sonner").then(({ toast }) => toast.info("退換貨申請功能開發中"));
-              }} />
-            
+              onRequestReturn={() => setShowReturnForm(true)} />
               </div>
           }
           </div>
