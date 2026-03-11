@@ -29,7 +29,7 @@ const InlineMediaEditor = ({
   const [showTrashZone, setShowTrashZone] = useState(false);
   const [isOverTrash, setIsOverTrash] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const longPressTimer = useRef<NodeJS.Timeout | null>(null);
+  const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
