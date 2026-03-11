@@ -82,13 +82,14 @@ const ProposalShippingInfo = ({
   recipient,
   deliveredDate,
   onRequestReturn,
+  hasPendingReturn,
 }: ProposalShippingInfoProps) => {
   const progress = statusProgress[status];
   const isDelivered = status === "delivered";
 
-  // Show return button only within 7 days of delivery
+  // Show return button only within 7 days of delivery and no pending return
   const canRequestReturn = (() => {
-    if (!isDelivered || !onRequestReturn || !deliveredDate) return false;
+    if (!isDelivered || !onRequestReturn || !deliveredDate || hasPendingReturn) return false;
     const delivered = new Date(deliveredDate);
     const now = new Date();
     const diffDays = (now.getTime() - delivered.getTime()) / (1000 * 60 * 60 * 24);
