@@ -48,6 +48,7 @@ const ProposalDetail = ({
   onSendThankYouLetter,
   onSendSingleThankYouLetter
 }: ProposalDetailProps) => {
+  const { addReturnOrder } = useReturnOrders();
   const [amountSortOrder, setAmountSortOrder] = useState<"none" | "asc" | "desc">("none");
   const [timeSortOrder, setTimeSortOrder] = useState<"none" | "asc" | "desc">("none");
   const [showRecipientForm, setShowRecipientForm] = useState(false);
