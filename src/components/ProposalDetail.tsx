@@ -48,6 +48,9 @@ const ProposalDetail = ({
   onSendThankYouLetter,
   onSendSingleThankYouLetter
 }: ProposalDetailProps) => {
+  // Generate mock order number - used for checking pending returns
+  const orderNumber = "202501150001";
+
   const { addReturnOrder, getReturnOrderByOriginalOrderNumber } = useReturnOrders();
   const [amountSortOrder, setAmountSortOrder] = useState<"none" | "asc" | "desc">("none");
   const [timeSortOrder, setTimeSortOrder] = useState<"none" | "asc" | "desc">("none");
@@ -56,7 +59,6 @@ const ProposalDetail = ({
   const [recipientData, setRecipientData] = useState<RecipientData | null>(null);
 
   // Check if this proposal has a pending return order
-  const orderNumber = generateOrderNumber();
   const pendingReturn = getReturnOrderByOriginalOrderNumber(orderNumber);
   const hasPendingReturn = pendingReturn !== undefined;
 
