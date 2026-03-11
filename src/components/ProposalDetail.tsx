@@ -106,6 +106,30 @@ const ProposalDetail = ({
   const percentage = getProgressPercentage(proposal.currentAmount, proposal.goalAmount);
   const isGoalReached = proposal.currentAmount >= proposal.goalAmount && proposal.goalAmount > 0;
 
+  // Generate mock order data from products
+  const generateOrderNumber = () => "202501150001";
+  const generateProductCode = (index: number) => `AB-${String(index + 1).padStart(3, "0")}`;
+  const generateProductNumber = (index: number) => `A${String(100001 + index)}`;
+
+  // Mock shipping status - delivered for ended campaigns, shipping for active
+  const mockShippingStatus = proposal.status === "building" ? "processing" as const : 
+    (proposal.currentAmount >= proposal.goalAmount ? "delivered" as const : "shipping" as const);
+
+  const handleRecipientSubmit = (data: RecipientData) => {
+    setRecipientData(data);
+    setShowRecipientForm(false);
+  };
+
+  if (showRecipientForm) {
+    return (
+      <RecipientForm
+        onBack={() => setShowRecipientForm(false)}
+        onMenuClick={onMenuClick}
+        onSubmit={handleRecipientSubmit}
+      />
+    );
+  }
+
   const getStatusBadge = (status: "building" | "active") => {
     if (status === "building") {
       return <span className="px-3 py-1 text-sm rounded bg-muted text-muted-foreground">建立中</span>;
