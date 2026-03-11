@@ -13,7 +13,9 @@ import { cn } from "@/lib/utils";
 
 interface ShippingTrackingPageProps {
   onBack: () => void;
-  onNavigate: (page: string) => void;
+  onMenuClick: () => void;
+  onCartClick: () => void;
+  cartCount: number;
 }
 
 type OrderStatus = "shipping" | "delivered" | "returning" | "returned";
