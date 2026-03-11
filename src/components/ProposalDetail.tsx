@@ -47,6 +47,8 @@ const ProposalDetail = ({
 }: ProposalDetailProps) => {
   const [amountSortOrder, setAmountSortOrder] = useState<"none" | "asc" | "desc">("none");
   const [timeSortOrder, setTimeSortOrder] = useState<"none" | "asc" | "desc">("none");
+  const [showRecipientForm, setShowRecipientForm] = useState(false);
+  const [recipientData, setRecipientData] = useState<RecipientData | null>(null);
 
   const sortedDonations = useMemo(() => {
     let result = [...proposal.donations];
