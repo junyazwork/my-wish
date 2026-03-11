@@ -29,11 +29,13 @@ export interface ReturnOrder {
 interface ReturnOrdersContextType {
   returnOrders: ReturnOrder[];
   addReturnOrder: (order: ReturnOrder) => void;
+  getReturnOrderByOriginalOrderNumber: (orderNumber: string) => ReturnOrder | undefined;
 }
 
 const ReturnOrdersContext = createContext<ReturnOrdersContextType>({
   returnOrders: [],
   addReturnOrder: () => {},
+  getReturnOrderByOriginalOrderNumber: () => undefined,
 });
 
 export const useReturnOrders = () => useContext(ReturnOrdersContext);
@@ -45,8 +47,12 @@ export const ReturnOrdersProvider = ({ children }: { children: ReactNode }) => {
     setReturnOrders((prev) => [order, ...prev]);
   };
 
+  const getReturnOrderByOriginalOrderNumber = (orderNumber: string) => {
+    return returnOrders.find((order) => order.originalOrderNumber === orderNumber);
+  };
+
   return (
-    <ReturnOrdersContext.Provider value={{ returnOrders, addReturnOrder }}>
+    <ReturnOrdersContext.Provider value={{ returnOrders, addReturnOrder, getReturnOrderByOriginalOrderNumber }}>
       {children}
     </ReturnOrdersContext.Provider>
   );

@@ -48,12 +48,19 @@ const ProposalDetail = ({
   onSendThankYouLetter,
   onSendSingleThankYouLetter
 }: ProposalDetailProps) => {
-  const { addReturnOrder } = useReturnOrders();
+  // Generate mock order number - used for checking pending returns
+  const orderNumber = "202501150001";
+
+  const { addReturnOrder, getReturnOrderByOriginalOrderNumber } = useReturnOrders();
   const [amountSortOrder, setAmountSortOrder] = useState<"none" | "asc" | "desc">("none");
   const [timeSortOrder, setTimeSortOrder] = useState<"none" | "asc" | "desc">("none");
   const [showRecipientForm, setShowRecipientForm] = useState(false);
   const [showReturnForm, setShowReturnForm] = useState(false);
   const [recipientData, setRecipientData] = useState<RecipientData | null>(null);
+
+  // Check if this proposal has a pending return order
+  const pendingReturn = getReturnOrderByOriginalOrderNumber(orderNumber);
+  const hasPendingReturn = pendingReturn !== undefined;
 
   const sortedDonations = useMemo(() => {
     let result = [...proposal.donations];
@@ -112,7 +119,7 @@ const ProposalDetail = ({
   const isGoalReached = proposal.currentAmount >= proposal.goalAmount && proposal.goalAmount > 0;
 
   // Generate mock order data from products
-  const generateOrderNumber = () => "202501150001";
+  const generateOrderNumber = () => orderNumber;
   const generateProductCode = (index: number) => `AB-${String(index + 1).padStart(3, "0")}`;
   const generateProductNumber = (index: number) => `A${String(100001 + index)}`;
 
@@ -283,7 +290,7 @@ const ProposalDetail = ({
             {recipientData && isGoalReached &&
           <div className="mt-6">
                 <ProposalShippingInfo
-              orderNumber={generateOrderNumber()}
+              orderNumber={orderNumber}
               orderDate={proposal.proposalDate || ""}
               status={mockShippingStatus}
               deliveredDate={mockDeliveredDate}
@@ -296,7 +303,8 @@ const ProposalDetail = ({
               }))}
               total={proposal.products.reduce((sum, p) => sum + p.price * p.quantity, 0)}
               recipient={recipientData}
-              onRequestReturn={() => setShowReturnForm(true)} />
+              onRequestReturn={() => setShowReturnForm(true)}
+              hasPendingReturn={hasPendingReturn} />
               </div>
           }
           </div>

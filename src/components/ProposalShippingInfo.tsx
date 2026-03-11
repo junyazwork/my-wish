@@ -2,7 +2,7 @@ import React from "react";
 import { Progress } from "./ui/progress";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
-import { RotateCcw } from "lucide-react";
+import { RotateCcw, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { RecipientData } from "./RecipientForm";
 
@@ -37,6 +37,7 @@ interface ProposalShippingInfoProps {
   recipient: RecipientData;
   deliveredDate?: string;
   onRequestReturn?: () => void;
+  hasPendingReturn?: boolean;
 }
 
 const DetailRow = ({ label, value }: { label: string; value?: string | number }) => {
@@ -81,13 +82,14 @@ const ProposalShippingInfo = ({
   recipient,
   deliveredDate,
   onRequestReturn,
+  hasPendingReturn,
 }: ProposalShippingInfoProps) => {
   const progress = statusProgress[status];
   const isDelivered = status === "delivered";
 
-  // Show return button only within 7 days of delivery
+  // Show return button only within 7 days of delivery and no pending return
   const canRequestReturn = (() => {
-    if (!isDelivered || !onRequestReturn || !deliveredDate) return false;
+    if (!isDelivered || !onRequestReturn || !deliveredDate || hasPendingReturn) return false;
     const delivered = new Date(deliveredDate);
     const now = new Date();
     const diffDays = (now.getTime() - delivered.getTime()) / (1000 * 60 * 60 * 24);
@@ -126,7 +128,7 @@ const ProposalShippingInfo = ({
         <DetailRow label="配送地址" value={recipient.address} />
       </div>
 
-      {/* Return Button - Only for delivered within 7 days */}
+      {/* Return Button - Only for delivered within 7 days, no pending return */}
       {canRequestReturn && (
         <Button
           onClick={onRequestReturn}
@@ -136,6 +138,14 @@ const ProposalShippingInfo = ({
           <RotateCcw className="w-4 h-4 mr-2" />
           申請退換貨
         </Button>
+      )}
+
+      {/* Pending Return Status - Show when return is being processed */}
+      {hasPendingReturn && (
+        <div className="flex items-center justify-center gap-2 px-4 py-3 bg-muted/50 rounded-lg border border-border">
+          <Clock className="w-4 h-4 text-muted-foreground" />
+          <span className="text-sm text-muted-foreground">退貨處理中</span>
+        </div>
       )}
     </div>
   );
