@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Mail, Send, ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
+import { Mail, Send, ArrowUpDown, ArrowUp, ArrowDown, ClipboardList } from "lucide-react";
 import Header from "./Header";
 import { Progress } from "./ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
@@ -7,6 +7,8 @@ import { Button } from "./ui/button";
 import { DonationRecord } from "@/contexts/CampaignsContext";
 import WishlistItem from "./WishlistItem";
 import { CartItem } from "@/types";
+import RecipientForm, { RecipientData } from "./RecipientForm";
+import ProposalShippingInfo from "./ProposalShippingInfo";
 
 interface ProposalDetailData {
   id: string;
