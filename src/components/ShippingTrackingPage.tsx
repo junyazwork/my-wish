@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import Header from "@/components/Header";
 import SlideMenu from "@/components/SlideMenu";
 import { Badge } from "@/components/ui/badge";
@@ -17,6 +17,15 @@ interface ShippingTrackingPageProps {
 
 type OrderStatus = "shipping" | "delivered" | "returning" | "returned";
 
+interface OrderProduct {
+  productName: string;
+  productStyle?: string;
+  productCode?: string;
+  productNumber?: string;
+  quantity: number;
+  unitPrice: number;
+}
+
 interface ShippingOrder {
   id: string;
   orderNumber: string;
@@ -24,12 +33,7 @@ interface ShippingOrder {
   status: OrderStatus;
   // Shipping fields
   orderDate?: string;
-  productName: string;
-  productStyle?: string;
-  productCode?: string;
-  productNumber?: string;
-  quantity: number;
-  unitPrice: number;
+  products: OrderProduct[];
   total: number;
   recipient?: string;
   phone?: string;
@@ -67,13 +71,11 @@ const mockOrders: ShippingOrder[] = [
     date: "2026-03-01",
     status: "shipping",
     orderDate: "2026-03-01",
-    productName: "北歐風簡約檯燈",
-    productStyle: "白色 / 標準款",
-    productCode: "LP-001",
-    productNumber: "A260301",
-    quantity: 1,
-    unitPrice: 1280,
-    total: 1280,
+    products: [
+      { productName: "北歐風簡約檯燈", productStyle: "白色 / 標準款", productCode: "LP-001", productNumber: "A260301", quantity: 1, unitPrice: 1280 },
+      { productName: "極簡木質時鐘", productStyle: "原木色", productCode: "CK-012", productNumber: "A260302", quantity: 1, unitPrice: 980 },
+    ],
+    total: 2260,
     recipient: "王小明",
     phone: "0912-345-678",
     address: "台北市信義區松高路100號5F",
@@ -84,12 +86,9 @@ const mockOrders: ShippingOrder[] = [
     date: "2026-02-25",
     status: "shipping",
     orderDate: "2026-02-25",
-    productName: "手工皮革錢包",
-    productStyle: "深棕色 / 長夾",
-    productCode: "WL-05",
-    productNumber: "B225001",
-    quantity: 2,
-    unitPrice: 2450,
+    products: [
+      { productName: "手工皮革錢包", productStyle: "深棕色 / 長夾", productCode: "WL-05", productNumber: "B225001", quantity: 2, unitPrice: 2450 },
+    ],
     total: 4900,
     recipient: "李小華",
     phone: "0923-456-789",
@@ -100,12 +99,12 @@ const mockOrders: ShippingOrder[] = [
     orderNumber: "202602200003",
     date: "2026-02-20",
     status: "returning",
-    productName: "無線藍牙耳機",
+    products: [
+      { productName: "無線藍牙耳機", quantity: 1, unitPrice: 3200 },
+    ],
     returnDate: "2026-03-05",
     originalOrderNumber: "202602200003",
     returnOrderNumber: "R123456789",
-    quantity: 1,
-    unitPrice: 3200,
     total: 3200,
     returnQuantity: 1,
     refundAmount: 3200,
@@ -120,13 +119,12 @@ const mockOrders: ShippingOrder[] = [
     date: "2026-02-10",
     status: "delivered",
     orderDate: "2026-02-10",
-    productName: "有機棉枕頭套組",
-    productStyle: "淺灰色 / 雙人組",
-    productCode: "PL-012",
-    productNumber: "C210003",
-    quantity: 1,
-    unitPrice: 1680,
-    total: 1680,
+    products: [
+      { productName: "有機棉枕頭套組", productStyle: "淺灰色 / 雙人組", productCode: "PL-012", productNumber: "C210003", quantity: 1, unitPrice: 1680 },
+      { productName: "天然乳膠枕", productStyle: "標準型", productCode: "PL-018", productNumber: "C210004", quantity: 2, unitPrice: 1200 },
+      { productName: "純棉床包組", productStyle: "米白色 / 雙人", productCode: "BD-003", productNumber: "C210005", quantity: 1, unitPrice: 2380 },
+    ],
+    total: 6460,
     recipient: "林美玲",
     phone: "0945-678-901",
     address: "高雄市前鎮區中華五路789號",
@@ -136,12 +134,12 @@ const mockOrders: ShippingOrder[] = [
     orderNumber: "202602050005",
     date: "2026-02-05",
     status: "returned",
-    productName: "陶瓷馬克杯禮盒",
+    products: [
+      { productName: "陶瓷馬克杯禮盒", quantity: 1, unitPrice: 890 },
+    ],
     returnDate: "2026-02-15",
     originalOrderNumber: "202602050005",
     returnOrderNumber: "R987654321",
-    quantity: 1,
-    unitPrice: 890,
     total: 890,
     returnQuantity: 1,
     refundAmount: 890,
@@ -190,16 +188,40 @@ const ShippingTrackingPage = ({ onBack, onNavigate }: ShippingTrackingPageProps)
     );
   };
 
+  const renderProductTable = (products: OrderProduct[]) => (
+    <div className="border border-border rounded-lg overflow-hidden">
+      <div className="grid grid-cols-[1fr_auto_auto_auto_auto] gap-0 text-xs">
+        {/* Header */}
+        <div className="bg-muted/60 px-3 py-2 font-medium text-muted-foreground">商品名稱</div>
+        <div className="bg-muted/60 px-3 py-2 font-medium text-muted-foreground text-center">品號</div>
+        <div className="bg-muted/60 px-3 py-2 font-medium text-muted-foreground text-center">商品編號</div>
+        <div className="bg-muted/60 px-3 py-2 font-medium text-muted-foreground text-center">數量</div>
+        <div className="bg-muted/60 px-3 py-2 font-medium text-muted-foreground text-right">售價</div>
+        {/* Rows */}
+        {products.map((p, i) => (
+          <React.Fragment key={i}>
+            <div className={cn("px-3 py-2 border-t border-border", i % 2 === 1 && "bg-muted/20")}>
+              <p className="font-medium text-foreground">{p.productName}</p>
+              {p.productStyle && <p className="text-muted-foreground mt-0.5">{p.productStyle}</p>}
+            </div>
+            <div className={cn("px-3 py-2 border-t border-border text-center text-foreground", i % 2 === 1 && "bg-muted/20")}>{p.productCode || "-"}</div>
+            <div className={cn("px-3 py-2 border-t border-border text-center text-foreground", i % 2 === 1 && "bg-muted/20")}>{p.productNumber || "-"}</div>
+            <div className={cn("px-3 py-2 border-t border-border text-center text-foreground", i % 2 === 1 && "bg-muted/20")}>{p.quantity}</div>
+            <div className={cn("px-3 py-2 border-t border-border text-right text-foreground", i % 2 === 1 && "bg-muted/20")}>NT$ {p.unitPrice.toLocaleString()}</div>
+          </React.Fragment>
+        ))}
+      </div>
+    </div>
+  );
+
   const renderShippingDetails = (order: ShippingOrder) => (
-    <div className="px-4 pb-4 space-y-1 bg-muted/30 rounded-b-lg">
+    <div className="px-4 pb-4 space-y-3 bg-muted/30 rounded-b-lg">
       <DetailRow label="發單日" value={order.orderDate} />
       <DetailRow label="訂單號碼" value={order.orderNumber} />
-      <DetailRow label="商品名稱" value={order.productName} />
-      <DetailRow label="商品款式" value={order.productStyle} />
-      <DetailRow label="品號" value={order.productCode} />
-      <DetailRow label="商品編號" value={order.productNumber} />
-      <DetailRow label="訂購數量" value={order.quantity} />
-      <DetailRow label="售價" value={`NT$ ${order.unitPrice?.toLocaleString()}`} />
+      <div className="pt-1">
+        <p className="text-xs font-medium text-muted-foreground mb-2">商品明細</p>
+        {renderProductTable(order.products)}
+      </div>
       <DetailRow label="總計" value={`NT$ ${order.total?.toLocaleString()}`} />
       <DetailRow label="收件人" value={order.recipient} />
       <DetailRow label="聯絡電話" value={order.phone} />
@@ -208,11 +230,14 @@ const ShippingTrackingPage = ({ onBack, onNavigate }: ShippingTrackingPageProps)
   );
 
   const renderReturnDetails = (order: ShippingOrder) => (
-    <div className="px-4 pb-4 space-y-1 bg-muted/30 rounded-b-lg">
+    <div className="px-4 pb-4 space-y-3 bg-muted/30 rounded-b-lg">
       <DetailRow label="申請退貨日期" value={order.returnDate} />
       <DetailRow label="原訂單號碼" value={order.originalOrderNumber} />
       <DetailRow label="退貨單號" value={order.returnOrderNumber} />
-      <DetailRow label="商品名稱" value={order.productName} />
+      <div className="pt-1">
+        <p className="text-xs font-medium text-muted-foreground mb-2">退貨商品</p>
+        {renderProductTable(order.products)}
+      </div>
       <DetailRow label="退貨數量" value={order.returnQuantity} />
       <DetailRow label="退款金額" value={`NT$ ${order.refundAmount?.toLocaleString()}`} />
       <DetailRow label="退貨原因" value={order.returnReason} />
