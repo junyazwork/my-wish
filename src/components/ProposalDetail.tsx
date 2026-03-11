@@ -198,6 +198,20 @@ const ProposalDetail = ({
           </div>
         )}
 
+        {/* Fill Recipient Info Button - Only show when goal is reached */}
+        {isGoalReached && (
+          <div className="px-4 pb-2">
+            <Button
+              onClick={() => setShowRecipientForm(true)}
+              variant={recipientData ? "outline" : "default"}
+              className="w-full h-12 text-base font-medium"
+            >
+              <ClipboardList className="w-5 h-5 mr-2" />
+              {recipientData ? "修改收件人資料" : "填寫收件人資料"}
+            </Button>
+          </div>
+        )}
+
         {/* Wishlist Section */}
         {proposal.products.length > 0 && (
           <div className="px-4 py-6">
@@ -207,6 +221,30 @@ const ProposalDetail = ({
                 <WishlistItem key={product.id} item={product} />
               ))}
             </div>
+
+            {/* Shipping Info - Show after recipient data submitted */}
+            {recipientData && isGoalReached && (
+              <div className="mt-6">
+                <ProposalShippingInfo
+                  orderNumber={generateOrderNumber()}
+                  orderDate={proposal.proposalDate || ""}
+                  status={mockShippingStatus}
+                  products={proposal.products.map((p, i) => ({
+                    productName: p.name,
+                    productCode: generateProductCode(i),
+                    productNumber: generateProductNumber(i),
+                    quantity: p.quantity,
+                    unitPrice: p.price,
+                  }))}
+                  total={proposal.products.reduce((sum, p) => sum + p.price * p.quantity, 0)}
+                  recipient={recipientData}
+                  onRequestReturn={() => {
+                    // TODO: implement return request flow
+                    import("sonner").then(({ toast }) => toast.info("退換貨申請功能開發中"));
+                  }}
+                />
+              </div>
+            )}
           </div>
         )}
 
