@@ -190,13 +190,7 @@ const ShippingTrackingPage = ({ onBack, onMenuClick, onCartClick, cartCount }: S
         title="配送/退貨查詢"
         showBack
         onBack={onBack}
-        onMenuClick={() => setIsMenuOpen(true)}
-      />
-      <SlideMenu
-        isOpen={isMenuOpen}
-        onClose={() => setIsMenuOpen(false)}
-        onNavigate={onNavigate}
-        currentPage="shipping"
+        onMenuClick={onMenuClick}
       />
 
       <div className="px-4 py-4 space-y-4">
