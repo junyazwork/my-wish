@@ -15,14 +15,20 @@ interface RecipientFormProps {
   onBack: () => void;
   onMenuClick: () => void;
   onSubmit: (data: RecipientData) => void;
+  viewOnlyData?: RecipientData;
 }
 
-const RecipientForm = ({ onBack, onMenuClick, onSubmit }: RecipientFormProps) => {
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [address, setAddress] = useState("");
+const RecipientForm = ({ onBack, onMenuClick, onSubmit, viewOnlyData }: RecipientFormProps) => {
+  const [name, setName] = useState(viewOnlyData?.name || "");
+  const [phone, setPhone] = useState(viewOnlyData?.phone || "");
+  const [address, setAddress] = useState(viewOnlyData?.address || "");
 
   const handleSubmit = () => {
+    if (viewOnlyData) {
+      // View-only mode, just go back
+      onBack();
+      return;
+    }
     if (!name.trim() || !phone.trim() || !address.trim()) {
       toast.error("請填寫所有欄位");
       return;
@@ -50,6 +56,7 @@ const RecipientForm = ({ onBack, onMenuClick, onSubmit }: RecipientFormProps) =>
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="請輸入收件人姓名"
+            disabled={!!viewOnlyData}
           />
         </div>
 
@@ -63,6 +70,7 @@ const RecipientForm = ({ onBack, onMenuClick, onSubmit }: RecipientFormProps) =>
             onChange={(e) => setPhone(e.target.value)}
             placeholder="請輸入聯絡電話"
             type="tel"
+            disabled={!!viewOnlyData}
           />
         </div>
 
@@ -75,6 +83,7 @@ const RecipientForm = ({ onBack, onMenuClick, onSubmit }: RecipientFormProps) =>
             value={address}
             onChange={(e) => setAddress(e.target.value)}
             placeholder="請輸入配送地址"
+            disabled={!!viewOnlyData}
           />
         </div>
       </div>
@@ -82,9 +91,10 @@ const RecipientForm = ({ onBack, onMenuClick, onSubmit }: RecipientFormProps) =>
       <div className="px-4 py-4 border-t border-border">
         <Button
           onClick={handleSubmit}
+          variant={viewOnlyData ? "outline" : "default"}
           className="w-full h-12 text-base font-medium"
         >
-          送出
+          {viewOnlyData ? "返回" : "送出"}
         </Button>
       </div>
     </div>
