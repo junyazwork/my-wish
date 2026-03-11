@@ -11,6 +11,7 @@ import { CartItem } from "@/types";
 import RecipientForm, { RecipientData } from "./RecipientForm";
 import ProposalShippingInfo from "./ProposalShippingInfo";
 import ReturnRequestForm from "./ReturnRequestForm";
+import { useReturnOrders } from "@/contexts/ReturnOrdersContext";
 
 interface ProposalDetailData {
   id: string;
@@ -47,6 +48,7 @@ const ProposalDetail = ({
   onSendThankYouLetter,
   onSendSingleThankYouLetter
 }: ProposalDetailProps) => {
+  const { addReturnOrder } = useReturnOrders();
   const [amountSortOrder, setAmountSortOrder] = useState<"none" | "asc" | "desc">("none");
   const [timeSortOrder, setTimeSortOrder] = useState<"none" | "asc" | "desc">("none");
   const [showRecipientForm, setShowRecipientForm] = useState(false);
@@ -139,6 +141,37 @@ const ProposalDetail = ({
         onBack={() => setShowReturnForm(false)}
         onMenuClick={onMenuClick}
         onSubmit={(data) => {
+          const today = new Date().toISOString().split("T")[0];
+          const returnOrderNumber = `R${Date.now().toString().slice(-9)}`;
+          const refundAmount = data.products.reduce((sum, p) => {
+            const original = proposal.products.find((op) => op.name === p.productName);
+            return sum + (original ? original.price * p.quantity : 0);
+          }, 0);
+          const totalReturnQty = data.products.reduce((sum, p) => sum + p.quantity, 0);
+
+          addReturnOrder({
+            id: `return-${Date.now()}`,
+            orderNumber: returnOrderNumber,
+            date: today,
+            status: "returning",
+            products: data.products.map((p) => ({
+              productName: p.productName,
+              productCode: p.productCode,
+              quantity: p.quantity,
+              unitPrice: proposal.products.find((op) => op.name === p.productName)?.price || 0,
+            })),
+            total: refundAmount,
+            returnDate: today,
+            originalOrderNumber: generateOrderNumber(),
+            returnOrderNumber,
+            returnQuantity: totalReturnQty,
+            refundAmount,
+            returnReason: data.reason,
+            returnPerson: recipientData?.name || "",
+            returnPhone: recipientData?.phone || "",
+            pickupAddress: recipientData?.address || "",
+          });
+
           setShowReturnForm(false);
           toast.success("退換貨申請已送出");
         }}

@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { useReturnOrders } from "@/contexts/ReturnOrdersContext";
 import Header from "@/components/Header";
 import SlideMenu from "@/components/SlideMenu";
 import ShippingOrderDetail from "@/components/ShippingOrderDetail";
@@ -150,13 +151,36 @@ const mockOrders: ShippingOrder[] = [
 ];
 
 const ShippingTrackingPage = ({ onBack, onNavigate }: ShippingTrackingPageProps) => {
+  const { returnOrders } = useReturnOrders();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<ShippingOrder | null>(null);
   const [startDate, setStartDate] = useState<Date | undefined>(undefined);
   const [endDate, setEndDate] = useState<Date | undefined>(undefined);
 
+  // Merge mock orders with dynamic return orders
+  const allOrders = useMemo(() => {
+    const dynamicOrders: ShippingOrder[] = returnOrders.map((r) => ({
+      id: r.id,
+      orderNumber: r.orderNumber,
+      date: r.date,
+      status: r.status,
+      products: r.products,
+      total: r.total,
+      returnDate: r.returnDate,
+      originalOrderNumber: r.originalOrderNumber,
+      returnOrderNumber: r.returnOrderNumber,
+      returnQuantity: r.returnQuantity,
+      refundAmount: r.refundAmount,
+      returnReason: r.returnReason,
+      returnPerson: r.returnPerson,
+      returnPhone: r.returnPhone,
+      pickupAddress: r.pickupAddress,
+    }));
+    return [...dynamicOrders, ...mockOrders];
+  }, [returnOrders]);
+
   const filteredOrders = useMemo(() => {
-    return mockOrders.filter((order) => {
+    return allOrders.filter((order) => {
       const orderDate = new Date(order.date);
       if (startDate && orderDate < startDate) return false;
       if (endDate) {
@@ -166,7 +190,7 @@ const ShippingTrackingPage = ({ onBack, onNavigate }: ShippingTrackingPageProps)
       }
       return true;
     });
-  }, [startDate, endDate]);
+  }, [allOrders, startDate, endDate]);
 
   const clearFilters = () => {
     setStartDate(undefined);
