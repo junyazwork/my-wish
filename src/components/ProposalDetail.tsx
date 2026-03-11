@@ -43,7 +43,7 @@ const ProposalDetail = ({
   onShareClick,
   onViewMessageBoard,
   onSendThankYouLetter,
-  onSendSingleThankYouLetter,
+  onSendSingleThankYouLetter
 }: ProposalDetailProps) => {
   const [amountSortOrder, setAmountSortOrder] = useState<"none" | "asc" | "desc">("none");
   const [timeSortOrder, setTimeSortOrder] = useState<"none" | "asc" | "desc">("none");
@@ -54,7 +54,7 @@ const ProposalDetail = ({
     let result = [...proposal.donations];
 
     if (amountSortOrder !== "none") {
-      result.sort((a, b) => (amountSortOrder === "asc" ? a.amount - b.amount : b.amount - a.amount));
+      result.sort((a, b) => amountSortOrder === "asc" ? a.amount - b.amount : b.amount - a.amount);
     } else if (timeSortOrder !== "none") {
       result.sort((a, b) => {
         const timeA = new Date(a.date).getTime();
@@ -100,7 +100,7 @@ const ProposalDetail = ({
 
   const getProgressPercentage = (current: number, goal: number) => {
     if (goal === 0) return 0;
-    return Math.min((current / goal) * 100, 100);
+    return Math.min(current / goal * 100, 100);
   };
 
   const percentage = getProgressPercentage(proposal.currentAmount, proposal.goalAmount);
@@ -112,8 +112,8 @@ const ProposalDetail = ({
   const generateProductNumber = (index: number) => `A${String(100001 + index)}`;
 
   // Mock shipping status - delivered for ended campaigns, shipping for active
-  const mockShippingStatus = proposal.status === "building" ? "processing" as const : 
-    (proposal.currentAmount >= proposal.goalAmount ? "delivered" as const : "shipping" as const);
+  const mockShippingStatus = proposal.status === "building" ? "processing" as const :
+  proposal.currentAmount >= proposal.goalAmount ? "delivered" as const : "shipping" as const;
 
   const handleRecipientSubmit = (data: RecipientData) => {
     setRecipientData(data);
@@ -125,9 +125,9 @@ const ProposalDetail = ({
       <RecipientForm
         onBack={() => setShowRecipientForm(false)}
         onMenuClick={onMenuClick}
-        onSubmit={handleRecipientSubmit}
-      />
-    );
+        onSubmit={handleRecipientSubmit} />);
+
+
   }
 
   const getStatusBadge = (status: "building" | "active") => {
@@ -149,8 +149,8 @@ const ProposalDetail = ({
         onBack={onBack}
         onMenuClick={onMenuClick}
         showShare
-        onShareClick={onShareClick}
-      />
+        onShareClick={onShareClick} />
+      
 
       <div className="flex-1 overflow-auto">
         {/* Date and Status */}
@@ -167,8 +167,8 @@ const ProposalDetail = ({
             <Progress
               value={percentage}
               className="h-3 bg-muted"
-              indicatorClassName={isGoalReached ? "bg-success" : undefined}
-            />
+              indicatorClassName={isGoalReached ? "bg-success" : undefined} />
+            
           </div>
 
           {/* Amount Info */}
@@ -186,67 +186,67 @@ const ProposalDetail = ({
         <div className="h-px bg-border" />
 
         {/* Send Thank You Letter Button - Only show when goal is reached */}
-        {isGoalReached && onSendThankYouLetter && (
-          <div className="px-4 pt-6">
+        {isGoalReached && onSendThankYouLetter &&
+        <div className="px-4 py-[2px] pt-[24px] pb-[8px]">
             <Button
-              onClick={onSendThankYouLetter}
-              className="w-full h-12 text-base font-medium bg-success hover:bg-success/90"
-            >
+            onClick={onSendThankYouLetter}
+            className="w-full h-12 text-base font-medium bg-success hover:bg-success/90">
+            
               <Send className="w-5 h-5 mr-2" />
               發送感謝信給大家
             </Button>
           </div>
-        )}
+        }
 
         {/* Fill Recipient Info Button - Only show when goal is reached */}
-        {isGoalReached && (
-          <div className="px-4 pb-2">
+        {isGoalReached &&
+        <div className="px-4 py-[24px] pb-[24px] pt-[8px]">
             <Button
-              onClick={() => setShowRecipientForm(true)}
-              variant={recipientData ? "outline" : "default"}
-              className="w-full h-12 text-base font-medium"
-            >
+            onClick={() => setShowRecipientForm(true)}
+            variant={recipientData ? "outline" : "default"}
+            className="w-full h-12 text-base font-medium">
+            
               <ClipboardList className="w-5 h-5 mr-2" />
               {recipientData ? "修改收件人資料" : "填寫收件人資料"}
             </Button>
           </div>
-        )}
+        }
 
         {/* Wishlist Section */}
-        {proposal.products.length > 0 && (
-          <div className="px-4 py-6">
+        {proposal.products.length > 0 &&
+        <div className="px-4 py-6">
             <h3 className="text-lg font-medium text-foreground mb-4">我的願望清單</h3>
             <div className="space-y-3">
-              {proposal.products.map((product) => (
-                <WishlistItem key={product.id} item={product} />
-              ))}
+              {proposal.products.map((product) =>
+            <WishlistItem key={product.id} item={product} />
+            )}
             </div>
 
             {/* Shipping Info - Show after recipient data submitted */}
-            {recipientData && isGoalReached && (
-              <div className="mt-6">
+            {recipientData && isGoalReached &&
+          <div className="mt-6">
                 <ProposalShippingInfo
-                  orderNumber={generateOrderNumber()}
-                  orderDate={proposal.proposalDate || ""}
-                  status={mockShippingStatus}
-                  products={proposal.products.map((p, i) => ({
-                    productName: p.name,
-                    productCode: generateProductCode(i),
-                    productNumber: generateProductNumber(i),
-                    quantity: p.quantity,
-                    unitPrice: p.price,
-                  }))}
-                  total={proposal.products.reduce((sum, p) => sum + p.price * p.quantity, 0)}
-                  recipient={recipientData}
-                  onRequestReturn={() => {
-                    // TODO: implement return request flow
-                    import("sonner").then(({ toast }) => toast.info("退換貨申請功能開發中"));
-                  }}
-                />
+              orderNumber={generateOrderNumber()}
+              orderDate={proposal.proposalDate || ""}
+              status={mockShippingStatus}
+              products={proposal.products.map((p, i) => ({
+                productName: p.name,
+                productCode: generateProductCode(i),
+                productNumber: generateProductNumber(i),
+                quantity: p.quantity,
+                unitPrice: p.price
+              }))}
+              total={proposal.products.reduce((sum, p) => sum + p.price * p.quantity, 0)}
+              recipient={recipientData}
+              onRequestReturn={() => {
+                // TODO: implement return request flow
+                import("sonner").then(({ toast }) => toast.info("退換貨申請功能開發中"));
+              }} />
+            
               </div>
-            )}
+          }
           </div>
-        )}
+        }
 
         {/* Divider */}
         <div className="h-px bg-border" />
@@ -262,8 +262,8 @@ const ProposalDetail = ({
                 <TableHead className="text-muted-foreground">
                   <button
                     onClick={toggleAmountSort}
-                    className="flex items-center gap-1 hover:text-foreground transition-colors"
-                  >
+                    className="flex items-center gap-1 hover:text-foreground transition-colors">
+                    
                     金額
                     {getAmountSortIcon()}
                   </button>
@@ -271,8 +271,8 @@ const ProposalDetail = ({
                 <TableHead className="text-muted-foreground">
                   <button
                     onClick={toggleTimeSort}
-                    className="flex items-center gap-1 hover:text-foreground transition-colors"
-                  >
+                    className="flex items-center gap-1 hover:text-foreground transition-colors">
+                    
                     時間
                     {getTimeSortIcon()}
                   </button>
@@ -281,28 +281,28 @@ const ProposalDetail = ({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {sortedDonations.map((donation) => (
-                <TableRow key={donation.id}>
+              {sortedDonations.map((donation) =>
+              <TableRow key={donation.id}>
                   <TableCell className="text-foreground">{donation.lineName}</TableCell>
                   <TableCell className="text-foreground">${donation.amount}</TableCell>
                   <TableCell className="text-foreground">{donation.date}</TableCell>
                   <TableCell className="text-center">
-                    {donation.email ? (
-                      <button onClick={() => onSendSingleThankYouLetter?.(donation)} className="inline-flex">
+                    {donation.email ?
+                  <button onClick={() => onSendSingleThankYouLetter?.(donation)} className="inline-flex">
                         <Mail className="w-5 h-5 text-primary mx-auto cursor-pointer hover:text-primary/80 transition-colors" />
-                      </button>
-                    ) : (
-                      <Mail className="w-5 h-5 text-muted-foreground/50 mx-auto" />
-                    )}
+                      </button> :
+
+                  <Mail className="w-5 h-5 text-muted-foreground/50 mx-auto" />
+                  }
                   </TableCell>
                 </TableRow>
-              ))}
+              )}
             </TableBody>
           </Table>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default ProposalDetail;
