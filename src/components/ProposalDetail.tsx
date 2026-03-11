@@ -116,7 +116,12 @@ const ProposalDetail = ({
 
   // Mock shipping status - delivered for ended campaigns, shipping for active
   const mockShippingStatus = proposal.status === "building" ? "processing" as const :
-  proposal.currentAmount >= proposal.goalAmount ? "delivered" as const : "shipping" as const;
+    proposal.currentAmount >= proposal.goalAmount ? "delivered" as const : "shipping" as const;
+
+  // Mock delivered date - 3 days ago for delivered status (within 7-day return window)
+  const mockDeliveredDate = mockShippingStatus === "delivered"
+    ? new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString().split("T")[0]
+    : undefined;
 
   const handleRecipientSubmit = (data: RecipientData) => {
     setRecipientData(data);
