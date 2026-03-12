@@ -56,7 +56,20 @@ const ProposalDetail = ({
   const [timeSortOrder, setTimeSortOrder] = useState<"none" | "asc" | "desc">("none");
   const [showRecipientForm, setShowRecipientForm] = useState(false);
   const [showReturnForm, setShowReturnForm] = useState(false);
-  const [recipientData, setRecipientData] = useState<RecipientData | null>(null);
+
+  // Pre-fill recipient data for campaign 6 (流浪動物救援行動) as demo
+  const [recipientData, setRecipientData] = useState<RecipientData | null>(
+    proposal.id === "6"
+      ? {
+          name: "林美玲",
+          phone: "0912345678",
+          address: "臺北市大安區忠孝東路四段100號3樓",
+          city: "臺北市",
+          district: "大安區",
+          streetDetail: "忠孝東路四段100號3樓",
+        }
+      : null
+  );
 
   // Check if this proposal has a pending return order
   const pendingReturn = getReturnOrderByOriginalOrderNumber(orderNumber);
