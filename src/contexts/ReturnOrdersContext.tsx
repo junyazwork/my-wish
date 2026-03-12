@@ -41,7 +41,34 @@ const ReturnOrdersContext = createContext<ReturnOrdersContextType>({
 export const useReturnOrders = () => useContext(ReturnOrdersContext);
 
 export const ReturnOrdersProvider = ({ children }: { children: ReactNode }) => {
-  const [returnOrders, setReturnOrders] = useState<ReturnOrder[]>([]);
+  // Seed with a completed return order for campaign 6 (流浪動物救援行動)
+  const [returnOrders, setReturnOrders] = useState<ReturnOrder[]>([
+    {
+      id: "return-seed-1",
+      orderNumber: "R000000001",
+      date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
+      status: "returned",
+      products: [
+        {
+          productName: "寵物飼料大包裝",
+          productCode: "AB-001",
+          productNumber: "A100001",
+          quantity: 3,
+          unitPrice: 650,
+        },
+      ],
+      total: 1950,
+      returnDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
+      originalOrderNumber: "202501150006",
+      returnOrderNumber: "R000000001",
+      returnQuantity: 3,
+      refundAmount: 1950,
+      returnReason: "商品數量過多，退回部分",
+      returnPerson: "林美玲",
+      returnPhone: "0912345678",
+      pickupAddress: "臺北市大安區忠孝東路四段100號3樓",
+    },
+  ]);
 
   const addReturnOrder = (order: ReturnOrder) => {
     setReturnOrders((prev) => [order, ...prev]);
