@@ -48,8 +48,8 @@ const ProposalDetail = ({
   onSendThankYouLetter,
   onSendSingleThankYouLetter
 }: ProposalDetailProps) => {
-  // Generate mock order number - used for checking pending returns
-  const orderNumber = "202501150001";
+  // Generate mock order number based on proposal id
+  const orderNumber = `2025011500${proposal.id.padStart(2, "0")}`;
 
   const { addReturnOrder, getReturnOrderByOriginalOrderNumber } = useReturnOrders();
   const [amountSortOrder, setAmountSortOrder] = useState<"none" | "asc" | "desc">("none");
